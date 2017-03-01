@@ -8,6 +8,7 @@
 
 // Apply the java-library plugin to add support for Java Library
 apply plugin: 'java-library'
+apply from: 'http://dl.bintray.com/content/shemnon/javafx-gradle/8.1.1/javafx.plugin'
 
 // In this section you declare where to find the dependencies of your project
 repositories {
@@ -18,10 +19,12 @@ repositories {
 
 dependencies {
     // This dependency is exported to consumers, that is to say found on their compile classpath.
-    api 'org.apache.commons:commons-math3:3.6.1'
+    //api 'org.apache.commons:commons-math3:3.6.1'
 
     // This dependency is used internally, and not exposed to consumers on their own compile classpath.
-    implementation 'com.google.guava:guava:20.0'
+    //implementation 'com.google.guava:guava:20.0'
+    
+    runtime files('libs/jfxrt.jar')
 
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'

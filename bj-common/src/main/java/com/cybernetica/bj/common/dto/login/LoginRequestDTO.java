@@ -1,6 +1,6 @@
-package com.cybernetica.bj.server.dto.login;
+package com.cybernetica.bj.common.dto.login;
 
-import com.cybernetica.bj.server.dto.BaseDTO;
+import com.cybernetica.bj.common.dto.BaseDTO;
 
 @SuppressWarnings("serial")
 public class LoginRequestDTO extends BaseDTO {

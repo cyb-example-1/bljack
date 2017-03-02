@@ -1,5 +1,7 @@
 package com.cybernetica.bj.server.exceptions;
 
+import com.cybernetica.bj.common.exceptions.BaseException;
+
 @SuppressWarnings("serial")
 public class DaoException  extends BaseException{
 	public DaoException(String message) {

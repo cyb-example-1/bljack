@@ -1,4 +1,4 @@
-package com.cybernetica.bj.server.dto;
+package com.cybernetica.bj.common.dto;
 
 import java.io.Serializable;
 

@@ -1,4 +1,4 @@
-package com.cybernetica.bj.server.exceptions;
+package com.cybernetica.bj.common.exceptions;
 
 /**
  * Base exception class. for all layers.

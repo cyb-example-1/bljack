@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cybernetica.bj.server.dto.login.LoginRequestDTO;
-import com.cybernetica.bj.server.dto.login.LoginResponseDTO;
+import com.cybernetica.bj.common.dto.login.LoginRequestDTO;
+import com.cybernetica.bj.common.dto.login.LoginResponseDTO;
 
 /**
  * Session controller.

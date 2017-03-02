@@ -1,6 +1,11 @@
 package com.cybernetica.bj.client.scene;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.security.InvalidParameterException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.cybernetica.bj.client.Main;
 import com.cybernetica.bj.client.exceptions.ClientException;
@@ -22,11 +27,13 @@ import javafx.stage.Stage;
  *
  */
 public class BaseScene<T extends BaseScene<T>> {
+	protected static final Logger logger = LoggerFactory.getLogger(BaseScene.class);
 	private static BaseScene<? extends BaseScene<?>> instance;
 	private Stage stage;
 	
 	@SuppressWarnings("unchecked")
 	public static <T> T create(Stage stage,Class<T> sceneClass) throws ClientException{
+		logger.trace("creating "+sceneClass.getName());
 		if(instance!=null)
 			return (T) instance;
 		//Class<T> lookupClass = (Class<T>) MethodHandles.lookup().lookupClass();
@@ -81,6 +88,7 @@ public class BaseScene<T extends BaseScene<T>> {
 	 */
 	public Parent replaceSceneContent() throws Exception {
 		String name = this.getClass().getSimpleName().toLowerCase().replace("scene", "");
+		name= "/form/"+name+"/"+name;
 		String fxml = name + ".fxml";
 		String cssFile = name + ".css";
 		return replaceSceneContent(fxml, cssFile);
@@ -118,13 +126,44 @@ public class BaseScene<T extends BaseScene<T>> {
 	}
 	
 	/**
+	 * Get element text
+	 * @param id
+	 * @return
+	 */
+	public String getElementTextById(String id){
+		Node node = getElementById(id);
+		if(node==null)
+			return null;
+		try {
+			Method method = node.getClass().getDeclaredMethod("getText");
+			return (String) method.invoke(node);
+		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			logger.warn("getElementTextById failed  "+node.getClass().getName());
+			return null;
+		}
+		
+	}
+	
+	/**
 	 * Set element text
 	 * @param id
 	 * @param messageCode
 	 * @return
 	 */
+	//will use straight approach without method invoke
 	public String setElementTextById(String id,String messageCode){
 		Node node = getElementById(id);
+		return setElementText(node,messageCode);
+
+	}	
+
+	/**
+	 * Set element text
+	 * @param node
+	 * @param messageCode
+	 * @return
+	 */
+	protected String setElementText(Node node, String messageCode) {
 		if(node==null)
 			return null;
 		String text=MessageService.message(messageCode);
@@ -137,9 +176,11 @@ public class BaseScene<T extends BaseScene<T>> {
 			elem.setText(text);
 		}
 		else {
+			logger.error("setElementText failed  "+node.getClass().getName());
 			throw new InvalidParameterException("setElementTextById: " +node.getClass().getName());
 		}
 		
 		return text;
+		
 	}
 }

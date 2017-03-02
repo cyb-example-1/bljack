@@ -1,5 +1,9 @@
 package com.cybernetica.bj.client.scene;
 
+import javax.validation.ValidationException;
+
+import com.cybernetica.bj.client.services.AuthService;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -25,7 +29,13 @@ public class LoginScene extends BaseScene<LoginScene> {
 
             @Override
             public void handle(ActionEvent e) {
-            	textLabel.setText("Sign in button pressed");
+            	String username=getElementTextById("username");
+            	String password=getElementTextById("password");
+            	try {
+					AuthService.get().login(username,password);
+				} catch (ValidationException e1) {
+					setElementText(textLabel,e1.getMessage());
+				}
             }
         });
 	}

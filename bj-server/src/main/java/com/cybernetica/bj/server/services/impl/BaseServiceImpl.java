@@ -8,8 +8,8 @@ import org.slf4j.LoggerFactory;
  * @author dmitri
  *
  */
-public abstract class BaseService {
+public abstract class BaseServiceImpl {
 	
-	protected static final Logger logger = LoggerFactory.getLogger(BaseService.class);
+	protected static final Logger logger = LoggerFactory.getLogger(BaseServiceImpl.class);
 
 }

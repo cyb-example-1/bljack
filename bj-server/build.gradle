@@ -3,8 +3,11 @@ plugins {
 }
 
 // Apply the java-library plugin to add support for Java Library
-apply plugin: 'java-library'
+apply plugin: 'java'
 apply plugin: 'war'
+apply plugin: 'eclipse'
+apply plugin: 'war'
+
 
 war {
     baseName = 'bj-server'
@@ -34,11 +37,11 @@ dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-logging', version: '1.5.1.RELEASE'
     compile group: 'org.springframework.boot', name: 'spring-boot-test-autoconfigure', version: '1.5.1.RELEASE'
     
+    compile group: 'org.apache.tomcat', name: 'tomcat-jdbc', version: '8.5.11'
+    
     providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
     
     testCompile group: 'org.springframework', name: 'spring-test', version: '4.3.6.RELEASE'
-
-    // Use JUnit test framework
-    testImplementation 'junit:junit:4.12'
+    testCompile 'junit:junit:4.12'
 }
 

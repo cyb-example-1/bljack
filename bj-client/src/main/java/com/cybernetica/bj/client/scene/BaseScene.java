@@ -1,9 +1,9 @@
 package com.cybernetica.bj.client.scene;
 
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.security.InvalidParameterException;
 
+import org.apache.commons.lang3.reflect.MethodUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -135,8 +135,7 @@ public class BaseScene<T extends BaseScene<T>> {
 		if(node==null)
 			return null;
 		try {
-			Method method = node.getClass().getDeclaredMethod("getText");
-			return (String) method.invoke(node);
+			return (String) MethodUtils.invokeMethod(node, "getText");
 		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			logger.warn("getElementTextById failed  "+node.getClass().getName());
 			return null;

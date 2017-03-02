@@ -2,6 +2,9 @@ package com.cybernetica.bj.client.scene;
 
 import javax.validation.ValidationException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.cybernetica.bj.client.services.AuthService;
 
 import javafx.event.ActionEvent;
@@ -15,6 +18,7 @@ import javafx.scene.control.Label;
  *
  */
 public class LoginScene extends BaseScene<LoginScene> {
+	private static final Logger logger = LoggerFactory.getLogger(LoginScene.class);
 
 	@Override
 	protected void postBuild() {
@@ -29,11 +33,14 @@ public class LoginScene extends BaseScene<LoginScene> {
 
             @Override
             public void handle(ActionEvent e) {
+            	logger.trace("form.login.click");
+            	setElementText(textLabel,"");
             	String username=getElementTextById("username");
             	String password=getElementTextById("password");
             	try {
 					AuthService.get().login(username,password);
 				} catch (ValidationException e1) {
+					logger.debug(e1.getMessage());
 					setElementText(textLabel,e1.getMessage());
 				}
             }

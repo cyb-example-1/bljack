@@ -2,17 +2,26 @@ package com.cybernetica.bj.client.services;
 
 import javax.validation.ValidationException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.cybernetica.bj.common.dto.login.LoginRequestDTO;
+import com.cybernetica.bj.common.dto.login.LoginResponseDTO;
 
 /**
- * Authentication service
+ * Authentication service.
+ * statefull singleton
  * @author dmitri
  *
  */
 public class AuthService {
+	private static final Logger logger = LoggerFactory.getLogger(AuthService.class);
 	private static AuthService instance;
 	
+	private RestService restService;
+	
 	private AuthService(){	
+		restService=RestService.get();
 	}
 	
 	/**
@@ -26,12 +35,15 @@ public class AuthService {
 		return instance;	
 	}
 
-	public void login(String username, String password) throws ValidationException{
+	public LoginResponseDTO login(String username, String password) throws ValidationException{
+		logger.trace("starting logging for "+username);
 		LoginRequestDTO dto = new LoginRequestDTO();
 		dto.setPassword(password);
 		dto.setUsername(username);
 		validate(dto);
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub'
+		
+		return null;
 		
 	}
 

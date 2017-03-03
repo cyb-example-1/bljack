@@ -1,13 +1,8 @@
 package com.cybernetica.bj.client.services;
 
-import javax.validation.ValidationException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.cybernetica.bj.client.exceptions.ClientException;
-import com.cybernetica.bj.common.dto.login.LoginRequestDTO;
 import com.cybernetica.bj.common.dto.login.LoginResponseDTO;
+import com.cybernetica.bj.common.interfaces.Singleton;
 
 /**
  * Authentication service.
@@ -15,50 +10,16 @@ import com.cybernetica.bj.common.dto.login.LoginResponseDTO;
  * @author dmitri
  *
  */
-public class AuthService {
-	private static final Logger logger = LoggerFactory.getLogger(AuthService.class);
-	private static AuthService instance;
-	
-	private RestService restService;
-	
-	private AuthService(){	
-		restService=RestService.get();
-	}
-	
+public interface AuthService  extends Singleton<AuthService>{
+
+	LoginResponseDTO login(String string, String string2) throws ClientException;
+
 	/**
-	 * gets singleton
+	 * Singleton initializer
 	 * @return
 	 */
-	public static AuthService get(){
-		if(instance!=null)
-			return instance;
-		instance=new AuthService();
-		return instance;	
+	static AuthService get() {
+		return Singleton.getSingleton(AuthService.class);
 	}
 
-	public LoginResponseDTO login(String username, String password) throws ClientException{
-		logger.trace("starting logging for "+username);
-		LoginRequestDTO dto = new LoginRequestDTO();
-		dto.setPassword(password);
-		dto.setUsername(username);
-		validate(dto);
-
-		LoginResponseDTO resp = restService.post("/session/login", dto, LoginResponseDTO.class);
-		return resp;
-		
-	}
-
-	/**
-	 * login dto validation
-	 * @param dto
-	 * @throws ValidationException
-	 */
-	private void validate(LoginRequestDTO dto) throws ClientException{
-		if(dto.getUsername()==null || dto.getPassword()==null)
-			throw new ClientException("error.login-dto.invalid");
-		if(dto.getUsername().isEmpty() || dto.getUsername().length()>20)
-			throw new ClientException("error.login-dto.invalid");
-		if(dto.getPassword().isEmpty() || dto.getPassword().length()>20)
-			throw new ClientException("error.login-dto.invalid");
-	}
 }

@@ -2,25 +2,23 @@ package com.cybernetica.bj.client.utils;
 
 import java.util.ResourceBundle;
 
+import com.cybernetica.bj.common.interfaces.Singleton;
+
 /**
  * Application property helper
  * @author dmitri
  *
  */
 public class Properties {
-	private static Properties instance;
 	private static ResourceBundle  properties;
 	
-	private Properties(){
+	public Properties(){
 		properties = ResourceBundle.getBundle("application");
 		
 	}
 	
 	public static Properties get() {
-		if(instance!=null)
-			return instance;
-		instance = new Properties();
-		return instance;
+		return Singleton.getSingleton(Properties.class);
 	}
 	
 	/**

@@ -18,7 +18,7 @@ public class SessionServiceTest {
 	
 	@Test
 	public void testFindByUsername() throws ServiceException{
-		service.findByUsername("test");
+		service.findByUsername("test1");
 	}
 
 }

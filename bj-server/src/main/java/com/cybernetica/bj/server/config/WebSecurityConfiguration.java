@@ -12,10 +12,8 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.web.AuthenticationEntryPoint;
 
 import com.cybernetica.bj.server.exceptions.ServiceException;
-import com.cybernetica.bj.server.security.RestAuthenticationEntryPoint;
 import com.cybernetica.bj.server.services.UserService;
 
 @Configuration
@@ -36,7 +34,7 @@ class WebSecurityConfiguration extends GlobalAuthenticationConfigurerAdapter {
 
 			@Override
 			public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-				User account;
+				com.cybernetica.bj.server.models.User account;
 				try {
 					account = userService.findByUsername(username);
 				} catch (ServiceException e) {

@@ -12,10 +12,13 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.session.jdbc.config.annotation.web.http.EnableJdbcHttpSession;
 
+import com.cybernetica.bj.server.controllers.SessionController;
 import com.cybernetica.bj.server.security.RestAuthenticationEntryPoint;
 import com.cybernetica.bj.server.security.RestAuthenticationFailureHandler;
+import com.cybernetica.bj.server.security.RestAuthenticationProcessingFilter;
 import com.cybernetica.bj.server.security.RestAuthenticationSuccessHandler;
 
 @EnableJdbcHttpSession
@@ -24,13 +27,17 @@ import com.cybernetica.bj.server.security.RestAuthenticationSuccessHandler;
 public class SessionSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
-	DataSource dataSource;
+	private DataSource dataSource;
+	
+	@Autowired
+	private SessionController sessionController;
 
 	@Autowired
 	public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
 		auth.jdbcAuthentication().dataSource(dataSource)
 				.usersByUsernameQuery("select username,password, enabled from users where username=?")
-				.authoritiesByUsernameQuery("select username, role from user_roles where username=?");
+				//.authoritiesByUsernameQuery("select username, role from user_roles where username=?")
+				;
 
 	}
 
@@ -47,8 +54,15 @@ public class SessionSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     AuthenticationSuccessHandler authenticationSuccessHandler() {
-        return new RestAuthenticationSuccessHandler();
-}	
+    	RestAuthenticationSuccessHandler handler= new RestAuthenticationSuccessHandler();
+    	handler.setSessionController(sessionController);
+    	return handler;
+    }	
+    
+    @Bean
+    RestAuthenticationProcessingFilter authenticationFilter(){
+    	return new RestAuthenticationProcessingFilter();
+    }
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -57,13 +71,14 @@ public class SessionSecurityConfig extends WebSecurityConfigurerAdapter {
 				.exceptionHandling()
 					.authenticationEntryPoint(authenticationEntryPoint())
 					.and()
+				.addFilterAfter(authenticationFilter(), UsernamePasswordAuthenticationFilter.class)
 				// Configure form login.
 //				.formLogin()
 //					.loginProcessingUrl("/session/login")
-				//.failureHandler(authenticationFailureHandler())
-				//.successHandler(authenticationSuccessHandler())
-					//.permitAll()
-					//.and()
+//					.failureHandler(authenticationFailureHandler())
+//					.successHandler(authenticationSuccessHandler())
+//					.permitAll()
+//					.and()
 				// Configure logout function.
 				.logout()
 					.deleteCookies("JSESSIONID")
@@ -74,7 +89,7 @@ public class SessionSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/game/**").authenticated()
 				.antMatchers("/session/**").permitAll()
 				.anyRequest().permitAll()
-				.and().csrf();
+				.and().csrf().disable();
 	}
 
 }

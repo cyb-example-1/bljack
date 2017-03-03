@@ -81,6 +81,61 @@ public class SpringSession  implements Serializable{
 	public void setCreationTime(Long creationTime) {
 		this.creationTime = creationTime;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((creationTime == null) ? 0 : creationTime.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((lastAccessTime == null) ? 0 : lastAccessTime.hashCode());
+		result = prime * result + ((maxInactiveInterval == null) ? 0 : maxInactiveInterval.hashCode());
+		result = prime * result + ((username == null) ? 0 : username.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		SpringSession other = (SpringSession) obj;
+		if (creationTime == null) {
+			if (other.creationTime != null)
+				return false;
+		} else if (!creationTime.equals(other.creationTime))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (lastAccessTime == null) {
+			if (other.lastAccessTime != null)
+				return false;
+		} else if (!lastAccessTime.equals(other.lastAccessTime))
+			return false;
+		if (maxInactiveInterval == null) {
+			if (other.maxInactiveInterval != null)
+				return false;
+		} else if (!maxInactiveInterval.equals(other.maxInactiveInterval))
+			return false;
+		if (username == null) {
+			if (other.username != null)
+				return false;
+		} else if (!username.equals(other.username))
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "SpringSession [id=" + id + ", username=" + username + ", maxInactiveInterval=" + maxInactiveInterval
+				+ ", lastAccessTime=" + lastAccessTime + ", creationTime=" + creationTime + "]";
+	}
 	
 	
 

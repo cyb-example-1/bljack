@@ -1,6 +1,6 @@
 package com.cybernetica.bj.server.controllers;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -19,34 +19,28 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(SessionController.class)
-public class SessionControllerTest {
-	
+@WebMvcTest(GameController.class)
+public class GameControllerTest {
+
 	private MockMvc mockMvc;
 
 	@Autowired
 	private WebApplicationContext webApplicationContext;
-	
+
 	@Autowired
 	private FilterChainProxy filterChainProxy;
-	
+
 	@Before
 	public void setUp() {
 		DefaultMockMvcBuilder builder = MockMvcBuilders.webAppContextSetup(webApplicationContext);
 		builder.addFilter(filterChainProxy);
-	     mockMvc = builder.build();
-	}	
-
-	
-	@Test
-	public void testLogin() throws Exception{
-		ResultActions result = mockMvc.perform(post("/session/login").content("{\"username\":\"me\",\"password\":\"pass\"}").contentType(MediaType.APPLICATION_JSON_UTF8).accept(MediaType.APPLICATION_JSON_UTF8));
-		
-		
-		result
-        .andExpect(status().isOk())
-        .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
-		
+		mockMvc = builder.build();
 	}
 
+	@Test
+	public void testLogin() throws Exception{
+		ResultActions result = mockMvc.perform(get("/game/start").contentType(MediaType.APPLICATION_JSON_UTF8).accept(MediaType.APPLICATION_JSON_UTF8));
+		result.andExpect(status().isUnauthorized());
+		
+	}
 }

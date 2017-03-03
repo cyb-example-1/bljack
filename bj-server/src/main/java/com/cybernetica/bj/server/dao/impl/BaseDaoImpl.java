@@ -14,8 +14,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 public abstract class BaseDaoImpl {
 	protected static final Logger logger = LoggerFactory.getLogger(BaseDaoImpl.class);
 
-	@Autowired
+	public BaseDaoImpl() {
+		System.out.println("");
+	}
+	
 	private SessionFactory sessionFactory;
+	
+	
+	@Autowired
+	public void setSessionFactory(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
 
 	protected SessionFactory getSessionFactory() {
 		return sessionFactory;

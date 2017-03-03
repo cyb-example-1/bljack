@@ -1,5 +1,12 @@
 package com.cybernetica.bj.server.models;
 
+import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+
 /**
  * 
 CREATE TABLE SPRING_SESSION_ATTRIBUTES (
@@ -14,6 +21,45 @@ CREATE INDEX SPRING_SESSION_ATTRIBUTES_IX1 ON SPRING_SESSION_ATTRIBUTES (SESSION
  * @author dmitri
  *
  */
-public class SpringSessionAttributes {
+@SuppressWarnings("serial")
+@Entity(name="SPRING_SESSION_ATTRIBUTES")
+public class SpringSessionAttributes implements Serializable{
+	
+	@Id
+	@Column(name="SESSION_ID",length=36)
+	private String id;
+	
+	@Id
+	@Column(name="ATTRIBUTE_NAME",length=200)
+	private String attrName;
+	
+	@Column(name="ATTRIBUTE_BYTES")
+	@Lob
+	private byte[] data;
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getAttrName() {
+		return attrName;
+	}
+
+	public void setAttrName(String attrName) {
+		this.attrName = attrName;
+	}
+
+	public byte[] getData() {
+		return data;
+	}
+
+	public void setData(byte[] data) {
+		this.data = data;
+	}
+	
 
 }

@@ -12,7 +12,14 @@ import com.cybernetica.bj.common.interfaces.Singleton;
  */
 public interface AuthService  extends Singleton<AuthService>{
 
-	LoginResponseDTO login(String string, String string2) throws ClientException;
+	/**
+	 * Login method
+	 * @param username
+	 * @param password
+	 * @return
+	 * @throws ClientException
+	 */
+	LoginResponseDTO login(String username, String password) throws ClientException;
 
 	/**
 	 * Singleton initializer

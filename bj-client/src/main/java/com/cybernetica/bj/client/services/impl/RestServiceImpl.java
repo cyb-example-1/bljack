@@ -3,6 +3,7 @@ package com.cybernetica.bj.client.services.impl;
 import java.io.IOException;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.entity.ContentType;
@@ -15,10 +16,11 @@ import org.slf4j.LoggerFactory;
 
 import com.cybernetica.bj.client.exceptions.ClientException;
 import com.cybernetica.bj.client.services.RestService;
+import com.cybernetica.bj.client.utils.Properties;
 import com.cybernetica.bj.common.dto.BaseDTO;
 import com.cybernetica.bj.common.dto.BaseRestResponseDTO;
-import com.cybernetica.bj.common.dto.login.LoginRequestDTO;
-import com.cybernetica.bj.common.dto.login.LoginResponseDTO;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * provides rest services.
@@ -28,19 +30,24 @@ import com.cybernetica.bj.common.dto.login.LoginResponseDTO;
  */
 public class RestServiceImpl implements RestService{
 	private static final Logger logger = LoggerFactory.getLogger(RestService.class);
+	private static ObjectMapper mapper = new ObjectMapper();
+	
+	private String BACKEND_HOST;  
 	
 	private CloseableHttpClient client;
 	
 	public RestServiceImpl(){	
 		client = buildClient();
+		BACKEND_HOST = Properties.getString("app.backend.host");
 	}
 	
-
 	
 	private CloseableHttpClient buildClient(){
-		
-		
 		return HttpClientBuilder.create().build();
+	}
+	
+	protected CloseableHttpClient getClient() {
+		return client;
 	}
 	
 	/**
@@ -103,13 +110,19 @@ public class RestServiceImpl implements RestService{
 	
 	
 	private <T extends BaseRestResponseDTO,Y extends BaseDTO> T doExecute(String method,String path,Y content,Class<T> respClass) throws ClientException {
-		String uri="http://localhost:8080/"+path;
+		String uri=BACKEND_HOST+path;
 		logger.debug("calling {}",uri);
 		RequestBuilder builder = RequestBuilder.create(method);
 		builder.setUri(uri);
 		
 		if(content!=null) {
-			String json="";
+			String json;
+			try {
+				json = mapper.writeValueAsString(content);
+			} catch (JsonProcessingException e) {
+				logger.error("unable to map {}",content);
+				throw new ClientException("error.json.write", e);
+			}
 			if(logger.isTraceEnabled())
 				logger.trace("content {}",json);
 			
@@ -119,12 +132,17 @@ public class RestServiceImpl implements RestService{
 		
 		CloseableHttpResponse response1;
 		try {
-			response1 = client.execute(builder.build());
+			response1 = getClient().execute(builder.build());
 		} catch (IOException e1) {
 			logger.error("execute error",e1);
 			throw new ClientException("error.http.execute", e1);
 		}
 		String responseString;
+		
+		if(response1.getStatusLine().getStatusCode()!=HttpStatus.SC_OK) {
+			System.out.println("todo");
+		}
+		
 		try {
 			logger.debug("response status: {}",response1.getStatusLine());
 		    HttpEntity entity1 = response1.getEntity();
@@ -138,11 +156,16 @@ public class RestServiceImpl implements RestService{
 		finally {
 		    try {
 				response1.close();
-			} catch (IOException e) {
+			} catch (Exception e) {
 				logger.error("response close",e);
 			}
 		}
 
-		return null;
+		try {
+			return mapper.readValue(responseString, respClass);
+		} catch (IOException e) {
+			logger.error("unable to parse {}",responseString);
+			throw new ClientException("error.json.parse", e);
+		}
 	}
 }

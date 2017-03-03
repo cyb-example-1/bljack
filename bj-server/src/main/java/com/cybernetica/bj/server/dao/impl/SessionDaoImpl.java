@@ -17,7 +17,7 @@ public class SessionDaoImpl extends BaseDaoImpl implements SessionDao {
 	public SpringSession findByUsername(String username) throws DaoException {
 		Session session = getSession();
 		@SuppressWarnings("unchecked")
-		Query<SpringSession> query = session.createQuery("from SpringSession where username=:username");
+		Query<SpringSession> query = session.createQuery("from com.cybernetica.bj.server.models.SpringSession where username=:username");
 		query.setParameter("username", username);
 		List<SpringSession> list = query.getResultList();
 		if(list==null || list.size()<1)

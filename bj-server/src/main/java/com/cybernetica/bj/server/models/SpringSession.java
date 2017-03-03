@@ -1,8 +1,11 @@
 package com.cybernetica.bj.server.models;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+
 
 /**
  * 
@@ -19,8 +22,9 @@ CREATE INDEX SPRING_SESSION_IX1 ON SPRING_SESSION (LAST_ACCESS_TIME);
  * @author dmitri
  *
  */
+@SuppressWarnings("serial")
 @Entity(name="SPRING_SESSION")
-public class SpringSession {
+public class SpringSession  implements Serializable{
 	
 	@Id
 	@Column(name="SESSION_ID",length=36)

@@ -1,10 +1,9 @@
 package com.cybernetica.bj.client.scene;
 
-import javax.validation.ValidationException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.cybernetica.bj.client.exceptions.ClientException;
 import com.cybernetica.bj.client.services.AuthService;
 
 import javafx.event.ActionEvent;
@@ -39,7 +38,7 @@ public class LoginScene extends BaseScene<LoginScene> {
             	String password=getElementTextById("password");
             	try {
 					AuthService.get().login(username,password);
-				} catch (ValidationException e1) {
+				} catch (ClientException e1) {
 					logger.debug(e1.getMessage());
 					setElementText(textLabel,e1.getMessage());
 				}

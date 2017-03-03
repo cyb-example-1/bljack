@@ -9,4 +9,8 @@ public class ClientException extends BaseException {
 		super(message, throwable);
 	}
 
+	public ClientException(String message) {
+		super(message);
+	}
+
 }

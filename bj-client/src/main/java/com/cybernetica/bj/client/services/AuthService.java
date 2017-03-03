@@ -5,6 +5,7 @@ import javax.validation.ValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.cybernetica.bj.client.exceptions.ClientException;
 import com.cybernetica.bj.common.dto.login.LoginRequestDTO;
 import com.cybernetica.bj.common.dto.login.LoginResponseDTO;
 
@@ -35,15 +36,15 @@ public class AuthService {
 		return instance;	
 	}
 
-	public LoginResponseDTO login(String username, String password) throws ValidationException{
+	public LoginResponseDTO login(String username, String password) throws ClientException{
 		logger.trace("starting logging for "+username);
 		LoginRequestDTO dto = new LoginRequestDTO();
 		dto.setPassword(password);
 		dto.setUsername(username);
 		validate(dto);
-		// TODO Auto-generated method stub'
-		
-		return null;
+
+		LoginResponseDTO resp = restService.post("/session/login", dto, LoginResponseDTO.class);
+		return resp;
 		
 	}
 
@@ -52,12 +53,12 @@ public class AuthService {
 	 * @param dto
 	 * @throws ValidationException
 	 */
-	private void validate(LoginRequestDTO dto) throws ValidationException{
+	private void validate(LoginRequestDTO dto) throws ClientException{
 		if(dto.getUsername()==null || dto.getPassword()==null)
-			throw new ValidationException("error.login-dto.invalid");
+			throw new ClientException("error.login-dto.invalid");
 		if(dto.getUsername().isEmpty() || dto.getUsername().length()>20)
-			throw new ValidationException("error.login-dto.invalid");
+			throw new ClientException("error.login-dto.invalid");
 		if(dto.getPassword().isEmpty() || dto.getPassword().length()>20)
-			throw new ValidationException("error.login-dto.invalid");
+			throw new ClientException("error.login-dto.invalid");
 	}
 }

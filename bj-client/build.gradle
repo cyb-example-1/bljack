@@ -36,5 +36,8 @@ dependencies {
     // Use JUnit test framework
     testCompile 'junit:junit:4.12'
     testCompile group: 'org.mockito', name: 'mockito-all', version: '2.0.2-beta'
+    testCompile group: 'org.testfx', name: 'testfx-core', version: '4.0.5-alpha'
+	testCompile group: 'org.testfx', name: 'testfx-junit', version: '4.0.5-alpha'
+    
 }
 

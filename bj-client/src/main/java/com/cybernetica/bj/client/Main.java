@@ -1,6 +1,7 @@
 package com.cybernetica.bj.client;
 	
 import com.cybernetica.bj.client.exceptions.ClientException;
+import com.cybernetica.bj.client.game.GameCoordinator;
 import com.cybernetica.bj.client.scene.LoginScene;
 
 import javafx.application.Application;
@@ -13,7 +14,8 @@ public class Main extends Application {
 	
 	@Override
 	public void start(Stage primaryStage) {
-
+		GameCoordinator coordinator = new GameCoordinator();
+		coordinator.init();
 		try {
 			initScenes(primaryStage);
 			 LoginScene.get().replaceSceneContent();
@@ -21,7 +23,7 @@ public class Main extends Application {
 			e1.printStackTrace();
 			return;
 		}
-		
+		primaryStage.setTitle("Blackjack");
 		primaryStage.show();
 	}
 
@@ -33,7 +35,13 @@ public class Main extends Application {
 
 
 	public static void main(String[] args) {
-		launch(args);
+		try {
+			launch(args);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println();
+		}
 	}
 	
 

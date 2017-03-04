@@ -3,6 +3,8 @@ package com.cybernetica.bj.client.services.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.cybernetica.bj.client.context.EventProducer;
+import com.cybernetica.bj.client.events.LoginEvent;
 import com.cybernetica.bj.client.exceptions.ClientException;
 import com.cybernetica.bj.client.services.AuthService;
 import com.cybernetica.bj.client.services.RestService;
@@ -37,6 +39,7 @@ public class AuthServiceImpl implements AuthService {
 
 		LoginResponseDTO resp = restService.post("/session/login", dto, LoginResponseDTO.class);
 		validate(resp);
+		EventProducer.publishEvent(new LoginEvent(resp));
 		return resp;
 		
 	}

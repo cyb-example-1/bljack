@@ -58,7 +58,7 @@ public class AuthServiceImpl implements AuthService {
 	private void validate(LoginResponseDTO resp) throws ClientException {
 		if(resp==null)
 			throw new ClientException("null response");
-		if(resp.getErrors()!=null || resp.getErrors().size()>0) {
+		if(resp.getErrors()!=null && resp.getErrors().size()>0) {
 			for(String error:resp.getErrors())
 				logger.debug("received {}",error);
 			throw new ClientException(resp.getErrors().get(0));

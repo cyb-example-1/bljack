@@ -1,5 +1,6 @@
 package com.cybernetica.bj.server.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -16,13 +17,50 @@ public class SessionDaoImpl extends BaseDaoImpl implements SessionDao {
 	@Override
 	public SpringSession findByUsername(String username) throws DaoException {
 		Session session = getSession();
-		@SuppressWarnings("unchecked")
-		Query<SpringSession> query = session.createQuery("from com.cybernetica.bj.server.models.SpringSession where username=:username");
+		Query<SpringSession> query = session.createQuery("from com.cybernetica.bj.server.models.SpringSession where username=:username",SpringSession.class);
 		query.setParameter("username", username);
 		List<SpringSession> list = query.getResultList();
 		if(list==null || list.size()<1)
 			return null;
 		return list.get(0);
+	}
+
+	@Override
+	public List<SpringSession> getAllSessions() throws DaoException {
+		Session session = getSession();
+		Query<SpringSession> query = session.createQuery("from com.cybernetica.bj.server.models.SpringSession",SpringSession.class);
+		List<SpringSession> list = query.getResultList();
+		if(list==null || list.size()<1)
+			return new ArrayList<>();
+		return list;
+	}
+
+	@Override
+	public SpringSession findBySession(String sessionId) throws DaoException {
+		Session session = getSession();
+		Query<SpringSession> query = session.createQuery("from com.cybernetica.bj.server.models.SpringSession where id=:id",SpringSession.class);
+		query.setParameter("id", sessionId);
+		List<SpringSession> list = query.getResultList();
+		if(list==null || list.size()<1)
+			return null;
+		return list.get(0);
+	}
+
+	@Override
+	public void deleteAllSessions(String username, String sessionId) throws DaoException {
+		Session session = getSession();
+		if(username!=null){
+			Query<?> query = session.createQuery("delete from com.cybernetica.bj.server.models.SpringSession where username=:username");
+			query.setParameter("username", username);
+			query.executeUpdate();
+		}
+		
+		if(sessionId!=null){
+			Query<?> query = session.createQuery("delete from com.cybernetica.bj.server.models.SpringSession where id=:id");
+			query.setParameter("id", sessionId);
+			query.executeUpdate();
+		}
+		
 	}
 
 }

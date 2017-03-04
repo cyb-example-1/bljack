@@ -17,10 +17,10 @@ import org.slf4j.LoggerFactory;
 import com.cybernetica.bj.client.exceptions.ClientException;
 import com.cybernetica.bj.client.services.RestService;
 import com.cybernetica.bj.client.utils.Properties;
+import com.cybernetica.bj.common.JsonUtils;
 import com.cybernetica.bj.common.dto.BaseDTO;
 import com.cybernetica.bj.common.dto.BaseRestResponseDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * provides rest services.
@@ -30,7 +30,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public class RestServiceImpl implements RestService{
 	private static final Logger logger = LoggerFactory.getLogger(RestService.class);
-	private static ObjectMapper mapper = new ObjectMapper();
 	
 	private String BACKEND_HOST;  
 	
@@ -118,7 +117,7 @@ public class RestServiceImpl implements RestService{
 		if(content!=null) {
 			String json;
 			try {
-				json = mapper.writeValueAsString(content);
+				json = JsonUtils.toString(content);
 			} catch (JsonProcessingException e) {
 				logger.error("unable to map {}",content);
 				throw new ClientException("error.json.write", e);
@@ -162,7 +161,7 @@ public class RestServiceImpl implements RestService{
 		}
 
 		try {
-			return mapper.readValue(responseString, respClass);
+			return JsonUtils.fromString(responseString, respClass);
 		} catch (IOException e) {
 			logger.error("unable to parse {}",responseString);
 			throw new ClientException("error.json.parse", e);

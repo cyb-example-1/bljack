@@ -14,9 +14,9 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.message.BasicStatusLine;
 import org.apache.http.params.HttpParams;
 
+import com.cybernetica.bj.common.JsonUtils;
 import com.cybernetica.bj.common.dto.BaseRestResponseDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SuppressWarnings("deprecation")
 public class CloseableHttpResponseWrapper implements CloseableHttpResponse {
@@ -32,9 +32,8 @@ public class CloseableHttpResponseWrapper implements CloseableHttpResponse {
 		
 		public CloseableHttpResponseWrapper(int statuscode, BaseRestResponseDTO dto) {
 			this.statuscode = statuscode;
-			ObjectMapper mapper = new ObjectMapper();
 			try {
-				this.content=mapper.writeValueAsString(dto);
+				this.content=JsonUtils.toString(dto);
 			} catch (JsonProcessingException e) {
 			}
 		}		

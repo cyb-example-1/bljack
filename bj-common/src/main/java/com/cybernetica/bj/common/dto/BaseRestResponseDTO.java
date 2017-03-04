@@ -1,5 +1,6 @@
 package com.cybernetica.bj.common.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("serial")
@@ -30,7 +31,11 @@ public class BaseRestResponseDTO extends BaseDTO {
 		this.messages = messages;
 	}
 	
-	
+	public void addError(String errorMsg){
+		if(errors==null)
+			errors = new ArrayList<>();
+		errors.add(errorMsg);
+	}
 	
 	@Override
 	public String toString() {

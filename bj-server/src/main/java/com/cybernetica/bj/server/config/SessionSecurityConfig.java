@@ -10,9 +10,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.session.jdbc.config.annotation.web.http.EnableJdbcHttpSession;
 
 import com.cybernetica.bj.server.controllers.SessionController;
@@ -20,6 +21,7 @@ import com.cybernetica.bj.server.security.RestAuthenticationEntryPoint;
 import com.cybernetica.bj.server.security.RestAuthenticationFailureHandler;
 import com.cybernetica.bj.server.security.RestAuthenticationProcessingFilter;
 import com.cybernetica.bj.server.security.RestAuthenticationSuccessHandler;
+import com.cybernetica.bj.server.security.RestLogoutSuccessHandler;
 
 @EnableJdbcHttpSession
 @Configuration
@@ -55,13 +57,23 @@ public class SessionSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     AuthenticationSuccessHandler authenticationSuccessHandler() {
     	RestAuthenticationSuccessHandler handler= new RestAuthenticationSuccessHandler();
+
     	handler.setSessionController(sessionController);
     	return handler;
-    }	
+    }
+    
+    @Bean
+    LogoutSuccessHandler logoutSuccessHandler() {
+    	RestLogoutSuccessHandler handler= new RestLogoutSuccessHandler();
+    	handler.setSessionController(sessionController);
+    	return handler;
+    }
     
     @Bean
     RestAuthenticationProcessingFilter authenticationFilter(){
-    	return new RestAuthenticationProcessingFilter();
+    	RestAuthenticationProcessingFilter filter =  new RestAuthenticationProcessingFilter();
+    	//filter.setAuthenticationFailureHandler(authenticationFailureHandler());
+    	return filter;
     }
 
 	@Override
@@ -71,7 +83,7 @@ public class SessionSecurityConfig extends WebSecurityConfigurerAdapter {
 				.exceptionHandling()
 					.authenticationEntryPoint(authenticationEntryPoint())
 					.and()
-				.addFilterAfter(authenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+				.addFilterBefore(authenticationFilter(), AnonymousAuthenticationFilter.class)
 				// Configure form login.
 //				.formLogin()
 //					.loginProcessingUrl("/session/login")
@@ -83,7 +95,7 @@ public class SessionSecurityConfig extends WebSecurityConfigurerAdapter {
 				.logout()
 					.deleteCookies("JSESSIONID")
 					.logoutUrl("/session/logout")
-					.logoutSuccessUrl("/")
+					.logoutSuccessHandler(logoutSuccessHandler())
 					.and()
 				.authorizeRequests()
 				.antMatchers("/game/**").authenticated()

@@ -7,4 +7,6 @@ public interface UserDao extends BaseDao{
 
 	User findByUsername(String username) throws DaoException;
 
+
+
 }

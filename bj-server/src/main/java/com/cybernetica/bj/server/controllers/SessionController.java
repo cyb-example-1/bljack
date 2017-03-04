@@ -9,8 +9,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cybernetica.bj.common.dto.BaseRestResponseDTO;
+import com.cybernetica.bj.common.dto.LogoutRequestDTO;
 import com.cybernetica.bj.common.dto.login.LoginRequestDTO;
 import com.cybernetica.bj.common.dto.login.LoginResponseDTO;
+import com.cybernetica.bj.server.exceptions.ControllerException;
 import com.cybernetica.bj.server.exceptions.ServiceException;
 import com.cybernetica.bj.server.services.SessionService;
 
@@ -40,6 +43,18 @@ public class SessionController extends BaseController {
 	public String status() throws ServiceException {
 		sessionService.findByUsername("asd");
 		return "{\"version\":\"0.1.0\"}";
+	}
+
+
+	@RequestMapping(value="/logout",produces = "application/json", consumes="application/json",method=RequestMethod.POST)
+	@ResponseBody
+	public BaseRestResponseDTO logout(LogoutRequestDTO dto) throws ControllerException {
+		try {
+			sessionService.deleteAllSessions(dto.getUsername(),dto.getSessionId());
+		} catch (ServiceException e) {
+			throw new ControllerException(e);
+		}
+		return new BaseRestResponseDTO();
 	}
 	
 

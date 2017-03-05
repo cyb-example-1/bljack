@@ -1,25 +1,30 @@
 package com.cybernetica.bj.client.game;
 
-import com.cybernetica.bj.common.dto.login.LoginResponseDTO;
+import com.cybernetica.bj.common.dto.user.UserResponseDTO;
 import com.cybernetica.bj.common.interfaces.Singleton;
 
+/**
+ * user's session object
+ * @author dmitri
+ *
+ */
 public class GameSession  implements Singleton<GameSession>{
 	
-	private LoginResponseDTO user;
+	private UserResponseDTO user;
 	
 	/**
 	 * Singleton initializer
 	 * @return
 	 */
-	static GameSession get() {
+	public static GameSession get() {
 		return Singleton.getSingleton(GameSession.class);
 	}
 
-	public LoginResponseDTO getUser() {
+	public UserResponseDTO getUser() {
 		return user;
 	}
 
-	public void setUser(LoginResponseDTO user) {
+	public void setUser(UserResponseDTO user) {
 		this.user = user;
 	}
 	

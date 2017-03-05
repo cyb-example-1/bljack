@@ -5,9 +5,13 @@ import org.slf4j.LoggerFactory;
 
 import com.cybernetica.bj.client.context.EventProducer;
 import com.cybernetica.bj.client.events.LoginEvent;
+import com.cybernetica.bj.client.events.LogoutEvent;
 import com.cybernetica.bj.client.exceptions.ClientException;
 import com.cybernetica.bj.client.services.AuthService;
 import com.cybernetica.bj.client.services.RestService;
+import com.cybernetica.bj.common.dto.BaseRestResponseDTO;
+import com.cybernetica.bj.common.dto.LogoutRequestDTO;
+import com.cybernetica.bj.common.dto.LogoutResponseDTO;
 import com.cybernetica.bj.common.dto.login.LoginRequestDTO;
 import com.cybernetica.bj.common.dto.login.LoginResponseDTO;
 
@@ -30,6 +34,10 @@ public class AuthServiceImpl implements AuthService {
 		this.restService = restService;
 	} 
 	
+	/**
+	 * @inheritDoc
+	 */
+	@Override
 	public LoginResponseDTO login(String username, String password) throws ClientException{
 		logger.trace("starting logging for "+username);
 		LoginRequestDTO dto = new LoginRequestDTO();
@@ -42,6 +50,20 @@ public class AuthServiceImpl implements AuthService {
 		EventProducer.publishEvent(new LoginEvent(resp));
 		return resp;
 		
+	}
+	
+	/**
+	 * @inheritDoc
+	 */
+	@Override
+	public LogoutResponseDTO logout() throws ClientException {
+		logger.trace("starting logging");
+		LogoutRequestDTO dto = new LogoutRequestDTO();
+//		validate(dto);
+		LogoutResponseDTO resp = restService.post("/session/logout", dto, LogoutResponseDTO.class);
+		validate(resp);
+		EventProducer.publishEvent(new LogoutEvent(resp));
+		return resp;
 	}
 
 	/**
@@ -58,7 +80,7 @@ public class AuthServiceImpl implements AuthService {
 			throw new ClientException("error.login-dto.invalid");
 	}
 	
-	private void validate(LoginResponseDTO resp) throws ClientException {
+	private void validate(BaseRestResponseDTO resp) throws ClientException {
 		if(resp==null)
 			throw new ClientException("null response");
 		if(resp.getErrors()!=null && resp.getErrors().size()>0) {
@@ -68,4 +90,6 @@ public class AuthServiceImpl implements AuthService {
 		}
 			
 	}
+
+
 }

@@ -1,26 +1,18 @@
 package com.cybernetica.bj.client.events;
 
-import com.cybernetica.bj.common.dto.login.LoginResponseDTO;
+import com.cybernetica.bj.common.dto.LogoutResponseDTO;
 
 /**
- * Sent on successful login
- * @author dmitri
+ * Logout event
+ * @author dmitr@SuppressWarnings("serial")
+i
  *
  */
 @SuppressWarnings("serial")
-public class LoginEvent extends BaseEvent {
-	
-	private LoginResponseDTO response;
+public class LogoutEvent extends BaseEvent {
+	private LogoutResponseDTO response;
 
-	public LoginEvent(LoginResponseDTO response){
-		this.response = response;
-	}
-
-	public LoginResponseDTO getResponse() {
-		return response;
-	}
-
-	public void setResponse(LoginResponseDTO response) {
+	public LogoutEvent(LogoutResponseDTO response){
 		this.response = response;
 	}
 
@@ -40,7 +32,7 @@ public class LoginEvent extends BaseEvent {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		LoginEvent other = (LoginEvent) obj;
+		LogoutEvent other = (LogoutEvent) obj;
 		if (response == null) {
 			if (other.response != null)
 				return false;
@@ -51,7 +43,8 @@ public class LoginEvent extends BaseEvent {
 
 	@Override
 	public String toString() {
-		return "LoginEvent [response=" + response + "]";
+		return "LogoutEvent [response=" + response + "]";
 	}
-
+	
+	
 }

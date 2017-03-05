@@ -29,4 +29,8 @@ public class EventProducer {
 			listener.onEvent(event);
 	}
 
+	public static void removeAllListeners() {
+		listeners.clear();		
+	}
+
 }

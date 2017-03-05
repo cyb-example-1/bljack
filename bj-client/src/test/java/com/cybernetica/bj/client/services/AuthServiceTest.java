@@ -23,6 +23,7 @@ public class AuthServiceTest {
 	public void testLogin() throws ClientException{
 		
 		LoginResponseDTO respDTO = authService.login("test", "test");
+		assertNotNull(respDTO);
 	}
 	
 	@Test(expected=ClientException.class)

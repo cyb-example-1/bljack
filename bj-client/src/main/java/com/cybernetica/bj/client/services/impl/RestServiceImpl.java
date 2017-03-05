@@ -58,11 +58,7 @@ public class RestServiceImpl implements RestService{
 	}
 	
 	/**
-	 * GET request
-	 * @param uri
-	 * @param respClass
-	 * @return
-	 * @throws ClientException
+	 * @inheritDoc
 	 */
 	public <T extends BaseRestResponseDTO> T get(String uri,Class<T> respClass) throws ClientException{
 		logger.debug("calling {}",uri);
@@ -70,12 +66,7 @@ public class RestServiceImpl implements RestService{
 	}
 	
 	/**
-	 * PUT request
-	 * @param uri
-	 * @param content
-	 * @param respClass
-	 * @return
-	 * @throws ClientException
+	 * @inheritDoc
 	 */
 	public <T extends BaseRestResponseDTO,Y extends BaseDTO> T put(String uri,Y content,Class<T> respClass) throws ClientException{
 		logger.debug("calling {} with {}",uri,content);
@@ -83,12 +74,7 @@ public class RestServiceImpl implements RestService{
 	}
 	
 	/**
-	 * POST request
-	 * @param uri
-	 * @param content
-	 * @param respClass
-	 * @return
-	 * @throws ClientException
+	 * @inheritDoc
 	 */
 	public <T extends BaseRestResponseDTO,Y extends BaseDTO> T post(String uri,Y content,Class<T> respClass) throws ClientException{
 		logger.debug("calling {} with {}",uri,content);

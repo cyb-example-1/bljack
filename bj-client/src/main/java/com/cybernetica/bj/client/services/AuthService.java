@@ -1,19 +1,30 @@
 package com.cybernetica.bj.client.services;
 
 import com.cybernetica.bj.client.exceptions.ClientException;
+import com.cybernetica.bj.common.dto.LogoutResponseDTO;
 import com.cybernetica.bj.common.dto.login.LoginResponseDTO;
 import com.cybernetica.bj.common.interfaces.Singleton;
 
 /**
- * Authentication service.
- * statefull singleton
+ * Authentication service. statefull singleton
+ * 
  * @author dmitri
  *
  */
-public interface AuthService  extends Singleton<AuthService>{
+public interface AuthService extends Singleton<AuthService> {
+
+	/**
+	 * Singleton initializer
+	 * 
+	 * @return
+	 */
+	static AuthService get() {
+		return Singleton.getSingleton(AuthService.class);
+	}
 
 	/**
 	 * Login method
+	 * 
 	 * @param username
 	 * @param password
 	 * @return
@@ -22,11 +33,11 @@ public interface AuthService  extends Singleton<AuthService>{
 	LoginResponseDTO login(String username, String password) throws ClientException;
 
 	/**
-	 * Singleton initializer
+	 * Logout method
+	 * 
 	 * @return
+	 * @throws ClientException
 	 */
-	static AuthService get() {
-		return Singleton.getSingleton(AuthService.class);
-	}
+	LogoutResponseDTO logout() throws ClientException;
 
 }

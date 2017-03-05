@@ -13,6 +13,14 @@ import com.cybernetica.bj.common.interfaces.Singleton;
  */
 public interface RestService   extends Singleton<RestService>{
 
+	/**
+	 * POST request
+	 * @param uri
+	 * @param content
+	 * @param respClass
+	 * @return
+	 * @throws ClientException
+	 */
 	public <T extends BaseRestResponseDTO,Y extends BaseDTO> T post(String uri,Y content,Class<T> respClass) throws ClientException;
 
 	/**

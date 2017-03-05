@@ -20,13 +20,12 @@ public class MessageServiceImpl implements MessageService,Singleton<MessageServi
 	
 
 	/**
-	 * see 
-	 * @param messageCode
-	 * @param defaultMsg
-	 * @return
+	 * @inheritDoc
 	 */
 	@Override
 	public String message(String messageCode,String defaultMsg){
+		if(messageCode==null)
+			return null;
 		if(translations.containsKey(messageCode))
 			return translations.getString(messageCode);
 		return defaultMsg;

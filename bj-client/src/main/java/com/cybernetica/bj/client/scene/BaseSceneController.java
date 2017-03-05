@@ -1,5 +1,6 @@
 package com.cybernetica.bj.client.scene;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.security.InvalidParameterException;
 
@@ -10,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import com.cybernetica.bj.client.Main;
 import com.cybernetica.bj.client.exceptions.ClientException;
 import com.cybernetica.bj.client.services.MessageService;
+import com.cybernetica.bj.common.interfaces.Singleton;
 
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.JavaFXBuilderFactory;
@@ -26,28 +28,17 @@ import javafx.stage.Stage;
  * @author dmitri
  *
  */
-public class BaseScene<T extends BaseScene<T>> {
-	protected static final Logger logger = LoggerFactory.getLogger(BaseScene.class);
-	private static BaseScene<? extends BaseScene<?>> instance;
+public class BaseSceneController<T extends BaseSceneController<T>> implements Singleton<T> {
+	protected static final Logger logger = LoggerFactory.getLogger(BaseSceneController.class);
+
 	private Stage stage;
+	private Scene scene;
 	
-	@SuppressWarnings("unchecked")
-	public static <T> T create(Stage stage,Class<T> sceneClass) throws ClientException{
+	public static <T  extends BaseSceneController<T>> T create(Stage stage,Class<T> sceneClass) throws ClientException{
 		logger.trace("creating "+sceneClass.getName());
-		if(instance!=null)
-			return (T) instance;
-		//Class<T> lookupClass = (Class<T>) MethodHandles.lookup().lookupClass();
-		try {
-			instance= (BaseScene<? extends BaseScene<?>>) sceneClass.newInstance();
-		} catch (InstantiationException | IllegalAccessException e) {
-			throw new ClientException("error.scene.create", e);
-		}
+		T instance = Singleton.getSingleton(sceneClass);
 		instance.setStage(stage);
 		return (T) instance;
-	}
-	
-	public static BaseScene<?> get() {
-		return instance;
 	}
 
 	/**
@@ -64,14 +55,33 @@ public class BaseScene<T extends BaseScene<T>> {
 	 */
 	protected void setStage(Stage stage) {
 		this.stage = stage;
-	}
 
+	}
+	
+	public Scene getScene(){
+		return getScene(null,null);
+	}
 	/**
 	 * Returns current scene
+	 * @param cssFile 
+	 * @param fxml 
 	 * @return
+	 * @throws IOException 
 	 */
-	public Scene getScene(){
-		return stage.getScene();
+	public Scene getScene(String fxml, String cssFile){
+		if (scene == null) {
+			Parent page;
+			try {
+				page = (Parent) FXMLLoader.load(Main.class.getResource(fxml), null, new JavaFXBuilderFactory());
+			} catch (IOException e) {
+				logger.error("scene error",e);
+				throw new RuntimeException("system error");
+			}
+			scene = new Scene(page, 600, 450);
+			scene.getStylesheets().add(Main.class.getResource(cssFile).toExternalForm());
+			postBuild();
+		} 
+		return scene;
 	}
 
 	/**
@@ -80,6 +90,15 @@ public class BaseScene<T extends BaseScene<T>> {
 	protected void postBuild() {
 
 	}
+	
+	
+	/**
+	 * triggers when scene has been bound to stage
+	 */
+	protected void postActivate(){
+		
+		
+	}
 
 	/**
 	 * Load scene from resources
@@ -87,7 +106,7 @@ public class BaseScene<T extends BaseScene<T>> {
 	 * @throws Exception
 	 */
 	public Parent replaceSceneContent() throws Exception {
-		String name = this.getClass().getSimpleName().toLowerCase().replace("scene", "");
+		String name = this.getClass().getSimpleName().toLowerCase().replace("scenecontroller", "");
 		name= "/form/"+name+"/"+name;
 		String fxml = name + ".fxml";
 		String cssFile = name + ".css";
@@ -99,21 +118,13 @@ public class BaseScene<T extends BaseScene<T>> {
 	 * @return
 	 * @throws Exception
 	 */
-	public Parent replaceSceneContent(String fxml, String ccsFile) throws Exception {
-		Parent page = (Parent) FXMLLoader.load(Main.class.getResource(fxml), null, new JavaFXBuilderFactory());
-		Scene scene = getScene();
-		if (scene == null) {
-			scene = new Scene(page, 600, 450);
-			scene.getStylesheets().add(Main.class.getResource(ccsFile).toExternalForm());
-			stage.setScene(scene);
-		} else {
-			getScene().setRoot(page);
-		}
+	public Parent replaceSceneContent(String fxml, String cssFile) throws Exception {
+		Scene scene = getScene(fxml,cssFile);
+		stage.setScene(scene);
 		stage.sizeToScene();
 		
-		postBuild();
-		
-		return page;
+		this.postActivate();
+		return scene.getRoot();
 	}
 	
 	/**

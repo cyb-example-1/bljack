@@ -31,6 +31,14 @@ public interface RestService   extends Singleton<RestService>{
 	 */
 	public <T extends BaseRestResponseDTO,Y extends BaseDTO> T post(String uri,Y content,Class<T> respClass) throws ClientException;
 
+	/**
+	 * GET request
+	 * @param string
+	 * @param class1
+	 * @return
+	 */
+	public <T extends BaseRestResponseDTO> T get(String uri,Class<T> respClass) throws ClientException;
+
 
 	
 }

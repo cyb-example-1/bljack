@@ -6,54 +6,47 @@ import java.util.Currency;
 import com.cybernetica.bj.common.dto.BaseRestResponseDTO;
 
 @SuppressWarnings("serial")
-public class UserResponseDTO extends BaseRestResponseDTO{
+public class UserResponseDTO extends BaseRestResponseDTO {
+	private UserDTO user;
 
-	private Long id;
-	private String username;
-	private Currency  currency;
-	private BigDecimal balance;
-	private Long gameId;
-	
-
-	public String getUsername() {
-		return username;
+	public UserDTO getUser() {
+		return user;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setUser(UserDTO user) {
+		this.user = user;
 	}
 
-	public Long getId() {
-		return id;
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((user == null) ? 0 : user.hashCode());
+		return result;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		UserResponseDTO other = (UserResponseDTO) obj;
+		if (user == null) {
+			if (other.user != null)
+				return false;
+		} else if (!user.equals(other.user))
+			return false;
+		return true;
 	}
 
-	public Currency getCurrency() {
-		return currency;
-	}
-
-	public void setCurrency(Currency currency) {
-		this.currency = currency;
-	}
-
-	public BigDecimal getBalance() {
-		return balance;
-	}
-
-	public void setBalance(BigDecimal balance) {
-		this.balance = balance;
-	}
-
-	public Long getGameId() {
-		return gameId;
-	}
-
-	public void setGameId(Long gameId) {
-		this.gameId = gameId;
+	@Override
+	public String toString() {
+		return "UserResponseDTO [user=" + user + "]";
 	}
 	
 	
+
 }

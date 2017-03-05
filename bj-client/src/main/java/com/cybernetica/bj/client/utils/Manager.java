@@ -28,6 +28,10 @@ public class Manager {
 
 	public static <T extends BaseSceneController<T>> void switchTo(Class<T> cls) {
 		T controller=get(cls);
+		if(current!=null){
+			if(current.getClass().equals(cls))
+				return;
+		}
 		try {
 			controller.replaceSceneContent();
 		} catch (Exception e) {

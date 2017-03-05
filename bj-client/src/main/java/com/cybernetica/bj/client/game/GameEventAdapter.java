@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import com.cybernetica.bj.client.events.BaseEvent;
 import com.cybernetica.bj.client.events.LoginEvent;
 import com.cybernetica.bj.client.events.LogoutEvent;
+import com.cybernetica.bj.client.events.UserDataEvent;
 import com.cybernetica.bj.client.interfaces.EventListener;
 import com.cybernetica.bj.client.scene.LoginSceneController;
 import com.cybernetica.bj.client.scene.WelcomeSceneController;
@@ -27,8 +28,17 @@ public class GameEventAdapter implements EventListener<BaseEvent>{
 		case "LogoutEvent":
 			onLogout((LogoutEvent) event);
 			break;
+		case "UserDataEvent":
+			onUserData((UserDataEvent)event);
+			break;
 		}
 
+	}
+
+	private void onUserData(UserDataEvent event) {
+		//TODO check game presence
+		GameSession.get().setUser(event.getResponse().getUser());
+		
 	}
 
 	protected void onLogin(LoginEvent event){

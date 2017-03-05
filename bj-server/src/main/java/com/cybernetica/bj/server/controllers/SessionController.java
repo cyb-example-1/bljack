@@ -49,7 +49,7 @@ public class SessionController extends BaseController {
 
 	@RequestMapping(value="/logout",produces = "application/json", consumes="application/json",method=RequestMethod.POST)
 	@ResponseBody
-	public BaseRestResponseDTO logout(LogoutRequestDTO dto) throws ControllerException {
+	public BaseRestResponseDTO logout(@RequestBody LogoutRequestDTO dto) throws ControllerException {
 		logger.trace("loggout action for  {]",dto);
 		try {
 			sessionService.deleteAllSessions(dto.getUsername(),dto.getSessionId());

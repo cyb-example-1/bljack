@@ -2,6 +2,8 @@ package com.cybernetica.bj.server.services;
 
 
 
+import java.math.BigDecimal;
+
 import com.cybernetica.bj.server.exceptions.ServiceException;
 import com.cybernetica.bj.server.models.User;
 
@@ -24,5 +26,15 @@ public interface UserService {
 	 * @throws ServiceException
 	 */
 	User create(String username,String password) throws ServiceException;
+
+
+	/**
+	 * Balance change
+	 * @param name
+	 * @param balanceChange
+	 * @return
+	 * @throws ServiceException
+	 */
+	User updateBalance(String name, BigDecimal balanceChange) throws ServiceException;
 
 }

@@ -7,7 +7,7 @@ public class SecurityUtils {
 	
 	public static User getLoggerUser(){
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		return null;
+		return (User) principal;
 	}
 	
 	public static String getLoggedUserName(){

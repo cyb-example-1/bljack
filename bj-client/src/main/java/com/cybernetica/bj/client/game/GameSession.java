@@ -1,6 +1,6 @@
 package com.cybernetica.bj.client.game;
 
-import com.cybernetica.bj.common.dto.user.UserResponseDTO;
+import com.cybernetica.bj.common.dto.user.UserDTO;
 import com.cybernetica.bj.common.interfaces.Singleton;
 
 /**
@@ -10,7 +10,7 @@ import com.cybernetica.bj.common.interfaces.Singleton;
  */
 public class GameSession  implements Singleton<GameSession>{
 	
-	private UserResponseDTO user;
+	private UserDTO user;
 	
 	/**
 	 * Singleton initializer
@@ -20,11 +20,11 @@ public class GameSession  implements Singleton<GameSession>{
 		return Singleton.getSingleton(GameSession.class);
 	}
 
-	public UserResponseDTO getUser() {
+	public UserDTO getUser() {
 		return user;
 	}
 
-	public void setUser(UserResponseDTO user) {
+	public void setUser(UserDTO user) {
 		this.user = user;
 	}
 	

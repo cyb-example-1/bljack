@@ -9,7 +9,6 @@ import com.cybernetica.bj.client.events.LogoutEvent;
 import com.cybernetica.bj.client.exceptions.ClientException;
 import com.cybernetica.bj.client.services.AuthService;
 import com.cybernetica.bj.client.services.RestService;
-import com.cybernetica.bj.common.dto.BaseRestResponseDTO;
 import com.cybernetica.bj.common.dto.LogoutRequestDTO;
 import com.cybernetica.bj.common.dto.LogoutResponseDTO;
 import com.cybernetica.bj.common.dto.login.LoginRequestDTO;
@@ -21,7 +20,7 @@ import com.cybernetica.bj.common.dto.login.LoginResponseDTO;
  * @author dmitri
  *
  */
-public class AuthServiceImpl implements AuthService {
+public class AuthServiceImpl extends BaseServiceImpl implements AuthService {
 	private static final Logger logger = LoggerFactory.getLogger(AuthService.class);
 	
 	private RestService restService;
@@ -79,17 +78,4 @@ public class AuthServiceImpl implements AuthService {
 		if(dto.getPassword().isEmpty() || dto.getPassword().length()>20)
 			throw new ClientException("error.login-dto.invalid");
 	}
-	
-	private void validate(BaseRestResponseDTO resp) throws ClientException {
-		if(resp==null)
-			throw new ClientException("null response");
-		if(resp.getErrors()!=null && resp.getErrors().size()>0) {
-			for(String error:resp.getErrors())
-				logger.debug("received {}",error);
-			throw new ClientException(resp.getErrors().get(0));
-		}
-			
-	}
-
-
 }

@@ -11,6 +11,8 @@ import com.cybernetica.bj.client.exceptions.ClientException;
 import com.cybernetica.bj.client.test.BaseSceneTest;
 import com.cybernetica.bj.client.utils.Manager;
 import com.cybernetica.bj.common.dto.login.LoginResponseDTO;
+import com.cybernetica.bj.common.dto.user.UserDTO;
+import com.cybernetica.bj.common.dto.user.UserResponseDTO;
 
 import javafx.stage.Stage;
 
@@ -18,6 +20,9 @@ public class LoginSceneTest  extends BaseSceneTest{
 	
 	@Override
 	protected void initScene(Stage stage) throws Exception {
+    	UserResponseDTO userDTO = new UserResponseDTO();
+    	userDTO.setUser(new UserDTO());
+    	when(restService.get(eq("/user/get"),anyObject())).thenReturn(userDTO);
 		Manager.switchTo(LoginSceneController.class);	
 	}
 

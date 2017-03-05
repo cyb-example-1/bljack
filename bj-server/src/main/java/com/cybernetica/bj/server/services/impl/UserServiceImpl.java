@@ -1,5 +1,7 @@
 package com.cybernetica.bj.server.services.impl;
 
+import java.math.BigDecimal;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,9 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 	@Autowired
 	private UserDao userDao;
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public User findByUsername(String username) throws ServiceException {
 		try {
@@ -27,6 +32,9 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public User create(String username, String password) throws ServiceException {
 		User user = findByUsername(username);
@@ -43,6 +51,23 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 		return user;
 	}
 
-
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public User updateBalance(String name, BigDecimal balanceChange) throws ServiceException {
+		if(balanceChange==null)
+			throw new ServiceException("error.user.balance-change.invalid");
+		User user = findByUsername(name);
+		BigDecimal balance = user.getBalance();
+		if(balance==null)
+			balance=BigDecimal.ZERO;
+		user.setBalance(balance.add(balanceChange));
+		try {
+			return userDao.save(user);
+		} catch (DaoException e) {
+			throw new ServiceException(e);
+		}
+	}
 
 }

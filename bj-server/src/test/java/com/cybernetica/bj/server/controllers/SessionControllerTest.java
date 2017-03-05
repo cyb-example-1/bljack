@@ -62,7 +62,7 @@ public class SessionControllerTest extends BaseControllerTest{
 		ResultActions result = mockMvc
 				.perform(post("/session/login").content("{\"username\":\"test\",\"password\":\"test1\"}")
 						.contentType(MediaType.APPLICATION_JSON_UTF8).accept(MediaType.APPLICATION_JSON_UTF8));
-		//LoginResponseDTO body = res.getBody();
+
 		result.andExpect(status().isUnauthorized());
 	}
 }

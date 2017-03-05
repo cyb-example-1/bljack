@@ -1,6 +1,6 @@
 package com.cybernetica.bj.client.scene;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
@@ -31,8 +31,8 @@ public class LoginSceneTest  extends BaseSceneTest{
     	clickOn("#password");
     	write("test");
     	clickOn("#signin");
-    	
-    	assertNotNull(Manager.current().getClass().equals(WelcomeSceneController.class));
+
+    	assertEquals(WelcomeSceneController.class, Manager.current().getClass());
     }
 
 

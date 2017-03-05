@@ -20,7 +20,7 @@ public class MessageServiceImpl implements MessageService,Singleton<MessageServi
 	
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@Override
 	public String message(String messageCode,String defaultMsg){

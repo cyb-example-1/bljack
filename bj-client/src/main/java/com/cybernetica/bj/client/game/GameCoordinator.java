@@ -4,17 +4,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.cybernetica.bj.client.context.EventProducer;
-import com.cybernetica.bj.client.events.BaseEvent;
 import com.cybernetica.bj.client.exceptions.ClientException;
-import com.cybernetica.bj.client.interfaces.EventListener;
 import com.cybernetica.bj.client.scene.LoginSceneController;
 import com.cybernetica.bj.client.scene.WelcomeSceneController;
-import com.cybernetica.bj.client.utils.Manager;
-import com.cybernetica.bj.common.dto.user.UserResponseDTO;
+import com.cybernetica.bj.common.interfaces.Singleton;
 
-import javafx.event.EventHandler;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 
 /**
@@ -22,10 +17,17 @@ import javafx.stage.WindowEvent;
  * @author dmitri
  *
  */
-public class GameCoordinator implements EventListener<BaseEvent> {
+public class GameCoordinator implements Singleton<GameCoordinator> {
 	private static final Logger logger = LoggerFactory.getLogger(GameCoordinator.class);
-
 	
+	/**
+	 * Dispatches events
+	 */
+	private GameEventAdapter eventDispatcher;
+
+	public static GameCoordinator get(){
+		return Singleton.getSingleton(GameCoordinator.class);
+	}
 	/**
 	 * initializes application and beans
 	 * @param primaryStage
@@ -33,22 +35,17 @@ public class GameCoordinator implements EventListener<BaseEvent> {
 	 */
 	public void init(Stage primaryStage) throws ClientException {
 		EventProducer.removeAllListeners();
-		EventProducer.addListener(this);
+		
+		setEventDispatcher(new GameEventAdapter());
+		EventProducer.addListener(eventDispatcher);
 		
 		if(primaryStage!=null){
 			initScenes(primaryStage);
-			
-			primaryStage.addEventHandler(WindowEvent.ANY, new  EventHandler<WindowEvent>()
-		    {
-		        @Override
-		        public void handle(WindowEvent window)
-		        {
-		            System.out.println("");
-		        }
-		    });
 		}
 		
 	}
+	
+	
 	
 	/**
 	 * load scenes
@@ -56,27 +53,20 @@ public class GameCoordinator implements EventListener<BaseEvent> {
 	 * @throws ClientException
 	 */
 	private void initScenes(Stage stage) throws ClientException {
+		logger.info("Initializing stages");
 		LoginSceneController.create(stage,LoginSceneController.class);
 		WelcomeSceneController.create(stage,WelcomeSceneController.class);
 		
 	}
 	
-	/**
-	 * handles onLogin event
-	 */
-	@Override
-	public void onEvent(BaseEvent event) {
-		logger.trace("got {} event", event);
-		GameSession.get().setUser(new UserResponseDTO());
-		try {
-			Manager.switchTo(WelcomeSceneController.class);
-		} catch (Exception e) {
-			logger.error("error on event "+event.toString(),e);
-			return;
-		}
-		
+	
+	public GameEventAdapter getEventDispatcher() {
+		return eventDispatcher;
 	}
-
-
+	
+	
+	public void setEventDispatcher(GameEventAdapter eventDispatcher) {
+		this.eventDispatcher = eventDispatcher;
+	}
 
 }

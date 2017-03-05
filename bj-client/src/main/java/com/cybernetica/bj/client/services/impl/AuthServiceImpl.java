@@ -35,7 +35,7 @@ public class AuthServiceImpl implements AuthService {
 	} 
 	
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@Override
 	public LoginResponseDTO login(String username, String password) throws ClientException{
@@ -53,7 +53,7 @@ public class AuthServiceImpl implements AuthService {
 	}
 	
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@Override
 	public LogoutResponseDTO logout() throws ClientException {

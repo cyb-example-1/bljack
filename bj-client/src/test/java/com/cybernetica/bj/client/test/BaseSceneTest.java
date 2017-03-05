@@ -22,7 +22,7 @@ public abstract class BaseSceneTest extends ApplicationTest {
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		GameCoordinator coordinator = new GameCoordinator();
+		GameCoordinator coordinator = GameCoordinator.get();
 		coordinator.init(stage);
 
         initScene(stage);

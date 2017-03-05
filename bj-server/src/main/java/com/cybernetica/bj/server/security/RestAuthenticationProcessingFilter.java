@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.AuthenticationServiceException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -103,7 +104,8 @@ public class RestAuthenticationProcessingFilter extends AbstractAuthenticationPr
 		}
 		if(session==null){
 			logger.debug("SESSION NOT FOUND {}",authToken);
-			throw new AuthenticationServiceException("error.auth.session.not-exists");
+			//throw new BadCredentialsException("error.auth.session.not-exists");
+			return;
 		}
 		
 		User user;

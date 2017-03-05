@@ -22,6 +22,7 @@ public class GameController extends BaseController {
 	@RequestMapping(value="/start",produces = "application/json", consumes="application/json")
 	@ResponseBody
 	public GameStartResponseDTO gameStart() {
+		logger.trace("Game start");
 		return null;
 	}
 

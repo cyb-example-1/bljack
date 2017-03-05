@@ -99,6 +99,7 @@ public class SessionSecurityConfig extends WebSecurityConfigurerAdapter {
 					.and()
 				.authorizeRequests()
 				.antMatchers("/game/**").authenticated()
+				.antMatchers("/user/**").authenticated()
 				.antMatchers("/session/**").permitAll()
 				.anyRequest().permitAll()
 				.and().csrf().disable();

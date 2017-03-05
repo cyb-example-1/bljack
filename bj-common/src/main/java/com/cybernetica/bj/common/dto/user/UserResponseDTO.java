@@ -1,13 +1,17 @@
 package com.cybernetica.bj.common.dto.user;
 
-import java.math.BigDecimal;
-import java.util.Currency;
-
 import com.cybernetica.bj.common.dto.BaseRestResponseDTO;
 
 @SuppressWarnings("serial")
 public class UserResponseDTO extends BaseRestResponseDTO {
 	private UserDTO user;
+
+	public UserResponseDTO(){
+		
+	}
+	public UserResponseDTO(UserDTO user) {
+		this.user=user;
+	}
 
 	public UserDTO getUser() {
 		return user;

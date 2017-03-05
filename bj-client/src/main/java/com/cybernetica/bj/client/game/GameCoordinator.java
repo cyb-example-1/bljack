@@ -36,7 +36,7 @@ public class GameCoordinator implements Singleton<GameCoordinator> {
 	public void init(Stage primaryStage) throws ClientException {
 		EventProducer.removeAllListeners();
 		
-		setEventDispatcher(new GameEventAdapter());
+		setEventDispatcher(new GameEventDispatcher());
 		EventProducer.addListener(eventDispatcher);
 		
 		if(primaryStage!=null){

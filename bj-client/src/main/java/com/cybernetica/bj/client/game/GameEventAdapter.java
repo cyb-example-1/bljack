@@ -8,11 +8,15 @@ import com.cybernetica.bj.client.events.LoginEvent;
 import com.cybernetica.bj.client.events.LogoutEvent;
 import com.cybernetica.bj.client.events.UserDataEvent;
 import com.cybernetica.bj.client.interfaces.EventListener;
-import com.cybernetica.bj.client.scene.LoginSceneController;
-import com.cybernetica.bj.client.scene.WelcomeSceneController;
-import com.cybernetica.bj.client.utils.Manager;
+import com.cybernetica.bj.client.interfaces.IDataListener;
 
-public class GameEventAdapter implements EventListener<BaseEvent>{
+/**
+ * event adapter
+ * @author dmitri
+ *
+ */
+public class GameEventAdapter implements EventListener<BaseEvent>,IDataListener{
+	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(GameEventAdapter.class);
 
 	/**
@@ -20,7 +24,6 @@ public class GameEventAdapter implements EventListener<BaseEvent>{
 	 */
 	@Override
 	public void onEvent(BaseEvent event) {
-		logger.trace("got {} event", event);
 		switch(event.getClass().getSimpleName()){
 		case "LoginEvent":
 			onLogin((LoginEvent) event);
@@ -35,29 +38,13 @@ public class GameEventAdapter implements EventListener<BaseEvent>{
 
 	}
 
-	private void onUserData(UserDataEvent event) {
-		//TODO check game presence
-		GameSession.get().setUser(event.getResponse().getUser());
-		
+	public void onUserData(UserDataEvent event) {		
 	}
 
-	protected void onLogin(LoginEvent event){
-		try {
-			Manager.switchTo(WelcomeSceneController.class);
-		} catch (Exception e) {
-			logger.error("error on event "+event.toString(),e);
-			return;
-		}
+	public void onLogin(LoginEvent event){
 	}
 	
-	protected void onLogout(LogoutEvent event){
-		GameSession.get().setUser(null);
-		try {
-			Manager.switchTo(LoginSceneController.class);
-		} catch (Exception e) {
-			logger.error("error on event "+event.toString(),e);
-			return;
-		}
+	public void onLogout(LogoutEvent event){
 	}
 
 }

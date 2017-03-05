@@ -8,7 +8,6 @@ import com.cybernetica.bj.client.events.UserDataEvent;
 import com.cybernetica.bj.client.exceptions.ClientException;
 import com.cybernetica.bj.client.services.RestService;
 import com.cybernetica.bj.client.services.UserService;
-import com.cybernetica.bj.common.dto.BaseRestResponseDTO;
 import com.cybernetica.bj.common.dto.user.UserResponseDTO;
 
 public class UserServiceImpl extends BaseServiceImpl implements UserService {

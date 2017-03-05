@@ -3,8 +3,12 @@ package com.cybernetica.bj.client.scene;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.cybernetica.bj.client.context.EventProducer;
+import com.cybernetica.bj.client.events.UserDataEvent;
 import com.cybernetica.bj.client.exceptions.ClientException;
+import com.cybernetica.bj.client.game.GameEventAdapter;
 import com.cybernetica.bj.client.game.GameSession;
+import com.cybernetica.bj.client.interfaces.IDataListener;
 import com.cybernetica.bj.client.services.AuthService;
 import com.cybernetica.bj.client.services.UserService;
 
@@ -13,7 +17,7 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
-public class WelcomeSceneController extends BaseSceneController<WelcomeSceneController> {
+public class WelcomeSceneController extends BaseSceneController<WelcomeSceneController> implements IDataListener {
 	private static final Logger logger = LoggerFactory.getLogger(WelcomeSceneController.class);
 	
 	private Label textLabel;
@@ -36,22 +40,21 @@ public class WelcomeSceneController extends BaseSceneController<WelcomeSceneCont
 				}
             }
         });
+		
+		
 	}
 
+	public void onUserData(UserDataEvent event){
+		setElementTextById("username",GameSession.get().getUser().getUsername());
+	}
 
 
 	@Override
 	protected void postActivate() {
-		//re-aquire user
-		try {
-			UserService.get().requestUserData();
-		} catch (ClientException e) {
-			logger.debug(e.getMessage());
-			setElementText(textLabel,e.getMessage());
-		}
-		
-		setElementTextById("username",GameSession.get().getUser().getUsername());
-		}
+		EventProducer.addUserDataListener(this);
+		//simulate event
+		onUserData(new UserDataEvent(GameSession.get().getUser()));
+	}
 	
 	
 

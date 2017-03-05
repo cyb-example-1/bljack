@@ -1,18 +1,16 @@
 package com.cybernetica.bj.client.services;
 
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Mockito.*;
-
-import org.apache.http.HttpStatus;
-
-import static org.junit.Assert.*;
-
 import com.cybernetica.bj.client.exceptions.ClientException;
 import com.cybernetica.bj.client.services.impl.AuthServiceImpl;
-import com.cybernetica.bj.client.test.CloseableHttpResponseWrapper;
 import com.cybernetica.bj.common.dto.login.LoginResponseDTO;
 
 public class AuthServiceTest {

@@ -28,7 +28,7 @@ public class WelcomeSceneTest  extends BaseSceneTest{
 		UserResponseDTO userDTO = new UserResponseDTO();
 		userDTO.setUser(new UserDTO());
 		GameCoordinator.get().getEventDispatcher().onEvent(new UserDataEvent(userDTO));
-		when(restService.get(eq("/session/logout"),anyObject())).thenReturn(userDTO);
+		when(restService.get(eq("/user/get"),anyObject())).thenReturn(userDTO);
 		Manager.switchTo(WelcomeSceneController.class);	
 	}
 	

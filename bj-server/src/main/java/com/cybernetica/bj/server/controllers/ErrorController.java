@@ -34,15 +34,19 @@ public class ErrorController implements org.springframework.boot.autoconfigure.w
 		// by Spring.
 		// Here we just define response body.
 		RestResponseDTO dto = new RestResponseDTO();
-		// Map<String, Object> attributes = getErrorAttributes(request, false);
+		Map<String, Object> errorData = getError(request);
+		
 		switch (response.getStatus()) {
+		case 400:
+			dto.addError((String)errorData.get("message"));
+			break;
 		case 401:
 			dto.addError("error.login.failed");
 			break;
 		default:
 			dto.addError("error.unhandled");
 		}
-		Map<String, Object> errorData = getError(request);
+		
 		return dto;
 	}
 

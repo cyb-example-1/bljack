@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="401.0" prefWidth="600.0" stylesheets="@welcome.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="401.0" prefWidth="600.0" stylesheets="@blackjack.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label id="msgText" alignment="CENTER" contentDisplay="CENTER" layoutX="69.0" layoutY="25.0" prefHeight="16.0" prefWidth="462.0" styleClass="msg" />
       <Label layoutX="38.0" layoutY="43.0" text="User:" />
@@ -18,8 +18,24 @@
          <font>
             <Font size="14.0" />
          </font></Label>
-      <Button id="btnLogout" layoutX="20.0" layoutY="259.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="99.0" text="Log out" />
-      <Button id="btnPlay" layoutX="20.0" layoutY="124.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="99.0" text="Play game" />
-      <Button id="btnBalance" layoutX="20.0" layoutY="185.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="99.0" text="Get 100$" />
+      <Button id="btnCancel" layoutX="16.0" layoutY="355.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="99.0" text="Give up" />
+      <Button id="btnDone" layoutX="15.0" layoutY="267.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="99.0" text="Done" />
+      <Button id="btnTake" layoutX="16.0" layoutY="310.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="99.0" stylesheets="@bet.css" text="Take more" />
+      <Label layoutX="300.0" layoutY="43.0" prefHeight="17.0" prefWidth="70.0" text="Current bet:" />
+      <Label id="lblCurrentBet" layoutX="369.0" layoutY="41.0" text="Label">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label contentDisplay="TOP" layoutX="561.0" layoutY="250.0" prefHeight="129.0" prefWidth="18.0" text="D&#10;E&#10;A&#10;L&#10;E&#10;R" textAlignment="CENTER">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="28.0" layoutY="103.0" prefHeight="129.0" prefWidth="18.0" text="Y&#10;O&#10;U">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

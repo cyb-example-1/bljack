@@ -1,7 +1,12 @@
 package com.cybernetica.bj.server.controllers;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.math.BigDecimal;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,6 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.ResultActions;
 
 import com.cybernetica.bj.common.dto.RestResponseDTO;
+import com.cybernetica.bj.common.dto.game.GameBetChangeDTO;
 import com.cybernetica.bj.common.dto.game.GameResponseDTO;
 import com.cybernetica.bj.common.dto.login.LoginResponseDTO;
 import com.cybernetica.bj.common.dto.user.UserResponseDTO;
@@ -72,6 +78,47 @@ public class GameControllerTest extends BaseControllerTest {
 		
 		userData = getUserData("test");
 		assertNull(userData.getUser().getGame());
+	}	
+	
+	
+	@Test
+	public void testGameBet() throws Exception{
+		ResponseEntity<LoginResponseDTO> ret = login("test","test");
+		String sessionId=ret.getHeaders().getFirst("X-Auth-Token");
+		
+		
+		//start game
+		ResultActions result = get("/game/start",sessionId);
+		
+		result.andExpect(status().isOk());
+		GameResponseDTO gameResponseDTO = getResult(result, GameResponseDTO.class);
+		assertNotNull(gameResponseDTO);
+		assertNotNull(gameResponseDTO.getObject());
+		assertNotNull(gameResponseDTO.getObject().getId());
+		
+		UserResponseDTO userData = getUserData("test");
+		assertNotNull(userData.getUser().getGame());
+		assertNotNull(userData.getUser().getGame().getCurrentBet());
+		
+		BigDecimal prevBet = userData.getUser().getGame().getCurrentBet();
+		
+		
+		//game cancel
+		GameBetChangeDTO betDTO = new GameBetChangeDTO();
+		Long gameId=gameResponseDTO.getObject().getId();
+		betDTO.setGameId(gameId);
+		betDTO.setBet(BigDecimal.TEN);
+		
+		result = post("/game/bet",betDTO, sessionId);
+
+		result.andExpect(status().isOk());
+		GameResponseDTO responseDTO = getResult(result, GameResponseDTO.class);
+		assertFalse(responseDTO.hasErrors());
+		
+		userData = getUserData("test");
+		assertNotNull(userData.getUser().getGame());
+		
+		assertEquals(prevBet.add(BigDecimal.TEN), userData.getUser().getGame().getCurrentBet());
 	}		
 	
 	

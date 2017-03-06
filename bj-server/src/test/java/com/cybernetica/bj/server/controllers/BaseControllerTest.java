@@ -1,7 +1,6 @@
 package com.cybernetica.bj.server.controllers;
 
 import org.junit.Before;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.MediaType;
@@ -20,7 +19,6 @@ import com.cybernetica.bj.common.dto.BaseDTO;
 import com.cybernetica.bj.common.dto.login.LoginRequestDTO;
 import com.cybernetica.bj.common.dto.login.LoginResponseDTO;
 import com.cybernetica.bj.common.dto.user.UserResponseDTO;
-import com.cybernetica.bj.server.exceptions.ServiceException;
 
 public abstract class BaseControllerTest {
 	protected MockMvc mockMvc;

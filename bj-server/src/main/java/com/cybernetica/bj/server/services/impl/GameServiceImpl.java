@@ -63,10 +63,7 @@ public class GameServiceImpl extends BaseServiceImpl implements GameService {
 		}
 		if(user.getGame()!=null) {
 			Game game = user.getGame();
-			if(!game.getId().equals(gameId)) {
-				logger.error(" Ids do not match {} to {}",game.getId(),gameId);
-				throw new ServiceException("error.game.cancel.id-not-match");
-			}
+
 			user.setGame(null);;
 			try {
 				userDao.update(user);
@@ -76,4 +73,38 @@ public class GameServiceImpl extends BaseServiceImpl implements GameService {
 			}				
 		}
 	}
+
+	@Override
+	public Game betGame(Long userId, Long gameId, BigDecimal betAugment) throws ServiceException {
+		User user;
+		try {
+			user = userDao.get(userId);
+		} catch (DaoException e) {
+			throw new ServiceException(e);
+		}
+		
+		if(user.getGame()==null) {
+			logger.error("Betting not started game User #{} for Game #{}",userId,gameId);
+			throw new ServiceException("error.game.bet.not-started");
+		}
+		Game game = user.getGame();
+		if(!game.getId().equals(gameId)) {
+			logger.error(" Ids do not match {} to {}",game.getId(),gameId);
+			throw new ServiceException("error.game.cancel.id-not-match");
+		}		
+		
+		
+		BigDecimal newBet = game.getCurrentBet().add(betAugment);
+		if(newBet.compareTo(user.getBalance())>0)
+			throw new ServiceException("error.game.bet.money-exceeded");
+		game.setCurrentBet(newBet);
+		try {
+			gameDao.update(game);
+		} catch (DaoException e) {
+			throw new ServiceException(e);
+		}
+		
+		return game;
+	}
+	
 }

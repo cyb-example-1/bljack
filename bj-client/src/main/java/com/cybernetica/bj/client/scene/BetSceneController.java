@@ -64,9 +64,9 @@ public class BetSceneController extends BaseSceneController<BetSceneController> 
 
             @Override
             public void handle(ActionEvent e) {
-            	logger.trace("form.balance.click");
+            	logger.trace("form.bet.click");
             	try {
-					UserService.get().updateBalance(new BigDecimal(100));
+					GameService.get().betGame(GameSession.get().getUser().getGame().getId(),new BigDecimal(5));
 				} catch (ClientException e1) {
 					logger.debug(e1.getMessage());
 					setElementText(textLabel,e1.getMessage());

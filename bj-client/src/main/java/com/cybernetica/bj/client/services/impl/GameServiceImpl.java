@@ -1,5 +1,7 @@
 package com.cybernetica.bj.client.services.impl;
 
+import java.math.BigDecimal;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,6 +12,7 @@ import com.cybernetica.bj.client.game.GameSession;
 import com.cybernetica.bj.client.services.AuthService;
 import com.cybernetica.bj.client.services.GameService;
 import com.cybernetica.bj.common.dto.RestResponseDTO;
+import com.cybernetica.bj.common.dto.game.GameBetChangeDTO;
 import com.cybernetica.bj.common.dto.game.GameResponseDTO;
 
 /**
@@ -49,8 +52,24 @@ public class GameServiceImpl extends BaseRestServiceImpl  implements GameService
 		UserDataEvent data =  new UserDataEvent(GameSession.get().getUser());
 		
 		EventProducer.publishEvent(data);
-		return resp;
+		return resp;		
+	}
+
+	@Override
+	public GameResponseDTO betGame(Long gameId, BigDecimal bigDecimal) throws ClientException {
+		logger.debug("Betting game {} for user: ",gameId,GameSession.get().getUser().getId());
+		GameBetChangeDTO requestDTO = new GameBetChangeDTO();
+		requestDTO.setGameId(gameId);
+		requestDTO.setBet(bigDecimal);
 		
+		GameResponseDTO resp = getRestService().post("/game/bet",requestDTO, GameResponseDTO.class);
+		validate(resp);
+		
+		GameSession.get().getUser().setGame(resp.getObject());
+		UserDataEvent data =  new UserDataEvent(GameSession.get().getUser());
+		
+		EventProducer.publishEvent(data);
+		return resp;
 	}
 
 }

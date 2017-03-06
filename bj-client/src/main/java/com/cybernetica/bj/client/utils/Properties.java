@@ -1,5 +1,6 @@
 package com.cybernetica.bj.client.utils;
 
+import java.math.BigDecimal;
 import java.util.ResourceBundle;
 
 import com.cybernetica.bj.common.interfaces.Singleton;
@@ -31,6 +32,16 @@ public class Properties {
 		if(!properties.containsKey(key))
 			return null;
 		return properties.getString(key);
+	}
+
+	/**
+	 * Returns bigdecimal
+	 * @param string
+	 * @return
+	 */
+	public static BigDecimal getBigDecimal(String key) {
+		String val=getString(key);
+		return new BigDecimal(val);
 	}
 
 

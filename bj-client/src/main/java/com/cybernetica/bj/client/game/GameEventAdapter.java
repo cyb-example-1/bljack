@@ -7,6 +7,7 @@ import com.cybernetica.bj.client.events.BaseEvent;
 import com.cybernetica.bj.client.events.LoginEvent;
 import com.cybernetica.bj.client.events.LogoutEvent;
 import com.cybernetica.bj.client.events.UserDataEvent;
+import com.cybernetica.bj.client.exceptions.ClientException;
 import com.cybernetica.bj.client.interfaces.EventListener;
 import com.cybernetica.bj.client.interfaces.IDataListener;
 
@@ -23,7 +24,7 @@ public class GameEventAdapter implements EventListener<BaseEvent>,IDataListener{
 	 * handles onLogin event
 	 */
 	@Override
-	public void onEvent(BaseEvent event) {
+	public void onEvent(BaseEvent event) throws ClientException {
 		switch(event.getClass().getSimpleName()){
 		case "LoginEvent":
 			onLogin((LoginEvent) event);
@@ -38,13 +39,13 @@ public class GameEventAdapter implements EventListener<BaseEvent>,IDataListener{
 
 	}
 
-	public void onUserData(UserDataEvent event) {		
+	public void onUserData(UserDataEvent event) throws ClientException {		
 	}
 
-	public void onLogin(LoginEvent event){
+	public void onLogin(LoginEvent event) throws ClientException{
 	}
 	
-	public void onLogout(LogoutEvent event){
+	public void onLogout(LogoutEvent event) throws ClientException{
 	}
 
 }

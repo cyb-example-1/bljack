@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.cybernetica.bj.client.events.BaseEvent;
 import com.cybernetica.bj.client.events.UserDataEvent;
+import com.cybernetica.bj.client.exceptions.ClientException;
 import com.cybernetica.bj.client.game.GameEventAdapter;
 import com.cybernetica.bj.client.interfaces.EventListener;
 import com.cybernetica.bj.client.interfaces.IDataListener;
@@ -24,7 +25,7 @@ public class EventProducer {
 	public static void addUserDataListener(IDataListener lisetener){
 		addListener(new GameEventAdapter(){
 			@Override
-			public void onUserData(UserDataEvent event) {
+			public void onUserData(UserDataEvent event) throws ClientException {
 				lisetener.onUserData(event);
 			}			
 		});
@@ -34,9 +35,9 @@ public class EventProducer {
 		listeners.remove(listener);
 	}
 	
-	public static <T extends BaseEvent> void publishEvent(T event){
+	public static <T extends BaseEvent> void publishEvent(T event) throws ClientException{
 		@SuppressWarnings({ "rawtypes", "unchecked" })
-		List<EventListener<T>> lst =(List)listeners;
+		List<EventListener<T>> lst =new ArrayList<>((List)listeners);
 		for(EventListener<T> listener:lst)
 			listener.onEvent(event);
 	}

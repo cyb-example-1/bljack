@@ -3,6 +3,7 @@ package com.cybernetica.bj.client.utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.cybernetica.bj.client.exceptions.ClientException;
 import com.cybernetica.bj.client.scene.BaseSceneController;
 import com.cybernetica.bj.common.interfaces.Singleton;
 
@@ -26,7 +27,7 @@ public class Manager {
 		return (T) current;
 	}	
 
-	public static <T extends BaseSceneController<T>> void switchTo(Class<T> cls) {
+	public static <T extends BaseSceneController<T>> void switchTo(Class<T> cls) throws ClientException {
 		T controller=get(cls);
 		if(current!=null){
 			if(current.getClass().equals(cls))
@@ -36,7 +37,7 @@ public class Manager {
 			controller.replaceSceneContent();
 		} catch (Exception e) {
 			logger.error("scene switch failed",e);
-			throw new RuntimeException("scene switch failed",e);
+			throw new ClientException("scene switch failed",e);
 		}	
 		current=controller;
 	}

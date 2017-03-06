@@ -7,53 +7,49 @@ import com.cybernetica.bj.client.events.LoginEvent;
 import com.cybernetica.bj.client.events.LogoutEvent;
 import com.cybernetica.bj.client.events.UserDataEvent;
 import com.cybernetica.bj.client.exceptions.ClientException;
+import com.cybernetica.bj.client.scene.BetSceneController;
+import com.cybernetica.bj.client.scene.BlackjackSceneController;
 import com.cybernetica.bj.client.scene.LoginSceneController;
 import com.cybernetica.bj.client.scene.WelcomeSceneController;
 import com.cybernetica.bj.client.services.UserService;
 import com.cybernetica.bj.client.utils.Manager;
-
+import com.cybernetica.bj.common.dto.user.UserDTO;
 
 /**
  * Dispatches game events
+ * 
  * @author dmitri
  *
  */
 public class GameEventDispatcher extends GameEventAdapter {
 	private static final Logger logger = LoggerFactory.getLogger(GameEventAdapter.class);
 
-
 	@Override
-	public void onUserData(UserDataEvent event) {
-		//TODO check game presence
-		GameSession.get().setUser(event.getResponse().getUser());
-		
-	}
-
-	@Override
-	public void onLogin(LoginEvent event){
-		//re-aquire user
-		try {
-			UserService.get().requestUserData();
-		} catch (ClientException e) {
-			logger.error(e.getMessage());
-			return;
+	public void onUserData(UserDataEvent event) throws ClientException {
+		logger.trace("Received user-data event");
+		UserDTO user = event.getResponse().getUser();
+		GameSession.get().setUser(user);
+		if(user.getGame()!=null) {
+			if(!user.getGame().isBetDone())
+				Manager.switchTo(BlackjackSceneController.class);
+			else
+				Manager.switchTo(BetSceneController.class);	
+			//TODO check game presence	
 		}
-		try {
+		else
 			Manager.switchTo(WelcomeSceneController.class);
-		} catch (Exception e) {
-			logger.error("error on event "+event.toString(),e);
-			return;
-		}
 	}
-	
+
 	@Override
-	public void onLogout(LogoutEvent event){
+	public void onLogin(LoginEvent event) throws ClientException {
+		// re-aquire user
+		UserService.get().requestUserData();
+		Manager.switchTo(WelcomeSceneController.class);
+	}
+
+	@Override
+	public void onLogout(LogoutEvent event) throws ClientException {
 		GameSession.get().setUser(null);
-		try {
-			Manager.switchTo(LoginSceneController.class);
-		} catch (Exception e) {
-			logger.error("error on event "+event.toString(),e);
-			return;
-		}
+		Manager.switchTo(LoginSceneController.class);
 	}
 }

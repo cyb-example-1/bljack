@@ -7,7 +7,12 @@ import com.cybernetica.bj.client.utils.Manager;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-
+/**
+ * Thick client entry point.
+ * JavaFX application
+ * @author dmitri
+ *
+ */
 public class Main extends Application {
 	
 

@@ -1,5 +1,7 @@
 package com.cybernetica.bj.client.services;
 
+import java.math.BigDecimal;
+
 import com.cybernetica.bj.client.exceptions.ClientException;
 import com.cybernetica.bj.common.dto.user.UserResponseDTO;
 import com.cybernetica.bj.common.interfaces.Singleton;
@@ -20,5 +22,11 @@ public interface UserService    extends Singleton<UserService>{
 	 * @throws ClientException
 	 */
 	public UserResponseDTO requestUserData() throws ClientException;
+
+	/**
+	 * Update balance using provided augment
+	 * @param bigDecimal
+	 */
+	public UserResponseDTO updateBalance(BigDecimal augment) throws ClientException;
 	
 }

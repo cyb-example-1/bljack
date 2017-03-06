@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 import com.cybernetica.bj.server.exceptions.ServiceException;
 import com.cybernetica.bj.server.models.Game;
+import com.cybernetica.bj.server.models.User;
 
 public interface GameService {
 
@@ -33,5 +34,13 @@ public interface GameService {
 	 * @throws ServiceException
 	 */
 	Game betGame(Long userId, Long gameId, BigDecimal betAugment) throws ServiceException;
+
+	/**
+	 * Finishes betting and begins blackjack
+	 * @param userId
+	 * @param id
+	 * @return
+	 */
+	User beginGame(Long userId, Long gameId) throws ServiceException;
 
 }

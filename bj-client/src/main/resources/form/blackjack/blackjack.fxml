@@ -21,8 +21,8 @@
       <Button id="btnCancel" layoutX="16.0" layoutY="355.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="99.0" text="Give up" />
       <Button id="btnDone" layoutX="15.0" layoutY="267.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="99.0" text="Done" />
       <Button id="btnTake" layoutX="16.0" layoutY="310.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="99.0" stylesheets="@bet.css" text="Take more" />
-      <Label layoutX="300.0" layoutY="43.0" prefHeight="17.0" prefWidth="70.0" text="Current bet:" />
-      <Label id="lblCurrentBet" layoutX="369.0" layoutY="41.0" text="Label">
+      <Label layoutX="284.0" layoutY="43.0" prefHeight="17.0" prefWidth="86.0" text="Current bet:" />
+      <Label id="lblCurrentBet" layoutX="369.0" layoutY="43.0" text="Label">
          <font>
             <Font size="14.0" />
          </font>

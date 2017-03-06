@@ -37,57 +37,85 @@ public class GameControllerTest extends BaseControllerTest {
 	
 	@Test
 	public void testGameStart() throws Exception{
-		ResponseEntity<LoginResponseDTO> ret = login("test","test");
-		String sessionId=ret.getHeaders().getFirst("X-Auth-Token");
+		String sessionId=login();
 		
-		ResultActions result = get("/game/start",sessionId);
-
-		result.andExpect(status().isOk());
-		GameResponseDTO gameResponseDTO = getResult(result, GameResponseDTO.class);
-		assertNotNull(gameResponseDTO);
-		assertNotNull(gameResponseDTO.getObject());
-		assertNotNull(gameResponseDTO.getObject().getId());
+		startGame(sessionId);
 		
 	}	
 	
 	@Test
 	public void testGameCancel() throws Exception{
-		ResponseEntity<LoginResponseDTO> ret = login("test","test");
-		String sessionId=ret.getHeaders().getFirst("X-Auth-Token");
+		String sessionId=login();
 		
 		
 		//start game
-		ResultActions result = get("/game/start",sessionId);
+		startGame(sessionId);
 		
-		result.andExpect(status().isOk());
-		GameResponseDTO gameResponseDTO = getResult(result, GameResponseDTO.class);
-		assertNotNull(gameResponseDTO);
-		assertNotNull(gameResponseDTO.getObject());
-		assertNotNull(gameResponseDTO.getObject().getId());
-		
-		UserResponseDTO userData = getUserData("test");
-		assertNotNull(userData.getUser().getGame());
-		
-		//game cancel
-		Long gameId=gameResponseDTO.getObject().getId();
-		result = get("/game/cancel/{id}", sessionId,gameId);
+		ResultActions result=cancelGame(sessionId);
 
 		result.andExpect(status().isOk());
 		RestResponseDTO responseDTO = getResult(result, RestResponseDTO.class);
 		assertFalse(responseDTO.hasErrors());
 		
-		userData = getUserData("test");
+		UserResponseDTO userData = getUserData("test");
 		assertNull(userData.getUser().getGame());
 	}	
 	
 	
 	@Test
 	public void testGameBet() throws Exception{
+		String sessionId=login();
+		
+		cancelGame(sessionId);
+		startGame(sessionId);
+		
+		UserResponseDTO userData = getUserData("test");
+		BigDecimal prevBet = userData.getUser().getGame().getCurrentBet();
+		
+		betGame(sessionId);
+
+		userData = getUserData("test");
+		
+		assertEquals(prevBet.add(BigDecimal.TEN), userData.getUser().getGame().getCurrentBet());
+	}	
+	
+	@Test
+	public void testGameBegin() throws Exception{
+		String sessionId=login();
+		
+		cancelGame(sessionId);
+		startGame(sessionId);
+		betGame(sessionId);
+		
+		UserResponseDTO userData = getUserData("test");
+		
+		beginGame(sessionId);
+		
+		UserResponseDTO userData2 = getUserData("test");
+		
+		assertEquals(userData.getUser().getBalance().subtract(userData.getUser().getGame().getCurrentBet()), userData2.getUser().getBalance());
+		
+	}
+	
+	
+	private String login() throws Exception{
 		ResponseEntity<LoginResponseDTO> ret = login("test","test");
 		String sessionId=ret.getHeaders().getFirst("X-Auth-Token");
+		return sessionId;
+	}
+	
+	private ResultActions  cancelGame(String sessionId) throws Exception{
+		UserResponseDTO userData = getUserData("test");
 		
+		if(userData.getUser().getGame()==null)
+			return null;
 		
-		//start game
+		//game cancel
+		Long gameId=userData.getUser().getGame().getId();
+		return get("/game/cancel/{id}", sessionId,gameId);
+	}
+	
+	private ResultActions startGame(String sessionId) throws Exception{
 		ResultActions result = get("/game/start",sessionId);
 		
 		result.andExpect(status().isOk());
@@ -96,20 +124,24 @@ public class GameControllerTest extends BaseControllerTest {
 		assertNotNull(gameResponseDTO.getObject());
 		assertNotNull(gameResponseDTO.getObject().getId());
 		
+		
 		UserResponseDTO userData = getUserData("test");
 		assertNotNull(userData.getUser().getGame());
-		assertNotNull(userData.getUser().getGame().getCurrentBet());
 		
-		BigDecimal prevBet = userData.getUser().getGame().getCurrentBet();
+		return result;
+	}
+	
+	private ResultActions betGame(String sessionId) throws Exception {
 		
+		UserResponseDTO userData = getUserData("test");
+		Long gameId=userData.getUser().getGame().getId();
 		
 		//game cancel
 		GameBetChangeDTO betDTO = new GameBetChangeDTO();
-		Long gameId=gameResponseDTO.getObject().getId();
 		betDTO.setGameId(gameId);
 		betDTO.setBet(BigDecimal.TEN);
 		
-		result = post("/game/bet",betDTO, sessionId);
+		ResultActions result = post("/game/bet",betDTO, sessionId);
 
 		result.andExpect(status().isOk());
 		GameResponseDTO responseDTO = getResult(result, GameResponseDTO.class);
@@ -118,8 +150,20 @@ public class GameControllerTest extends BaseControllerTest {
 		userData = getUserData("test");
 		assertNotNull(userData.getUser().getGame());
 		
-		assertEquals(prevBet.add(BigDecimal.TEN), userData.getUser().getGame().getCurrentBet());
-	}		
+		return result;
+	}
 	
+	private ResultActions beginGame(String sessionId) throws Exception {
+		UserResponseDTO userData = getUserData("test");
+		Long gameId=userData.getUser().getGame().getId();
+		ResultActions result= get("/game/begin/{id}", sessionId,gameId);
+		
+		result.andExpect(status().isOk());
+		
+		userData = getUserData("test");
+		
+		assertEquals(userData.getUser().getGame().isBetDone(),true);
+		return result;
+	}
 	
 }

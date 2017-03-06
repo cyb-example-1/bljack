@@ -65,7 +65,7 @@ public class UserController extends BaseController {
 		return ret;
 	}
 
-	private UserDTO map(User user) {
+	static UserDTO map(User user) {
 		UserDTO dto = new UserDTO();
 		dto.setId(user.getId());
 		dto.setUsername(user.getUsername());

@@ -14,6 +14,7 @@ import com.cybernetica.bj.server.exceptions.ServiceException;
 import com.cybernetica.bj.server.models.Game;
 import com.cybernetica.bj.server.models.User;
 import com.cybernetica.bj.server.services.GameService;
+import com.cybernetica.bj.server.utils.CardSetUtils;
 
 
 @Service
@@ -105,6 +106,47 @@ public class GameServiceImpl extends BaseServiceImpl implements GameService {
 		}
 		
 		return game;
+	}
+
+	@Override
+	public User beginGame(Long userId, Long gameId) throws ServiceException {
+		User user;
+		try {
+			user = userDao.get(userId);
+		} catch (DaoException e) {
+			throw new ServiceException(e);
+		}
+		
+		if(user.getGame()==null) {
+			logger.error("Betting not started game User #{} for Game #{}",userId,gameId);
+			throw new ServiceException("error.game.bet.not-started");
+		}
+		Game game = user.getGame();
+		if(!game.getId().equals(gameId)) {
+			logger.error(" Ids do not match {} to {}",game.getId(),gameId);
+			throw new ServiceException("error.game.cancel.id-not-match");
+		}	
+		
+		//generate cards
+		Long userBitSet = CardSetUtils.generateSet(CardSetUtils.generateCard(0L));
+		
+		Long dealerHidden=CardSetUtils.generateCard(userBitSet);
+		Long dealerSeen=CardSetUtils.generateCard(dealerHidden|userBitSet);
+		
+		user.setBalance(user.getBalance().subtract(game.getCurrentBet()));
+		
+		game.setBetDone(true);
+		game.setUserCards(userBitSet);
+		game.setDealerCardClosed(dealerHidden);
+		game.setDealerCardOpened(dealerSeen);
+		
+		try {
+			userDao.update(user);
+			gameDao.update(game);
+		} catch (DaoException e) {
+			throw new ServiceException(e);
+		}
+		return user;
 	}
 	
 }

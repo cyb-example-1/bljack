@@ -65,7 +65,7 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 			balance=BigDecimal.ZERO;
 		user.setBalance(balance.add(balanceChange));
 		try {
-			return userDao.save(user);
+			return loadRelations(userDao.save(user));
 		} catch (DaoException e) {
 			throw new ServiceException(e);
 		}
@@ -74,9 +74,13 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 	@Override
 	public User loadByUsername(String username) throws ServiceException {
 		User user = findByUsername(username);
+		return loadRelations(user);
+	}
+	
+	private User loadRelations(User user){
 		if(user.getGame()!=null)
 			Hibernate.initialize(user.getGame());
-		return user;
+		return user;	
 	}
 
 }

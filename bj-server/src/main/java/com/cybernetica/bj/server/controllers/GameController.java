@@ -13,8 +13,10 @@ import com.cybernetica.bj.common.dto.RestResponseDTO;
 import com.cybernetica.bj.common.dto.game.GameBetChangeDTO;
 import com.cybernetica.bj.common.dto.game.GameResponseDTO;
 import com.cybernetica.bj.common.dto.user.GameDTO;
+import com.cybernetica.bj.common.dto.user.UserResponseDTO;
 import com.cybernetica.bj.server.exceptions.ServiceException;
 import com.cybernetica.bj.server.models.Game;
+import com.cybernetica.bj.server.models.User;
 import com.cybernetica.bj.server.services.GameService;
 
 /**
@@ -57,7 +59,16 @@ public class GameController extends BaseController {
 		
 		Game game = gameService.betGame(userId,betDTO.getGameId(),betDTO.getBet());
 		return new GameResponseDTO(map(game));
-	}		
+	}	
+	
+	@RequestMapping(value="/begin/{id}",produces = "application/json")
+	@ResponseBody
+	public UserResponseDTO gameBegin(@PathVariable(name="id") Long id) throws ServiceException {
+		Long userId = getLoggedUserId();
+		logger.trace("Game #{} beginning for User #{}",id,userId);
+		User user = gameService.beginGame(userId,id);
+		return new UserResponseDTO(UserController.map(user));
+	}
 	
 	
 	static GameDTO map(Game game) {

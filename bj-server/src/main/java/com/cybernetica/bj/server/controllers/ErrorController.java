@@ -27,7 +27,6 @@ public class ErrorController implements org.springframework.boot.autoconfigure.w
 		this.errorAttributes = errorAttributes;
 	}
 
-	@SuppressWarnings("unused")
 	@RequestMapping(value = PATH)
 	RestResponseDTO error(HttpServletRequest request, HttpServletResponse response) {
 		// Appropriate HTTP response code (e.g. 404 or 500) is automatically set

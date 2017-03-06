@@ -10,15 +10,108 @@ import com.cybernetica.bj.client.events.UserDataEvent;
 import com.cybernetica.bj.client.exceptions.ClientException;
 import com.cybernetica.bj.client.game.GameSession;
 import com.cybernetica.bj.client.interfaces.IDataListener;
-import com.cybernetica.bj.client.services.AuthService;
+import com.cybernetica.bj.client.services.GameService;
 import com.cybernetica.bj.client.services.UserService;
 import com.cybernetica.bj.client.utils.Properties;
+import com.cybernetica.bj.common.dto.user.GameDTO;
+import com.cybernetica.bj.common.dto.user.UserDTO;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
-public class BetSceneController extends BaseSceneController<BetSceneController> {
+public class BetSceneController extends BaseSceneController<BetSceneController> implements IDataListener {
+	private static final Logger logger = LoggerFactory.getLogger(WelcomeSceneController.class);
 	
+	private BigDecimal betStep;
+	
+	private Label textLabel;
+	private Button btnPlay;
+	private Button btnBet;
+	private Button btnCancel;
+	
+	
+	@Override
+	protected void postBuild() {
+		
+		betStep=Properties.getBigDecimal("app.game.bet.amount");
+		
+		textLabel = (Label) getElementById("msgText");
+		
+		btnPlay = (Button) getElementById("btnPlay");
+		btnBet = (Button) getElementById("btnBet");
+		btnCancel = (Button) getElementById("btnCancel");
+
+		
+		
+		btnCancel.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent e) {
+            	logger.trace("form.bet-cancel.click");
+            	Long gameId = GameSession.get().getUser().getGame().getId();
+            	try {
+					GameService.get().cancelBet(gameId);
+				} catch (ClientException e1) {
+					logger.debug(e1.getMessage());
+					setElementText(textLabel,e1.getMessage());
+				}
+            }
+        });
+		
+		btnBet.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent e) {
+            	logger.trace("form.balance.click");
+            	try {
+					UserService.get().updateBalance(new BigDecimal(100));
+				} catch (ClientException e1) {
+					logger.debug(e1.getMessage());
+					setElementText(textLabel,e1.getMessage());
+				}
+            }
+        });		
+		
+		
+	}
+
+	public void onUserData(UserDataEvent event){
+		UserDTO userDTO = GameSession.get().getUser();
+		if(userDTO==null)
+			return;
+		GameDTO game = userDTO.getGame();
+		if(game==null)
+			return;
+		
+		BigDecimal balance = userDTO.getBalance();
+		if(balance==null)
+			balance = BigDecimal.ZERO;
+		BigDecimal currentBet =  game.getCurrentBet();
+		if(currentBet==null)
+			currentBet = BigDecimal.ZERO;
+		
+		setElementTextById("username",userDTO.getUsername());
+		setElementTextById("balance",""+balance+"$");
+		
+		if(currentBet.add(betStep).compareTo(balance)>=0)
+			btnBet.setVisible(false);
+		else
+			btnBet.setVisible(true);
+		
+		if(currentBet.compareTo(BigDecimal.ZERO)>0)
+			btnBet.setVisible(true);
+		else
+			btnBet.setVisible(false);
+	}
+
+
+	@Override
+	protected void postActivate() {
+		EventProducer.addUserDataListener(this);
+		//simulate event
+		onUserData(new UserDataEvent(GameSession.get().getUser()));
+	}
+
 }

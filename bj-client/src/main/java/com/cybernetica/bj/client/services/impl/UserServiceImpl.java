@@ -8,23 +8,12 @@ import org.slf4j.LoggerFactory;
 import com.cybernetica.bj.client.context.EventProducer;
 import com.cybernetica.bj.client.events.UserDataEvent;
 import com.cybernetica.bj.client.exceptions.ClientException;
-import com.cybernetica.bj.client.services.RestService;
 import com.cybernetica.bj.client.services.UserService;
 import com.cybernetica.bj.common.dto.user.BalanceChangeDTO;
 import com.cybernetica.bj.common.dto.user.UserResponseDTO;
 
-public class UserServiceImpl extends BaseServiceImpl implements UserService {
+public class UserServiceImpl extends BaseRestServiceImpl implements UserService {
 	private static final Logger logger = LoggerFactory.getLogger(UserService.class);
-	
-	private RestService restService;
-	
-	public UserServiceImpl(){	
-		setRestService(RestService.get());
-	}
-	
-	protected void setRestService(RestService restService) {
-		this.restService = restService;
-	} 	
 	
 	/**
 	 * {@inheritDoc}
@@ -32,7 +21,7 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 	@Override
 	public UserResponseDTO requestUserData() throws ClientException {
 		logger.trace("retrieving user data");
-		UserResponseDTO resp = restService.get("/user/get", UserResponseDTO.class);
+		UserResponseDTO resp = getRestService().get("/user/get", UserResponseDTO.class);
 		validate(resp);
 		EventProducer.publishEvent(new UserDataEvent(resp));
 		return resp;
@@ -47,7 +36,7 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 		logger.info("updating user balance by {}",augment);
 		BalanceChangeDTO requestDTO = new BalanceChangeDTO();
 		requestDTO.setBalanceChange(augment);
-		UserResponseDTO resp = restService.post("/user/balance", requestDTO,UserResponseDTO.class);
+		UserResponseDTO resp = getRestService().post("/user/balance", requestDTO,UserResponseDTO.class);
 		validate(resp);
 		EventProducer.publishEvent(new UserDataEvent(resp));
 		return resp;

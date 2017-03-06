@@ -11,6 +11,7 @@ import org.testfx.framework.junit.ApplicationTest;
 import com.cybernetica.bj.client.exceptions.ClientException;
 import com.cybernetica.bj.client.game.GameCoordinator;
 import com.cybernetica.bj.client.services.AuthService;
+import com.cybernetica.bj.client.services.GameService;
 import com.cybernetica.bj.client.services.RestService;
 import com.cybernetica.bj.client.services.UserService;
 
@@ -54,6 +55,7 @@ public abstract class BaseSceneTest extends ApplicationTest {
 	private void setRestService(RestService restService) throws Exception{
 		MethodUtils.invokeMethod(AuthService.get(), true,"setRestService", restService);
 		MethodUtils.invokeMethod(UserService.get(), true,"setRestService", restService);
+		MethodUtils.invokeMethod(GameService.get(), true,"setRestService", restService);
 		
 	}
 	

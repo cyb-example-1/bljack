@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("serial")
-public class BaseRestResponseDTO extends BaseDTO {
+public class RestResponseDTO extends BaseDTO {
 	
 	private List<String> errors;
 	
@@ -58,7 +58,7 @@ public class BaseRestResponseDTO extends BaseDTO {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		BaseRestResponseDTO other = (BaseRestResponseDTO) obj;
+		RestResponseDTO other = (RestResponseDTO) obj;
 		if (errors == null) {
 			if (other.errors != null)
 				return false;

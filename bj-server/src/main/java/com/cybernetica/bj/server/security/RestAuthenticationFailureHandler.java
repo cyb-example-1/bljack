@@ -12,7 +12,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
 import com.cybernetica.bj.common.JsonUtils;
-import com.cybernetica.bj.common.dto.BaseRestResponseDTO;
+import com.cybernetica.bj.common.dto.RestResponseDTO;
 
 public final class RestAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
@@ -23,7 +23,7 @@ public final class RestAuthenticationFailureHandler implements AuthenticationFai
 			AuthenticationException e) throws IOException, ServletException {
 		logger.info("Authentication failed with message: {}", e.getMessage());
 		response.sendError(HttpServletResponse.SC_FORBIDDEN, "Authentication failed.");
-		BaseRestResponseDTO dto=new BaseRestResponseDTO();
+		RestResponseDTO dto=new RestResponseDTO();
 		dto.addError("error.login.failed");
 		response.getWriter().println(JsonUtils.toString(dto));
 		

@@ -19,7 +19,7 @@ import com.cybernetica.bj.client.services.RestService;
 import com.cybernetica.bj.client.utils.Properties;
 import com.cybernetica.bj.common.JsonUtils;
 import com.cybernetica.bj.common.dto.BaseDTO;
-import com.cybernetica.bj.common.dto.BaseRestResponseDTO;
+import com.cybernetica.bj.common.dto.RestResponseDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 /**
@@ -60,7 +60,7 @@ public class RestServiceImpl implements RestService{
 	/**
 	 * {@inheritDoc}
 	 */
-	public <T extends BaseRestResponseDTO> T get(String uri,Class<T> respClass) throws ClientException{
+	public <T extends RestResponseDTO> T get(String uri,Class<T> respClass) throws ClientException{
 		logger.debug("calling {}",uri);
 		return doExecute("GET",uri,null,respClass);
 	}
@@ -68,7 +68,7 @@ public class RestServiceImpl implements RestService{
 	/**
 	 * {@inheritDoc}
 	 */
-	public <T extends BaseRestResponseDTO,Y extends BaseDTO> T put(String uri,Y content,Class<T> respClass) throws ClientException{
+	public <T extends RestResponseDTO,Y extends BaseDTO> T put(String uri,Y content,Class<T> respClass) throws ClientException{
 		logger.debug("calling {} with {}",uri,content);
 		return doExecute("PUT",uri,content,respClass);
 	}
@@ -76,7 +76,7 @@ public class RestServiceImpl implements RestService{
 	/**
 	 * {@inheritDoc}
 	 */
-	public <T extends BaseRestResponseDTO,Y extends BaseDTO> T post(String uri,Y content,Class<T> respClass) throws ClientException{
+	public <T extends RestResponseDTO,Y extends BaseDTO> T post(String uri,Y content,Class<T> respClass) throws ClientException{
 		logger.debug("calling {} with {}",uri,content);
 		return doExecute("POST",uri,content,respClass);
 	}
@@ -88,13 +88,13 @@ public class RestServiceImpl implements RestService{
 	 * @return
 	 * @throws ClientException
 	 */
-	public <T extends BaseRestResponseDTO> T delete(String uri,Class<T> respClass) throws ClientException{
+	public <T extends RestResponseDTO> T delete(String uri,Class<T> respClass) throws ClientException{
 		logger.debug("calling {}",uri);
 		return doExecute("DELETE",uri,null,respClass);
 	}
 	
 	
-	private <T extends BaseRestResponseDTO,Y extends BaseDTO> T doExecute(String method,String path,Y content,Class<T> respClass) throws ClientException {
+	private <T extends RestResponseDTO,Y extends BaseDTO> T doExecute(String method,String path,Y content,Class<T> respClass) throws ClientException {
 		String uri=BACKEND_HOST+path;
 		logger.debug("calling {}",uri);
 		RequestBuilder builder = RequestBuilder.create(method);

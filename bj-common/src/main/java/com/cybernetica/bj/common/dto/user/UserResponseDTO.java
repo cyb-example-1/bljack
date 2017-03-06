@@ -1,9 +1,9 @@
 package com.cybernetica.bj.common.dto.user;
 
-import com.cybernetica.bj.common.dto.BaseRestResponseDTO;
+import com.cybernetica.bj.common.dto.RestResponseDTO;
 
 @SuppressWarnings("serial")
-public class UserResponseDTO extends BaseRestResponseDTO {
+public class UserResponseDTO extends RestResponseDTO {
 	private UserDTO user;
 
 	public UserResponseDTO(){

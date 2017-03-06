@@ -8,7 +8,6 @@ import com.cybernetica.bj.client.events.LoginEvent;
 import com.cybernetica.bj.client.events.LogoutEvent;
 import com.cybernetica.bj.client.exceptions.ClientException;
 import com.cybernetica.bj.client.services.AuthService;
-import com.cybernetica.bj.client.services.RestService;
 import com.cybernetica.bj.common.dto.LogoutRequestDTO;
 import com.cybernetica.bj.common.dto.LogoutResponseDTO;
 import com.cybernetica.bj.common.dto.login.LoginRequestDTO;
@@ -20,18 +19,8 @@ import com.cybernetica.bj.common.dto.login.LoginResponseDTO;
  * @author dmitri
  *
  */
-public class AuthServiceImpl extends BaseServiceImpl implements AuthService {
+public class AuthServiceImpl extends BaseRestServiceImpl implements AuthService {
 	private static final Logger logger = LoggerFactory.getLogger(AuthService.class);
-	
-	private RestService restService;
-	
-	public AuthServiceImpl(){	
-		setRestService(RestService.get());
-	}
-	
-	protected void setRestService(RestService restService) {
-		this.restService = restService;
-	} 
 	
 	/**
 	 * {@inheritDoc}
@@ -44,7 +33,7 @@ public class AuthServiceImpl extends BaseServiceImpl implements AuthService {
 		dto.setUsername(username);
 		validate(dto);
 
-		LoginResponseDTO resp = restService.post("/session/login", dto, LoginResponseDTO.class);
+		LoginResponseDTO resp = getRestService().post("/session/login", dto, LoginResponseDTO.class);
 		validate(resp);
 		EventProducer.publishEvent(new LoginEvent(resp));
 		return resp;
@@ -59,7 +48,7 @@ public class AuthServiceImpl extends BaseServiceImpl implements AuthService {
 		logger.trace("starting logging");
 		LogoutRequestDTO dto = new LogoutRequestDTO();
 //		validate(dto);
-		LogoutResponseDTO resp = restService.post("/session/logout", dto, LogoutResponseDTO.class);
+		LogoutResponseDTO resp = getRestService().post("/session/logout", dto, LogoutResponseDTO.class);
 		validate(resp);
 		EventProducer.publishEvent(new LogoutEvent(resp));
 		return resp;

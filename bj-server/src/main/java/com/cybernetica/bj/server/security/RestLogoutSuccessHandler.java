@@ -13,7 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 import com.cybernetica.bj.common.JsonUtils;
-import com.cybernetica.bj.common.dto.BaseRestResponseDTO;
+import com.cybernetica.bj.common.dto.RestResponseDTO;
 import com.cybernetica.bj.common.dto.LogoutRequestDTO;
 import com.cybernetica.bj.server.controllers.SessionController;
 
@@ -37,7 +37,7 @@ public final class RestLogoutSuccessHandler implements LogoutSuccessHandler {
 			dto.setSessionId(RestAuthenticationProcessingFilter.getAuthToken(request, response));
 		logger.debug("Logging out {}",dto);
 		
-		BaseRestResponseDTO responseDTO = sessionController.logout(dto);
+		RestResponseDTO responseDTO = sessionController.logout(dto);
 		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
 		response.getWriter().print(JsonUtils.toString(responseDTO));
 		

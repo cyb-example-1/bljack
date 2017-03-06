@@ -11,6 +11,7 @@ import com.cybernetica.bj.client.exceptions.ClientException;
 import com.cybernetica.bj.client.game.GameSession;
 import com.cybernetica.bj.client.interfaces.IDataListener;
 import com.cybernetica.bj.client.services.AuthService;
+import com.cybernetica.bj.client.services.GameService;
 import com.cybernetica.bj.client.services.UserService;
 import com.cybernetica.bj.client.utils.Properties;
 
@@ -64,6 +65,20 @@ public class WelcomeSceneController extends BaseSceneController<WelcomeSceneCont
             	logger.trace("form.balance.click");
             	try {
 					UserService.get().updateBalance(new BigDecimal(100));
+				} catch (ClientException e1) {
+					logger.debug(e1.getMessage());
+					setElementText(textLabel,e1.getMessage());
+				}
+            }
+        });		
+		
+		btnPlay.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent e) {
+            	logger.trace("form.game-start.click");
+            	try {
+					GameService.get().gameStart();
 				} catch (ClientException e1) {
 					logger.debug(e1.getMessage());
 					setElementText(textLabel,e1.getMessage());

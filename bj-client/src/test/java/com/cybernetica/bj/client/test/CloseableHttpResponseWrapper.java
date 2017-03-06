@@ -15,7 +15,7 @@ import org.apache.http.message.BasicStatusLine;
 import org.apache.http.params.HttpParams;
 
 import com.cybernetica.bj.common.JsonUtils;
-import com.cybernetica.bj.common.dto.BaseRestResponseDTO;
+import com.cybernetica.bj.common.dto.RestResponseDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 @SuppressWarnings("deprecation")
@@ -30,7 +30,7 @@ public class CloseableHttpResponseWrapper implements CloseableHttpResponse {
 			this.content=content;
 		}
 		
-		public CloseableHttpResponseWrapper(int statuscode, BaseRestResponseDTO dto) {
+		public CloseableHttpResponseWrapper(int statuscode, RestResponseDTO dto) {
 			this.statuscode = statuscode;
 			try {
 				this.content=JsonUtils.toString(dto);

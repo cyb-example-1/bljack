@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cybernetica.bj.common.dto.BaseRestResponseDTO;
+import com.cybernetica.bj.common.dto.RestResponseDTO;
 import com.cybernetica.bj.common.dto.LogoutRequestDTO;
 import com.cybernetica.bj.common.dto.login.LoginRequestDTO;
 import com.cybernetica.bj.common.dto.login.LoginResponseDTO;
@@ -49,7 +49,7 @@ public class SessionController extends BaseController {
 
 	@RequestMapping(value="/logout",produces = "application/json", consumes="application/json",method=RequestMethod.POST)
 	@ResponseBody
-	public BaseRestResponseDTO logout(@RequestBody LogoutRequestDTO dto) throws ControllerException {
+	public RestResponseDTO logout(@RequestBody LogoutRequestDTO dto) throws ControllerException {
 		logger.trace("loggout action for  {]",dto);
 		try {
 			sessionService.deleteAllSessions(dto.getUsername(),dto.getSessionId());
@@ -57,7 +57,7 @@ public class SessionController extends BaseController {
 			throw new ControllerException(e);
 		}
 		SecurityContextHolder.clearContext();
-		return new BaseRestResponseDTO();
+		return new RestResponseDTO();
 	}
 	
 

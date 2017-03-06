@@ -30,7 +30,7 @@ public class GameEventDispatcher extends GameEventAdapter {
 		UserDTO user = event.getResponse().getUser();
 		GameSession.get().setUser(user);
 		if(user.getGame()!=null) {
-			if(!user.getGame().isBetDone())
+			if(user.getGame().isBetDone())
 				Manager.switchTo(BlackjackSceneController.class);
 			else
 				Manager.switchTo(BetSceneController.class);	

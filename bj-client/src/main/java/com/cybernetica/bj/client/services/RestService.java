@@ -2,7 +2,7 @@ package com.cybernetica.bj.client.services;
 
 import com.cybernetica.bj.client.exceptions.ClientException;
 import com.cybernetica.bj.common.dto.BaseDTO;
-import com.cybernetica.bj.common.dto.BaseRestResponseDTO;
+import com.cybernetica.bj.common.dto.RestResponseDTO;
 import com.cybernetica.bj.common.interfaces.Singleton;
 
 /**
@@ -29,7 +29,7 @@ public interface RestService   extends Singleton<RestService>{
 	 * @return
 	 * @throws ClientException
 	 */
-	public <T extends BaseRestResponseDTO,Y extends BaseDTO> T post(String uri,Y content,Class<T> respClass) throws ClientException;
+	public <T extends RestResponseDTO,Y extends BaseDTO> T post(String uri,Y content,Class<T> respClass) throws ClientException;
 
 	/**
 	 * GET request
@@ -37,7 +37,7 @@ public interface RestService   extends Singleton<RestService>{
 	 * @param class1
 	 * @return
 	 */
-	public <T extends BaseRestResponseDTO> T get(String uri,Class<T> respClass) throws ClientException;
+	public <T extends RestResponseDTO> T get(String uri,Class<T> respClass) throws ClientException;
 
 
 	

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import com.cybernetica.bj.common.dto.BaseRestResponseDTO;
+import com.cybernetica.bj.common.dto.RestResponseDTO;
 
 @RestController
 public class ErrorController implements org.springframework.boot.autoconfigure.web.ErrorController {
@@ -29,11 +29,11 @@ public class ErrorController implements org.springframework.boot.autoconfigure.w
 
 	@SuppressWarnings("unused")
 	@RequestMapping(value = PATH)
-	BaseRestResponseDTO error(HttpServletRequest request, HttpServletResponse response) {
+	RestResponseDTO error(HttpServletRequest request, HttpServletResponse response) {
 		// Appropriate HTTP response code (e.g. 404 or 500) is automatically set
 		// by Spring.
 		// Here we just define response body.
-		BaseRestResponseDTO dto = new BaseRestResponseDTO();
+		RestResponseDTO dto = new RestResponseDTO();
 		// Map<String, Object> attributes = getErrorAttributes(request, false);
 		switch (response.getStatus()) {
 		case 401:

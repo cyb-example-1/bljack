@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cybernetica.bj.common.dto.game.GameStartResponseDTO;
+import com.cybernetica.bj.common.dto.game.GameResponseDTO;
 
 /**
  * Session controller.
@@ -21,7 +21,7 @@ public class GameController extends BaseController {
 	
 	@RequestMapping(value="/start",produces = "application/json", consumes="application/json")
 	@ResponseBody
-	public GameStartResponseDTO gameStart() {
+	public GameResponseDTO gameStart() {
 		logger.trace("Game start");
 		return null;
 	}

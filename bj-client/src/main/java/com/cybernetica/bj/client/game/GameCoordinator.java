@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 
 import com.cybernetica.bj.client.context.EventProducer;
 import com.cybernetica.bj.client.exceptions.ClientException;
+import com.cybernetica.bj.client.scene.BetSceneController;
+import com.cybernetica.bj.client.scene.BlackjackSceneController;
 import com.cybernetica.bj.client.scene.LoginSceneController;
 import com.cybernetica.bj.client.scene.WelcomeSceneController;
 import com.cybernetica.bj.common.interfaces.Singleton;
@@ -56,6 +58,8 @@ public class GameCoordinator implements Singleton<GameCoordinator> {
 		logger.info("Initializing stages");
 		LoginSceneController.create(stage,LoginSceneController.class);
 		WelcomeSceneController.create(stage,WelcomeSceneController.class);
+		BetSceneController.create(stage,BetSceneController.class);
+		BlackjackSceneController.create(stage,BlackjackSceneController.class);
 		
 	}
 	

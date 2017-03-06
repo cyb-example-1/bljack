@@ -22,7 +22,7 @@
       <Button id="btnPlay" layoutX="20.0" layoutY="124.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="99.0" text="Play game" />
       <Button id="btnBet" layoutX="20.0" layoutY="185.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="99.0" stylesheets="@bet.css" text="Bet 5$" />
       <Label layoutX="300.0" layoutY="43.0" prefHeight="17.0" prefWidth="70.0" text="Current bet:" />
-      <Label layoutX="369.0" layoutY="41.0" text="Label">
+      <Label id="lblCurrentBet" layoutX="369.0" layoutY="41.0" text="Label">
          <font>
             <Font size="14.0" />
          </font>

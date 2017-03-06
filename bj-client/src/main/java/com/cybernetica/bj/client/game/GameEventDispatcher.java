@@ -44,7 +44,7 @@ public class GameEventDispatcher extends GameEventAdapter {
 	public void onLogin(LoginEvent event) throws ClientException {
 		// re-aquire user
 		UserService.get().requestUserData();
-		Manager.switchTo(WelcomeSceneController.class);
+		//Manager.switchTo(WelcomeSceneController.class);
 	}
 
 	@Override

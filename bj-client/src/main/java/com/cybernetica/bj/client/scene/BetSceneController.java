@@ -74,7 +74,7 @@ public class BetSceneController extends BaseSceneController<BetSceneController> 
             }
         });		
 		
-		
+		EventProducer.addUserDataListener(this);
 	}
 
 	public void onUserData(UserDataEvent event){
@@ -94,22 +94,22 @@ public class BetSceneController extends BaseSceneController<BetSceneController> 
 		
 		setElementTextById("username",userDTO.getUsername());
 		setElementTextById("balance",""+balance+"$");
+		setElementTextById("lblCurrentBet",""+currentBet+"$");
 		
-		if(currentBet.add(betStep).compareTo(balance)>=0)
+		if(currentBet.add(betStep).compareTo(balance)>0)
 			btnBet.setVisible(false);
 		else
 			btnBet.setVisible(true);
 		
 		if(currentBet.compareTo(BigDecimal.ZERO)>0)
-			btnBet.setVisible(true);
+			btnPlay.setVisible(true);
 		else
-			btnBet.setVisible(false);
+			btnPlay.setVisible(false);
 	}
 
 
 	@Override
 	protected void postActivate() {
-		EventProducer.addUserDataListener(this);
 		//simulate event
 		onUserData(new UserDataEvent(GameSession.get().getUser()));
 	}

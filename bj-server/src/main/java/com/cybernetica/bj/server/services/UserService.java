@@ -19,6 +19,14 @@ public interface UserService {
 	
 	
 	/**
+	 * Searches user by username and pre-loads its game within object
+	 * @param username
+	 * @return
+	 */
+	User loadByUsername(String username) throws ServiceException;
+	
+	
+	/**
 	 * Creates user if not exists
 	 * @param username
 	 * @param password
@@ -36,5 +44,8 @@ public interface UserService {
 	 * @throws ServiceException
 	 */
 	User updateBalance(String name, BigDecimal balanceChange) throws ServiceException;
+
+
+
 
 }

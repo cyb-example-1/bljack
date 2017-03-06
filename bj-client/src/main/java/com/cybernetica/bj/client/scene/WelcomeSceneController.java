@@ -87,6 +87,7 @@ public class WelcomeSceneController extends BaseSceneController<WelcomeSceneCont
         });		
 		
 		
+		EventProducer.addUserDataListener(this);
 	}
 
 	public void onUserData(UserDataEvent event){
@@ -102,7 +103,6 @@ public class WelcomeSceneController extends BaseSceneController<WelcomeSceneCont
 
 	@Override
 	protected void postActivate() {
-		EventProducer.addUserDataListener(this);
 		//simulate event
 		onUserData(new UserDataEvent(GameSession.get().getUser()));
 	}

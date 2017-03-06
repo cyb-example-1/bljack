@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 import javax.transaction.Transactional;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -68,6 +69,14 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 		} catch (DaoException e) {
 			throw new ServiceException(e);
 		}
+	}
+
+	@Override
+	public User loadByUsername(String username) throws ServiceException {
+		User user = findByUsername(username);
+		if(user.getGame()!=null)
+			Hibernate.initialize(user.getGame());
+		return user;
 	}
 
 }

@@ -4,6 +4,9 @@ package com.cybernetica.bj.common.dto;
 public class RestObjectReponseDTO<T> extends RestResponseDTO {
 	private T object;
 
+	public RestObjectReponseDTO() {
+	}
+	
 	public RestObjectReponseDTO(T dto) {
 		object=dto;
 	}

@@ -37,6 +37,12 @@ public class RestResponseDTO extends BaseDTO {
 		errors.add(errorMsg);
 	}
 	
+	public boolean hasErrors() {
+		if(errors==null ||errors.size()<1)
+			return false;
+		return true;
+	}
+	
 	@Override
 	public String toString() {
 		return "BaseRestResponseDTO [errors=" + errors + ", warnings=" + warnings + ", messages=" + messages + "]";

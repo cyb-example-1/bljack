@@ -39,6 +39,9 @@ public abstract class BaseDaoImpl implements BaseDao {
 		return sessionFactory.getCurrentSession();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public <T extends Serializable> T save(T entity) throws DaoException {
 		Session session = getSession();
@@ -46,5 +49,39 @@ public abstract class BaseDaoImpl implements BaseDao {
 		return entity;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */	
+	@Override
+	public <T> T get(Class<T> entityCls,Serializable id) throws DaoException {
+		Session session = getSession();
+		return session.get(entityCls, id);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public <T extends Serializable> T persist(T entity) throws DaoException {
+		Session session = getSession();
+		session.persist(entity);
+		return entity;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public <T extends Serializable> T update(T entity) throws DaoException {
+		Session session = getSession();
+		session.update(entity);
+		return entity;
+	}
+
+	@Override
+	public <T> void delete(T entity) throws DaoException {
+		Session session = getSession();
+		session.delete(entity);		
+	}
 	
 }

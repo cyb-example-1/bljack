@@ -16,6 +16,7 @@ import com.cybernetica.bj.common.JsonUtils;
 import com.cybernetica.bj.common.dto.RestResponseDTO;
 import com.cybernetica.bj.common.dto.LogoutRequestDTO;
 import com.cybernetica.bj.server.controllers.SessionController;
+import com.cybernetica.bj.server.exceptions.ServiceException;
 
 public final class RestLogoutSuccessHandler implements LogoutSuccessHandler {
 
@@ -37,7 +38,13 @@ public final class RestLogoutSuccessHandler implements LogoutSuccessHandler {
 			dto.setSessionId(RestAuthenticationProcessingFilter.getAuthToken(request, response));
 		logger.debug("Logging out {}",dto);
 		
-		RestResponseDTO responseDTO = sessionController.logout(dto);
+		RestResponseDTO responseDTO;
+		try {
+			responseDTO = sessionController.logout(dto);
+		} catch (ServiceException e) {
+			logger.error("sth wrong",e);
+			return;
+		}
 		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
 		response.getWriter().print(JsonUtils.toString(responseDTO));
 		

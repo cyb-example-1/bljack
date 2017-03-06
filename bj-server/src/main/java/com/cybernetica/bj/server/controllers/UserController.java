@@ -12,12 +12,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cybernetica.bj.common.dto.user.BalanceChangeDTO;
-import com.cybernetica.bj.common.dto.user.GameDTO;
 import com.cybernetica.bj.common.dto.user.UserDTO;
 import com.cybernetica.bj.common.dto.user.UserResponseDTO;
-import com.cybernetica.bj.server.exceptions.ControllerException;
 import com.cybernetica.bj.server.exceptions.ServiceException;
-import com.cybernetica.bj.server.models.Game;
 import com.cybernetica.bj.server.models.User;
 import com.cybernetica.bj.server.security.SecurityUtils;
 import com.cybernetica.bj.server.services.UserService;
@@ -39,33 +36,29 @@ public class UserController extends BaseController {
 
 	@RequestMapping(value = "/get", produces = "application/json")
 	@ResponseBody
-	public UserResponseDTO get() {
+	public UserResponseDTO get() throws ServiceException {
 		logger.trace("User read");
 		String name = SecurityUtils.getLoggedUserName();
+		return get(name);
+	}
+	
+	public UserResponseDTO get(String username) throws ServiceException {
 		User user;
-		try {
-			user = userService.findByUsername(name);
-		} catch (ServiceException e) {
-			throw new ControllerException(e);
-		}
+		user = userService.loadByUsername(username);
 
 		UserResponseDTO ret = new UserResponseDTO();
 		ret.setUser(map(user));
 		return ret;
-	}
+	}	
 
 	@RequestMapping(value = "/balance", produces = "application/json", consumes = "application/json")
 	@ResponseBody
-	public UserResponseDTO balance(@RequestBody BalanceChangeDTO dto) {
+	public UserResponseDTO balance(@RequestBody BalanceChangeDTO dto) throws ServiceException {
 		logger.trace("User balance change {}", dto);
 		String name = SecurityUtils.getLoggedUserName();
 
 		User user;
-		try {
-			user = userService.updateBalance(name, dto.getBalanceChange());
-		} catch (ServiceException e) {
-			throw new ControllerException(e);
-		}
+		user = userService.updateBalance(name, dto.getBalanceChange());
 
 		UserResponseDTO ret = new UserResponseDTO();
 		ret.setUser(map(user));
@@ -82,13 +75,7 @@ public class UserController extends BaseController {
 		else
 			dto.setBalance(user.getBalance());
 		if (user.getGame() != null)
-			dto.setGame(map(user.getGame()));
+			dto.setGame(GameController.map(user.getGame()));
 		return dto;
-	}
-
-	private GameDTO map(Game game) {
-		GameDTO ret = new GameDTO();
-		ret.setId(game.getId());
-		return ret;
 	}
 }

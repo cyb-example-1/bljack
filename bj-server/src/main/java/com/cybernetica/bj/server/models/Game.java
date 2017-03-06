@@ -1,6 +1,7 @@
 package com.cybernetica.bj.server.models;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -23,6 +24,15 @@ public class Game  implements Serializable{
 	@GeneratedValue(generator="seq_games")
 	@Column(name="ID")
 	private Long id;
+
+	
+	@Column(name="CURRENT_BET")
+	private BigDecimal currentBet;
+	/**
+	 * Is betting finished
+	 */
+	@Column(name="BET_DONE")
+	private boolean betDone;	
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "game")
 	private Set<User> players;
@@ -42,6 +52,22 @@ public class Game  implements Serializable{
 
 	public void setPlayers(Set<User> players) {
 		this.players = players;
+	}
+
+	public BigDecimal getCurrentBet() {
+		return currentBet;
+	}
+
+	public void setCurrentBet(BigDecimal currentBet) {
+		this.currentBet = currentBet;
+	}
+
+	public boolean isBetDone() {
+		return betDone;
+	}
+
+	public void setBetDone(boolean betDone) {
+		this.betDone = betDone;
 	}
 	
 }

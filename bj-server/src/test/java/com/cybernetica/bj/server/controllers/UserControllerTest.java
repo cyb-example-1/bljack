@@ -31,9 +31,7 @@ public class UserControllerTest  extends BaseControllerTest{
 	public void testUserGet() throws Exception {
 		ResponseEntity<LoginResponseDTO> ret = login("test","test");
 		String sessionId=ret.getHeaders().getFirst("X-Auth-Token");
-		ResultActions result = mockMvc
-		.perform(get("/user/get")
-				.contentType(MediaType.APPLICATION_JSON_UTF8).accept(MediaType.APPLICATION_JSON_UTF8).	header("X-Auth-Token", sessionId));
+		ResultActions result = get("/user/get", sessionId);
 		result.andExpect(status().isOk()).andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
 		
 		UserResponseDTO dto = JsonUtils.fromString(result.andReturn().getResponse().getContentAsString(),UserResponseDTO.class);
@@ -47,9 +45,7 @@ public class UserControllerTest  extends BaseControllerTest{
 		String sessionId=ret.getHeaders().getFirst("X-Auth-Token");
 		BalanceChangeDTO request=new BalanceChangeDTO();
 		request.setBalanceChange( new BigDecimal(100));
-		ResultActions result = mockMvc
-		.perform(post("/user/balance").content(JsonUtils.toString(request))
-				.contentType(MediaType.APPLICATION_JSON_UTF8).accept(MediaType.APPLICATION_JSON_UTF8).	header("X-Auth-Token", sessionId));
+		ResultActions result =post("/user/balance",request, sessionId);
 		result.andExpect(status().isOk()).andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
 		
 		UserResponseDTO dto = JsonUtils.fromString(result.andReturn().getResponse().getContentAsString(),UserResponseDTO.class);

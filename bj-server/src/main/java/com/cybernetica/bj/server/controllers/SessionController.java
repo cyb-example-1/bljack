@@ -10,11 +10,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cybernetica.bj.common.dto.RestResponseDTO;
 import com.cybernetica.bj.common.dto.LogoutRequestDTO;
+import com.cybernetica.bj.common.dto.RestResponseDTO;
 import com.cybernetica.bj.common.dto.login.LoginRequestDTO;
 import com.cybernetica.bj.common.dto.login.LoginResponseDTO;
-import com.cybernetica.bj.server.exceptions.ControllerException;
 import com.cybernetica.bj.server.exceptions.ServiceException;
 import com.cybernetica.bj.server.services.SessionService;
 
@@ -49,13 +48,10 @@ public class SessionController extends BaseController {
 
 	@RequestMapping(value="/logout",produces = "application/json", consumes="application/json",method=RequestMethod.POST)
 	@ResponseBody
-	public RestResponseDTO logout(@RequestBody LogoutRequestDTO dto) throws ControllerException {
+	public RestResponseDTO logout(@RequestBody LogoutRequestDTO dto) throws ServiceException {
 		logger.trace("loggout action for  {]",dto);
-		try {
-			sessionService.deleteAllSessions(dto.getUsername(),dto.getSessionId());
-		} catch (ServiceException e) {
-			throw new ControllerException(e);
-		}
+		sessionService.deleteAllSessions(dto.getUsername(),dto.getSessionId());
+
 		SecurityContextHolder.clearContext();
 		return new RestResponseDTO();
 	}

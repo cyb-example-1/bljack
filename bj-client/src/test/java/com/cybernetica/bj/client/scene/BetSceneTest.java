@@ -23,10 +23,12 @@ import com.cybernetica.bj.common.dto.login.LoginResponseDTO;
 import com.cybernetica.bj.common.dto.user.GameDTO;
 import com.cybernetica.bj.common.dto.user.UserDTO;
 import com.cybernetica.bj.common.dto.user.UserResponseDTO;
+import com.cybernetica.bj.common.enums.GameStatus;
 
 import javafx.stage.Stage;
 
 public class BetSceneTest  extends BaseSceneTest{
+	
 
 	@Override
 	protected void initScene(Stage stage) throws Exception {
@@ -35,14 +37,13 @@ public class BetSceneTest  extends BaseSceneTest{
 		userResponseDTO.getUser().setBalance(new BigDecimal(100));
 		GameDTO game=new GameDTO();
 		game.setId(1L);
-		game.setBetDone(false);
+		game.setStatus(GameStatus.BETTING);
 		userResponseDTO.getUser().setGame(game);
 
 		GameCoordinator.get().getEventDispatcher().onEvent(new UserDataEvent(userResponseDTO));
 		when(restService.get(eq("/user/get"),anyObject())).thenReturn(userResponseDTO);
 		
 		GameCoordinator.get().getEventDispatcher().onEvent(new LoginEvent(new  LoginResponseDTO()));
-		Manager.switchTo(BetSceneController.class);	
 	}
 	
     @Test
@@ -69,7 +70,7 @@ public class BetSceneTest  extends BaseSceneTest{
     	GameResponseDTO resultDto = new GameResponseDTO();
     	GameDTO game=new GameDTO();
 		game.setId(1L);
-		game.setBetDone(false);
+		game.setStatus(GameStatus.BETTING);
 		game.setCurrentBet(prevBet.add(new BigDecimal(10)));
 		
     	resultDto.setObject(game);
@@ -83,30 +84,29 @@ public class BetSceneTest  extends BaseSceneTest{
     	assertEquals(prevBet.add(new BigDecimal(10)), GameSession.get().getUser().getGame().getCurrentBet());
     }    
     
-//    @Test
-//    public void testStartPlay() throws ClientException {
-//    	testAddBalance();   	
-//    	
-//    	GameDTO game= new GameDTO();
-//    	game.setId(1L);
-//    	
-//    	UserResponseDTO resultDto = new UserResponseDTO();
-//    	UserDTO user= new UserDTO();
-//    	resultDto.setUser(user);
-//    	user.setBalance(new BigDecimal(100));
-//		user.setGame(game);
-//		
-//		GameResponseDTO gameResponseDTO = new GameResponseDTO(game);
-//
-//		when(restService.get(eq("/user/get"),anyObject())).thenReturn(resultDto);    	
-//    	when(restService.get(eq("/game/start"),anyObject())).thenReturn(gameResponseDTO);
-//    	
-//    	
-//    	
-//        // given:
-//    	clickOn("#btnPlay");
-//    	
-//    	assertEquals(BetSceneController.class, Manager.current().getClass());
-//    }    
+    @Test
+    public void testStartPlay() throws ClientException {
+    	testAddBet();   	
+    	
+    	GameDTO game= new GameDTO();
+    	game.setId(1L);
+    	game.setStatus(GameStatus.BET_DONE);
+    	game.setCurrentBet(new BigDecimal(10));
+    	
+    	UserDTO user= new UserDTO();
+    	user.setBalance(new BigDecimal(90));
+		user.setGame(game);
+		
+		UserResponseDTO userResponseDTO = new UserResponseDTO();
+		userResponseDTO.setUser(user);	
+
+		when(restService.get(eq("/user/get"),anyObject())).thenReturn(userResponseDTO);
+    	when(restService.get(eq("/game/begin/1"),anyObject())).thenReturn(userResponseDTO);
+    	
+        // given:
+    	clickOn("#btnPlay");
+    	
+    	assertEquals(BlackjackSceneController.class, Manager.current().getClass());
+    }    
 
 }

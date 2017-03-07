@@ -14,6 +14,7 @@ import com.cybernetica.bj.client.services.GameService;
 import com.cybernetica.bj.common.dto.RestResponseDTO;
 import com.cybernetica.bj.common.dto.game.GameBetChangeDTO;
 import com.cybernetica.bj.common.dto.game.GameResponseDTO;
+import com.cybernetica.bj.common.dto.user.UserResponseDTO;
 
 /**
  * Game services
@@ -28,7 +29,7 @@ public class GameServiceImpl extends BaseRestServiceImpl  implements GameService
 	 */
 	@Override
 	public GameResponseDTO gameStart() throws ClientException {
-		logger.debug("Starting game for user: {}",GameSession.get().getUser().getId());
+		logger.debug("Starting game for user: #{}",GameSession.get().getUser().getId());
 		GameResponseDTO resp = getRestService().get("/game/start", GameResponseDTO.class);
 		validate(resp);
 		
@@ -44,7 +45,7 @@ public class GameServiceImpl extends BaseRestServiceImpl  implements GameService
 	 */
 	@Override
 	public RestResponseDTO cancelBet(Long gameId) throws ClientException {
-		logger.debug("Canceling game {} for user: ",gameId,GameSession.get().getUser().getId());
+		logger.debug("Canceling game #{} for user: #{}",gameId,GameSession.get().getUser().getId());
 		RestResponseDTO resp = getRestService().get("/game/cancel/"+gameId, RestResponseDTO.class);
 		validate(resp);
 		
@@ -55,9 +56,12 @@ public class GameServiceImpl extends BaseRestServiceImpl  implements GameService
 		return resp;		
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public GameResponseDTO betGame(Long gameId, BigDecimal bigDecimal) throws ClientException {
-		logger.debug("Betting game {} for user: ",gameId,GameSession.get().getUser().getId());
+		logger.debug("Betting game #{} for user: #{} ",gameId,GameSession.get().getUser().getId());
 		GameBetChangeDTO requestDTO = new GameBetChangeDTO();
 		requestDTO.setGameId(gameId);
 		requestDTO.setBet(bigDecimal);
@@ -69,6 +73,20 @@ public class GameServiceImpl extends BaseRestServiceImpl  implements GameService
 		UserDataEvent data =  new UserDataEvent(GameSession.get().getUser());
 		
 		EventProducer.publishEvent(data);
+		return resp;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public UserResponseDTO beginGame(Long gameId) throws ClientException {
+		logger.debug("Playin game #{} for user: #{}",gameId,GameSession.get().getUser().getId());
+		
+		UserResponseDTO resp = getRestService().get("/game/begin/"+gameId, UserResponseDTO.class);
+		validate(resp);
+		
+		EventProducer.publishEvent(new UserDataEvent(resp.getUser()));
 		return resp;
 	}
 

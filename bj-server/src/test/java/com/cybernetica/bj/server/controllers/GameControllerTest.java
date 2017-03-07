@@ -21,6 +21,7 @@ import com.cybernetica.bj.common.dto.game.GameBetChangeDTO;
 import com.cybernetica.bj.common.dto.game.GameResponseDTO;
 import com.cybernetica.bj.common.dto.login.LoginResponseDTO;
 import com.cybernetica.bj.common.dto.user.UserResponseDTO;
+import com.cybernetica.bj.common.enums.GameStatus;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -162,7 +163,7 @@ public class GameControllerTest extends BaseControllerTest {
 		
 		userData = getUserData("test");
 		
-		assertEquals(userData.getUser().getGame().isBetDone(),true);
+		assertEquals(userData.getUser().getGame().getStatus(),GameStatus.BET_DONE);
 		return result;
 	}
 	

@@ -14,6 +14,7 @@ import com.cybernetica.bj.client.scene.WelcomeSceneController;
 import com.cybernetica.bj.client.services.UserService;
 import com.cybernetica.bj.client.utils.Manager;
 import com.cybernetica.bj.common.dto.user.UserDTO;
+import com.cybernetica.bj.common.enums.GameStatus;
 
 /**
  * Dispatches game events
@@ -30,11 +31,10 @@ public class GameEventDispatcher extends GameEventAdapter {
 		UserDTO user = event.getResponse().getUser();
 		GameSession.get().setUser(user);
 		if(user.getGame()!=null) {
-			if(user.getGame().isBetDone())
+			if(user.getGame().getStatus()!=GameStatus.BETTING)
 				Manager.switchTo(BlackjackSceneController.class);
 			else
 				Manager.switchTo(BetSceneController.class);	
-			//TODO check game presence	
 		}
 		else
 			Manager.switchTo(WelcomeSceneController.class);

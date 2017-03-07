@@ -11,7 +11,6 @@ import com.cybernetica.bj.client.exceptions.ClientException;
 import com.cybernetica.bj.client.game.GameSession;
 import com.cybernetica.bj.client.interfaces.IDataListener;
 import com.cybernetica.bj.client.services.GameService;
-import com.cybernetica.bj.client.services.UserService;
 import com.cybernetica.bj.client.utils.Properties;
 import com.cybernetica.bj.common.dto.user.GameDTO;
 import com.cybernetica.bj.common.dto.user.UserDTO;
@@ -21,6 +20,11 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
+/**
+ * Bet scene controller
+ * @author dmitri
+ *
+ */
 public class BetSceneController extends BaseSceneController<BetSceneController> implements IDataListener {
 	private static final Logger logger = LoggerFactory.getLogger(WelcomeSceneController.class);
 	
@@ -73,6 +77,21 @@ public class BetSceneController extends BaseSceneController<BetSceneController> 
 				}
             }
         });		
+		
+		
+		btnPlay.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent e) {
+            	logger.trace("form.bet-play.click");
+            	try {
+					GameService.get().beginGame(GameSession.get().getUser().getGame().getId());
+				} catch (ClientException e1) {
+					logger.debug(e1.getMessage());
+					setElementText(textLabel,e1.getMessage());
+				}
+            }
+        });
 		
 		EventProducer.addUserDataListener(this);
 	}

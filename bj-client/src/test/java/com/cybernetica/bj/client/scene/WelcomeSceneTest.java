@@ -22,6 +22,7 @@ import com.cybernetica.bj.common.dto.login.LoginResponseDTO;
 import com.cybernetica.bj.common.dto.user.GameDTO;
 import com.cybernetica.bj.common.dto.user.UserDTO;
 import com.cybernetica.bj.common.dto.user.UserResponseDTO;
+import com.cybernetica.bj.common.enums.GameStatus;
 
 import javafx.stage.Stage;
 
@@ -36,7 +37,6 @@ public class WelcomeSceneTest  extends BaseSceneTest{
 		when(restService.get(eq("/user/get"),anyObject())).thenReturn(userDTO);
 		
 		GameCoordinator.get().getEventDispatcher().onEvent(new LoginEvent(new  LoginResponseDTO()));
-		Manager.switchTo(WelcomeSceneController.class);	
 	}
 	
     @Test
@@ -78,6 +78,7 @@ public class WelcomeSceneTest  extends BaseSceneTest{
     	
     	GameDTO game= new GameDTO();
     	game.setId(1L);
+    	game.setStatus(GameStatus.BETTING);
     	
     	UserResponseDTO resultDto = new UserResponseDTO();
     	UserDTO user= new UserDTO();

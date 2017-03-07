@@ -32,11 +32,6 @@ public class Game  implements Serializable{
 	
 	@Column(name="CURRENT_BET")
 	private BigDecimal currentBet;
-	/**
-	 * Is betting finished
-	 */
-	@Column(name="BET_DONE")
-	private boolean betDone;	
 	
 	@Column(name="USER_CARDS")
 	private Long userCards;
@@ -47,9 +42,14 @@ public class Game  implements Serializable{
 	@Column(name="DEALER_CLOSED")
 	private Long dealerCardClosed;
 	
-	
-	@Column(name="FINISHED")
-	private boolean finished;
+
+	/**
+	 * 1 - betting in progress
+	 * 2 - user has finished
+	 * 3 - game over
+	 */
+	@Column(name="STATUS")
+	private int status;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "game")
 	private Set<User> players;
@@ -79,13 +79,7 @@ public class Game  implements Serializable{
 		this.currentBet = currentBet;
 	}
 
-	public boolean isBetDone() {
-		return betDone;
-	}
 
-	public void setBetDone(boolean betDone) {
-		this.betDone = betDone;
-	}
 
 	public Long getUserCards() {
 		return userCards;
@@ -111,25 +105,26 @@ public class Game  implements Serializable{
 		this.dealerCardClosed = dealerCardClosed;
 	}
 
-	public boolean isFinished() {
-		return finished;
+
+
+	public int getStatus() {
+		return status;
 	}
 
-	public void setFinished(boolean finished) {
-		this.finished = finished;
+	public void setStatus(int status) {
+		this.status = status;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + (betDone ? 1231 : 1237);
 		result = prime * result + ((currentBet == null) ? 0 : currentBet.hashCode());
 		result = prime * result + ((dealerCardClosed == null) ? 0 : dealerCardClosed.hashCode());
 		result = prime * result + ((dealerCardOpened == null) ? 0 : dealerCardOpened.hashCode());
-		result = prime * result + (finished ? 1231 : 1237);
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((players == null) ? 0 : players.hashCode());
+		result = prime * result + status;
 		result = prime * result + ((userCards == null) ? 0 : userCards.hashCode());
 		return result;
 	}
@@ -143,8 +138,6 @@ public class Game  implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		Game other = (Game) obj;
-		if (betDone != other.betDone)
-			return false;
 		if (currentBet == null) {
 			if (other.currentBet != null)
 				return false;
@@ -160,8 +153,6 @@ public class Game  implements Serializable{
 				return false;
 		} else if (!dealerCardOpened.equals(other.dealerCardOpened))
 			return false;
-		if (finished != other.finished)
-			return false;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -171,6 +162,8 @@ public class Game  implements Serializable{
 			if (other.players != null)
 				return false;
 		} else if (!players.equals(other.players))
+			return false;
+		if (status != other.status)
 			return false;
 		if (userCards == null) {
 			if (other.userCards != null)
@@ -182,10 +175,12 @@ public class Game  implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Game [id=" + id + ", currentBet=" + currentBet + ", betDone=" + betDone + ", userCards=" + userCards
-				+ ", dealerCardOpened=" + dealerCardOpened + ", dealerCardClosed=" + dealerCardClosed + ", finished="
-				+ finished + ", players=" + players + "]";
+		return "Game [id=" + id + ", currentBet=" + currentBet + ", userCards=" + userCards + ", dealerCardOpened="
+				+ dealerCardOpened + ", dealerCardClosed=" + dealerCardClosed + ", status=" + status + ", players="
+				+ players + "]";
 	}
+
+	
 
 		
 	

@@ -14,6 +14,7 @@ import com.cybernetica.bj.common.dto.game.GameBetChangeDTO;
 import com.cybernetica.bj.common.dto.game.GameResponseDTO;
 import com.cybernetica.bj.common.dto.user.GameDTO;
 import com.cybernetica.bj.common.dto.user.UserResponseDTO;
+import com.cybernetica.bj.common.enums.GameStatus;
 import com.cybernetica.bj.server.exceptions.ServiceException;
 import com.cybernetica.bj.server.models.Game;
 import com.cybernetica.bj.server.models.User;
@@ -73,7 +74,7 @@ public class GameController extends BaseController {
 	
 	static GameDTO map(Game game) {
 		GameDTO ret=new GameDTO();
-		ret.setBetDone(game.isBetDone());
+		ret.setStatus(GameStatus.valueOf(game.getStatus()));
 		ret.setCurrentBet(game.getCurrentBet());
 		ret.setId(game.getId());
 		return ret;

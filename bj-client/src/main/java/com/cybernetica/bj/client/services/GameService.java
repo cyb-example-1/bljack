@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import com.cybernetica.bj.client.exceptions.ClientException;
 import com.cybernetica.bj.common.dto.RestResponseDTO;
 import com.cybernetica.bj.common.dto.game.GameResponseDTO;
+import com.cybernetica.bj.common.dto.user.UserResponseDTO;
 import com.cybernetica.bj.common.interfaces.Singleton;
 
 public interface GameService extends Singleton<UserService>{
@@ -38,6 +39,14 @@ public interface GameService extends Singleton<UserService>{
 	 * @throws ClientException
 	 */
 	public GameResponseDTO betGame(Long gameId,BigDecimal bigDecimal) throws ClientException;
+
+	/**
+	 * Begins game
+	 * @param id
+	 * @return
+	 * @throws ClientException
+	 */
+	public UserResponseDTO beginGame(Long id) throws ClientException;
 
 }
 	

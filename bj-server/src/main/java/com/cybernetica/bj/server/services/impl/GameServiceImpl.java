@@ -37,7 +37,7 @@ public class GameServiceImpl extends BaseServiceImpl implements GameService {
 		}
 		
 		Game game =  new Game();
-		game.setBetDone(false);
+		game.setStatus(1);
 		game.setCurrentBet(BigDecimal.ZERO);
 		try {
 			gameDao.persist(game);
@@ -135,7 +135,7 @@ public class GameServiceImpl extends BaseServiceImpl implements GameService {
 		
 		user.setBalance(user.getBalance().subtract(game.getCurrentBet()));
 		
-		game.setBetDone(true);
+		game.setStatus(2);
 		game.setUserCards(userBitSet);
 		game.setDealerCardClosed(dealerHidden);
 		game.setDealerCardOpened(dealerSeen);

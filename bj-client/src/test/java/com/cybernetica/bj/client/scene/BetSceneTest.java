@@ -10,7 +10,6 @@ import java.math.BigDecimal;
 
 import org.junit.Test;
 
-import com.cybernetica.bj.client.events.LoginEvent;
 import com.cybernetica.bj.client.events.UserDataEvent;
 import com.cybernetica.bj.client.exceptions.ClientException;
 import com.cybernetica.bj.client.game.GameCoordinator;
@@ -19,7 +18,6 @@ import com.cybernetica.bj.client.test.BaseSceneTest;
 import com.cybernetica.bj.client.utils.Manager;
 import com.cybernetica.bj.common.dto.RestResponseDTO;
 import com.cybernetica.bj.common.dto.game.GameResponseDTO;
-import com.cybernetica.bj.common.dto.login.LoginResponseDTO;
 import com.cybernetica.bj.common.dto.user.GameDTO;
 import com.cybernetica.bj.common.dto.user.UserDTO;
 import com.cybernetica.bj.common.dto.user.UserResponseDTO;

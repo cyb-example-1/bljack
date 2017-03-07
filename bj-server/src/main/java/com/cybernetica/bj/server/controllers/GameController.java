@@ -71,12 +71,37 @@ public class GameController extends BaseController {
 		return new UserResponseDTO(UserController.map(user));
 	}
 	
+	@RequestMapping(value="/quit/{id}",produces = "application/json")
+	@ResponseBody
+	public UserResponseDTO gameQuit(@PathVariable(name="id") Long id) throws ServiceException {
+		Long userId = getLoggedUserId();
+		logger.trace("Game #{} quit for User #{}",id,userId);
+		User user = gameService.quitGame(userId,id);
+		return new UserResponseDTO(UserController.map(user));
+	}	
+	
+	
+	@RequestMapping(value="/take/{id}",produces = "application/json")
+	@ResponseBody
+	public UserResponseDTO takeCard(@PathVariable(name="id") Long id) throws ServiceException {
+		Long userId = getLoggedUserId();
+		logger.trace("Game #{} for User #{} take card",id,userId);
+		User user = gameService.takeCard(userId,id);
+		return new UserResponseDTO(UserController.map(user));
+	}	
+	
 	
 	static GameDTO map(Game game) {
 		GameDTO ret=new GameDTO();
 		ret.setStatus(GameStatus.valueOf(game.getStatus()));
 		ret.setCurrentBet(game.getCurrentBet());
 		ret.setId(game.getId());
+		ret.setUserCards(game.getUserCards());
+		if(game.getStatus()==GameStatus.GAME_OVER.getValue())//show all dealer cards
+			ret.setDealerCards(game.getDealerCardOpened()|game.getDealerCardClosed());
+		else
+			ret.setDealerCards(game.getDealerCardOpened());
+		ret.setWinType(game.getWinType());
 		return ret;
 	}
 

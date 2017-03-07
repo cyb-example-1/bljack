@@ -1,17 +1,25 @@
 package com.cybernetica.bj.client.scene;
 
 import java.math.BigDecimal;
-import java.util.BitSet;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.cybernetica.bj.client.context.EventProducer;
 import com.cybernetica.bj.client.events.UserDataEvent;
+import com.cybernetica.bj.client.exceptions.ClientException;
 import com.cybernetica.bj.client.game.GameSession;
+import com.cybernetica.bj.client.interfaces.IDataListener;
+import com.cybernetica.bj.client.services.GameService;
 import com.cybernetica.bj.common.CardSetUtils;
+import com.cybernetica.bj.common.dto.CardDTO;
 import com.cybernetica.bj.common.dto.user.GameDTO;
 import com.cybernetica.bj.common.dto.user.UserDTO;
+import com.cybernetica.bj.common.enums.GameStatus;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -19,60 +27,61 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
-public class BlackjackSceneController extends BaseSceneController<BlackjackSceneController> {
+public class BlackjackSceneController extends BaseSceneController<BlackjackSceneController> implements IDataListener {
 	private static final Logger logger = LoggerFactory.getLogger(WelcomeSceneController.class);
 
 	private BigDecimal betStep;
 
 	private Label textLabel;
-	private Button btnPlay;
-	private Button btnBet;
+	private Label lblWinText;
+	private Button btnDone;
+	private Button btnClose;
+	private Button btnTake;
 	private Button btnCancel;
 
 	@Override
 	protected void postBuild() {
 
-		// betStep=Properties.getBigDecimal("app.game.bet.amount");
-		//
-		// textLabel = (Label) getElementById("msgText");
-		//
-		// btnPlay = (Button) getElementById("btnPlay");
-		// btnBet = (Button) getElementById("btnBet");
-		// btnCancel = (Button) getElementById("btnCancel");
-		//
-		//
-		//
-		// btnCancel.setOnAction(new EventHandler<ActionEvent>() {
-		//
-		// @Override
-		// public void handle(ActionEvent e) {
-		// logger.trace("form.bet-cancel.click");
-		// Long gameId = GameSession.get().getUser().getGame().getId();
-		// try {
-		// GameService.get().cancelBet(gameId);
-		// } catch (ClientException e1) {
-		// logger.debug(e1.getMessage());
-		// setElementText(textLabel,e1.getMessage());
-		// }
-		// }
-		// });
-		//
-		// btnBet.setOnAction(new EventHandler<ActionEvent>() {
-		//
-		// @Override
-		// public void handle(ActionEvent e) {
-		// logger.trace("form.bet.click");
-		// try {
-		// GameService.get().betGame(GameSession.get().getUser().getGame().getId(),new
-		// BigDecimal(5));
-		// } catch (ClientException e1) {
-		// logger.debug(e1.getMessage());
-		// setElementText(textLabel,e1.getMessage());
-		// }
-		// }
-		// });
-		//
-		//
+		textLabel = (Label) getElementById("msgText");
+		lblWinText = (Label) getElementById("lblWinText");
+
+		btnDone = (Button) getElementById("btnDone");
+		btnClose = (Button) getElementById("btnClose");
+		btnTake = (Button) getElementById("btnTake");
+		btnCancel = (Button) getElementById("btnCancel");
+		
+		EventHandler<ActionEvent> quitAction=new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent e) {
+				logger.trace("form.game-quit.click");
+				Long gameId = GameSession.get().getUser().getGame().getId();
+				try {
+					GameService.get().quitGame(gameId);
+				} catch (ClientException e1) {
+					logger.debug(e1.getMessage());
+					setElementText(textLabel, e1.getMessage());
+				}
+			}
+		};
+
+		btnCancel.setOnAction(quitAction);
+		btnClose.setOnAction(quitAction);
+
+		btnTake.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent e) {
+				logger.trace("form.take.click");
+				try {
+					GameService.get().takeCard(GameSession.get().getUser().getGame().getId());
+				} catch (ClientException e1) {
+					logger.debug(e1.getMessage());
+					setElementText(textLabel, e1.getMessage());
+				}
+			}
+		});
+
 		// btnPlay.setOnAction(new EventHandler<ActionEvent>() {
 		//
 		// @Override
@@ -87,7 +96,7 @@ public class BlackjackSceneController extends BaseSceneController<BlackjackScene
 		// }
 		// });
 		//
-		// EventProducer.addUserDataListener(this);
+		EventProducer.addUserDataListener(this);
 	}
 
 	public void onUserData(UserDataEvent event) {
@@ -98,17 +107,46 @@ public class BlackjackSceneController extends BaseSceneController<BlackjackScene
 		if (game == null)
 			return;
 
-		// BigDecimal balance = userDTO.getBalance();
-		// if(balance==null)
-		// balance = BigDecimal.ZERO;
-		// BigDecimal currentBet = game.getCurrentBet();
-		// if(currentBet==null)
-		// currentBet = BigDecimal.ZERO;
-		//
-		// setElementTextById("username",userDTO.getUsername());
-		// setElementTextById("balance",""+balance+"$");
-		// setElementTextById("lblCurrentBet",""+currentBet+"$");
-		//
+		BigDecimal balance = userDTO.getBalance();
+		if (balance == null)
+			balance = BigDecimal.ZERO;
+		BigDecimal currentBet = game.getCurrentBet();
+		if (currentBet == null)
+			currentBet = BigDecimal.ZERO;
+
+		setElementTextById("username", userDTO.getUsername());
+		setElementTextById("balance", "" + balance + "$");
+		setElementTextById("lblCurrentBet", "" + currentBet + "$");
+		//setElementText(lblWinText,"");
+
+		if (game.getStatus() == GameStatus.BETTING)
+			return;
+		
+		if(game.getStatus()==GameStatus.GAME_OVER) {
+			btnTake.setVisible(false);
+			btnCancel.setVisible(false);
+			btnDone.setVisible(false);
+			btnClose.setVisible(true);
+			
+			switch(game.getWinType()) {
+			case 2:
+				setElementText(lblWinText,"Draw");
+				break;
+			case 1:
+				setElementText(lblWinText,"You lose");
+				break;
+			case 0:
+				setElementText(lblWinText,"! WINNER !");
+				break;							
+			}
+		} else {
+			btnClose.setVisible(false);
+			
+			btnTake.setVisible(true);
+			btnCancel.setVisible(true);
+			btnDone.setVisible(true);
+		}
+
 		// if(currentBet.add(betStep).compareTo(balance)>0)
 		// btnBet.setVisible(false);
 		// else
@@ -145,18 +183,13 @@ public class BlackjackSceneController extends BaseSceneController<BlackjackScene
 	}
 
 	private void drawCardSet(String personPrefix, Long cards, Image imgSprite) {
-		BitSet bitset = CardSetUtils.toBitset(cards);
-
-		int cardPos=0;
-		for (int i = 0; i < 52; i++) {
-			if(bitset.get(i)) {
-				int row = i/14;
-				int col = i-row*14;
-
-				drawCard(personPrefix,row,col,cardPos,imgSprite);
-				cardPos++;
-			}
-
+		if (cards == null)
+			System.out.println("");
+		List<CardDTO> list = CardSetUtils.toList(cards);
+		int cardPos = 0;
+		for (CardDTO card : list) {
+			drawCard(personPrefix, card.getSuit().getValue(), card.getRank().getValue(), cardPos, imgSprite);
+			cardPos++;
 		}
 	}
 

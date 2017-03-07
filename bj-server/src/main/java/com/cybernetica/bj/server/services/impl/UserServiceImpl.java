@@ -71,6 +71,9 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public User loadByUsername(String username) throws ServiceException {
 		User user = findByUsername(username);

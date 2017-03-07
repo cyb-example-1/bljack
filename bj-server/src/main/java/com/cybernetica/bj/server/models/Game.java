@@ -42,6 +42,13 @@ public class Game  implements Serializable{
 	@Column(name="DEALER_CLOSED")
 	private Long dealerCardClosed;
 	
+	/**
+	 * 0 - User
+	 * 1 - Dealer
+	 * 2 - draw 
+	 */
+	private Integer winType;
+	
 
 	/**
 	 * 1 - betting in progress
@@ -115,6 +122,14 @@ public class Game  implements Serializable{
 		this.status = status;
 	}
 
+	public Integer getWinType() {
+		return winType;
+	}
+
+	public void setWinType(Integer winType) {
+		this.winType = winType;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -126,6 +141,7 @@ public class Game  implements Serializable{
 		result = prime * result + ((players == null) ? 0 : players.hashCode());
 		result = prime * result + status;
 		result = prime * result + ((userCards == null) ? 0 : userCards.hashCode());
+		result = prime * result + ((winType == null) ? 0 : winType.hashCode());
 		return result;
 	}
 
@@ -170,15 +186,22 @@ public class Game  implements Serializable{
 				return false;
 		} else if (!userCards.equals(other.userCards))
 			return false;
+		if (winType == null) {
+			if (other.winType != null)
+				return false;
+		} else if (!winType.equals(other.winType))
+			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
 		return "Game [id=" + id + ", currentBet=" + currentBet + ", userCards=" + userCards + ", dealerCardOpened="
-				+ dealerCardOpened + ", dealerCardClosed=" + dealerCardClosed + ", status=" + status + ", players="
-				+ players + "]";
+				+ dealerCardOpened + ", dealerCardClosed=" + dealerCardClosed + ", winType=" + winType + ", status="
+				+ status + ", players=" + players + "]";
 	}
+
+	
 
 	
 

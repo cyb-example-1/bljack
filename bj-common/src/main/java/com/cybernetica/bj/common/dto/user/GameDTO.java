@@ -30,6 +30,8 @@ public class GameDTO extends BaseDTO {
 	
 	private Long dealerCards;
 	
+	private Integer winType;
+	
 
 	public Long getId() {
 		return id;
@@ -69,6 +71,14 @@ public class GameDTO extends BaseDTO {
 
 	public void setDealerCards(Long dealerCards) {
 		this.dealerCards = dealerCards;
+	}
+
+	public Integer getWinType() {
+		return winType;
+	}
+
+	public void setWinType(Integer winType) {
+		this.winType = winType;
 	}
 
 	@Override

@@ -20,6 +20,9 @@ public class SessionServiceImpl implements SessionService {
 	@Autowired
 	private SessionDao sessionDao;
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public SpringSession findByUsername(String username) throws ServiceException {
 		try {
@@ -29,6 +32,9 @@ public class SessionServiceImpl implements SessionService {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public List<SpringSession> getAllSessions() throws ServiceException {
 		try {
@@ -38,6 +44,9 @@ public class SessionServiceImpl implements SessionService {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public SpringSession findBySession(String sessionId) throws ServiceException {
 
@@ -49,6 +58,9 @@ public class SessionServiceImpl implements SessionService {
 
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void deleteAllSessions(String username, String sessionId) throws ServiceException {
 		try {

@@ -17,6 +17,7 @@ import com.cybernetica.bj.client.game.GameCoordinator;
 import com.cybernetica.bj.client.game.GameSession;
 import com.cybernetica.bj.client.test.BaseSceneTest;
 import com.cybernetica.bj.client.utils.Manager;
+import com.cybernetica.bj.common.CardSetUtils;
 import com.cybernetica.bj.common.dto.RestResponseDTO;
 import com.cybernetica.bj.common.dto.game.GameResponseDTO;
 import com.cybernetica.bj.common.dto.login.LoginResponseDTO;
@@ -52,40 +53,50 @@ public class BlackjackSceneTest  extends BaseSceneTest{
     @Test
     public void testCancel() throws ClientException {
     	assertEquals(BlackjackSceneController.class, Manager.current().getClass());
-    	RestResponseDTO retDTO = new RestResponseDTO();
     	
-    	when(restService.get(eq("/game/cancel/1"),anyObject())).thenReturn(retDTO);
+		UserResponseDTO userResponseDTO = new UserResponseDTO();
+		userResponseDTO.setUser(new UserDTO());
+		userResponseDTO.getUser().setBalance(GameSession.get().getUser().getBalance());
     	
+    	when(restService.get(eq("/game/quit/1"),anyObject())).thenReturn(userResponseDTO);
+    	
+    	BigDecimal balance = GameSession.get().getUser().getBalance();
         // given:
     	clickOn("#btnCancel");
     	
     	assertEquals(WelcomeSceneController.class, Manager.current().getClass());
+    	
+    	assertEquals(balance, GameSession.get().getUser().getBalance());
     }
     
-//    @Test
-//    public void testAddBet() throws ClientException {
-//    	assertEquals(BetSceneController.class, Manager.current().getClass());
-//    	assertNotNull(GameSession.get().getUser().getGame());
-//    	BigDecimal prevBet = GameSession.get().getUser().getGame().getCurrentBet();
-//    	if(prevBet==null)
-//    		prevBet=BigDecimal.ZERO;
-//    	
-//    	GameResponseDTO resultDto = new GameResponseDTO();
-//    	GameDTO game=new GameDTO();
-//		game.setId(1L);
-//		game.setStatus(GameStatus.BETTING);
-//		game.setCurrentBet(prevBet.add(new BigDecimal(10)));
-//		
-//    	resultDto.setObject(game);
-//    	
-//    	when(restService.post(eq("/game/bet"),anyObject(),anyObject())).thenReturn(resultDto);
-//    	
-//        // given:
-//    	clickOn("#btnBet");
-//    	
-//    	assertEquals(BetSceneController.class, Manager.current().getClass());
-//    	assertEquals(prevBet.add(new BigDecimal(10)), GameSession.get().getUser().getGame().getCurrentBet());
-//    }    
+    //ok. no lose
+    @Test
+    public void testTakeCard() throws ClientException {
+    	assertEquals(BlackjackSceneController.class, Manager.current().getClass());
+    	assertNotNull(GameSession.get().getUser().getGame());
+    	GameDTO game1 = GameSession.get().getUser().getGame();
+    	
+
+    	UserResponseDTO userResponseDTO = new UserResponseDTO(new UserDTO());
+    	GameDTO game=new GameDTO();
+		game.setId(1L);
+		game.setStatus(GameStatus.BET_DONE);
+		game.setCurrentBet(new BigDecimal(10));
+		game.setUserCards(0x7L);
+		game.setDealerCards(0x1L);
+		
+		userResponseDTO.getUser().setGame(game);
+    	
+    	when(restService.get(eq("/game/take/1"),anyObject())).thenReturn(userResponseDTO);
+    	
+        // given:
+    	clickOn("#btnTake");
+    	
+    	assertEquals(BlackjackSceneController.class, Manager.current().getClass());
+    	
+    	GameDTO game2 = GameSession.get().getUser().getGame();
+    	assertEquals(CardSetUtils.toBitset(game1.getUserCards()).cardinality()+1,CardSetUtils.toBitset(game2.getUserCards()).cardinality());
+    }    
 //    
 //    @Test
 //    public void testStartPlay() throws ClientException {

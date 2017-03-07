@@ -1,5 +1,11 @@
 package com.cybernetica.bj.server.controllers;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.math.BigDecimal;
+
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -18,6 +24,7 @@ import com.cybernetica.bj.common.JsonUtils;
 import com.cybernetica.bj.common.dto.BaseDTO;
 import com.cybernetica.bj.common.dto.login.LoginRequestDTO;
 import com.cybernetica.bj.common.dto.login.LoginResponseDTO;
+import com.cybernetica.bj.common.dto.user.BalanceChangeDTO;
 import com.cybernetica.bj.common.dto.user.UserResponseDTO;
 
 public abstract class BaseControllerTest {
@@ -86,5 +93,23 @@ public abstract class BaseControllerTest {
 	protected UserResponseDTO getUserData(String username) throws Exception {
 		UserResponseDTO dto = webApplicationContext.getBean(UserController.class).get(username);
 		return dto;
+	}
+	
+	protected ResultActions updateBalance(String sessionId) throws Exception {
+		
+		UserResponseDTO userData = getUserData("test");
+		
+		BalanceChangeDTO request=new BalanceChangeDTO();
+		request.setBalanceChange( new BigDecimal(100));
+		ResultActions result =post("/user/balance",request, sessionId);		
+
+		result.andExpect(status().isOk());
+		UserResponseDTO responseDTO = getResult(result, UserResponseDTO.class);
+		assertFalse(responseDTO.hasErrors());
+		
+		userData = getUserData("test");
+		assertTrue(userData.getUser().getBalance().compareTo(BigDecimal.ZERO)>0);
+		
+		return result;
 	}
 }

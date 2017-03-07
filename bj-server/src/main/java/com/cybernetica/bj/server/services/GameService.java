@@ -22,7 +22,7 @@ public interface GameService {
 	 * @param gameId
 	 * @throws ServiceException
 	 */
-	void cancelGame(Long userId, Long gameId) throws ServiceException;
+	User cancelGame(Long userId, Long gameId) throws ServiceException;
 
 
 	/**
@@ -42,5 +42,22 @@ public interface GameService {
 	 * @return
 	 */
 	User beginGame(Long userId, Long gameId) throws ServiceException;
+
+	/**
+	 * Quits game. money loss.
+	 * @param userId
+	 * @param id
+	 * @return
+	 * @throws ServiceException
+	 */
+	User quitGame(Long userId, Long gameId) throws ServiceException;
+
+	/**
+	 * Take card
+	 * @param userId
+	 * @param id
+	 * @return
+	 */
+	User takeCard(Long userId, Long gameId) throws ServiceException;
 
 }

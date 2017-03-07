@@ -8,18 +8,20 @@ import com.cybernetica.bj.common.dto.game.GameResponseDTO;
 import com.cybernetica.bj.common.dto.user.UserResponseDTO;
 import com.cybernetica.bj.common.interfaces.Singleton;
 
-public interface GameService extends Singleton<UserService>{
+public interface GameService extends Singleton<UserService> {
 
 	/**
 	 * Singleton initializer
+	 * 
 	 * @return
-	 */	
+	 */
 	public static GameService get() {
 		return Singleton.getSingleton(GameService.class);
 	}
 
 	/**
 	 * Gate start action
+	 * 
 	 * @return
 	 * @throws ClientException
 	 */
@@ -30,23 +32,40 @@ public interface GameService extends Singleton<UserService>{
 	 */
 	public RestResponseDTO cancelBet(Long gameId) throws ClientException;
 
-
 	/**
 	 * Updates bet with provided augment
+	 * 
 	 * @param gameId
 	 * @param bigDecimal
 	 * @return
 	 * @throws ClientException
 	 */
-	public GameResponseDTO betGame(Long gameId,BigDecimal bigDecimal) throws ClientException;
+	public GameResponseDTO betGame(Long gameId, BigDecimal bigDecimal) throws ClientException;
 
 	/**
 	 * Begins game
+	 * 
 	 * @param id
 	 * @return
 	 * @throws ClientException
 	 */
 	public UserResponseDTO beginGame(Long id) throws ClientException;
 
+	/**
+	 * Quits game, losing money
+	 * 
+	 * @param gameId
+	 * @return
+	 * @throws ClientException
+	 */
+	public UserResponseDTO quitGame(Long gameId) throws ClientException;
+
+	/**
+	 * Take card
+	 * @param id
+	 * @return
+	 * @throws ClientException
+	 */
+	public UserResponseDTO takeCard(Long id) throws ClientException;
+
 }
-	

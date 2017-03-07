@@ -68,6 +68,7 @@ public class GameControllerTest extends BaseControllerTest {
 		String sessionId=login();
 		
 		cancelGame(sessionId);
+		updateBalance(sessionId);
 		startGame(sessionId);
 		
 		UserResponseDTO userData = getUserData("test");
@@ -85,6 +86,7 @@ public class GameControllerTest extends BaseControllerTest {
 		String sessionId=login();
 		
 		cancelGame(sessionId);
+		updateBalance(sessionId);
 		startGame(sessionId);
 		betGame(sessionId);
 		
@@ -99,6 +101,47 @@ public class GameControllerTest extends BaseControllerTest {
 	}
 	
 	
+	@Test
+	public void testGameQuit() throws Exception{
+		String sessionId=login();
+		
+		cancelGame(sessionId);
+		updateBalance(sessionId);
+		startGame(sessionId);
+		betGame(sessionId);
+		beginGame(sessionId);
+		
+		UserResponseDTO userData = getUserData("test");
+		quitGame(sessionId);
+		UserResponseDTO userData2 = getUserData("test");
+		assertNull(userData2.getUser().getGame());
+		assertEquals(userData.getUser().getBalance(), userData2.getUser().getBalance());
+	}	
+	
+	
+	@Test
+	public void testTakeCard() throws Exception{
+		String sessionId=login();
+		
+		cancelGame(sessionId);
+		updateBalance(sessionId);
+		startGame(sessionId);
+		betGame(sessionId);
+		beginGame(sessionId);
+		
+		UserResponseDTO userData = getUserData("test");
+		for(int i=0;i<13;i++)
+			takeCard(sessionId);
+		UserResponseDTO userData2 = getUserData("test");
+		assertNotNull(userData2.getUser().getGame());
+		assertEquals(userData.getUser().getBalance(), userData2.getUser().getBalance());
+		assertEquals(GameStatus.GAME_OVER, userData.getUser().getGame().getStatus());
+	}		
+	
+	
+
+
+
 	private String login() throws Exception{
 		ResponseEntity<LoginResponseDTO> ret = login("test","test");
 		String sessionId=ret.getHeaders().getFirst("X-Auth-Token");
@@ -166,5 +209,31 @@ public class GameControllerTest extends BaseControllerTest {
 		assertEquals(userData.getUser().getGame().getStatus(),GameStatus.BET_DONE);
 		return result;
 	}
+	
+	private ResultActions quitGame(String sessionId) throws Exception {
+		UserResponseDTO userData = getUserData("test");
+		Long gameId=userData.getUser().getGame().getId();
+		ResultActions result= get("/game/quit/{id}", sessionId,gameId);
+		
+		result.andExpect(status().isOk());
+		
+		userData = getUserData("test");
+		
+		assertNull(userData.getUser().getGame());
+		return result;
+	}
+	
+	private ResultActions takeCard(String sessionId) throws Exception {
+		UserResponseDTO userData = getUserData("test");
+		Long gameId=userData.getUser().getGame().getId();
+		ResultActions result= get("/game/take/{id}", sessionId,gameId);
+		
+		result.andExpect(status().isOk());
+		
+		userData = getUserData("test");
+		
+		assertNotNull(userData.getUser().getGame());
+		return result;
+	}	
 	
 }

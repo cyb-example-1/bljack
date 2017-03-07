@@ -21,12 +21,12 @@ public enum GameStatus {
 			return null;
 		
 		for(GameStatus gs : GameStatus.values())
-			if(gs.getStatus()==status)
+			if(gs.getValue()==status)
 				return gs;
 		return null;
 	}
 
-	private int getStatus() {
+	public int getValue() {
 		return status;
 	}
 

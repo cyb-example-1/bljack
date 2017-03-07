@@ -1,4 +1,4 @@
-package com.cybernetica.bj.server.utils;
+package com.cybernetica.bj.common;
 
 import java.util.BitSet;
 import java.util.Random;

@@ -3,6 +3,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="401.0" prefWidth="600.0" stylesheets="@blackjack.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
@@ -22,7 +23,7 @@
       <Button id="btnDone" layoutX="15.0" layoutY="267.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="99.0" text="Done" />
       <Button id="btnTake" layoutX="16.0" layoutY="310.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="99.0" stylesheets="@bet.css" text="Take more" />
       <Label layoutX="284.0" layoutY="43.0" prefHeight="17.0" prefWidth="86.0" text="Current bet:" />
-      <Label id="lblCurrentBet" layoutX="369.0" layoutY="43.0" text="Label">
+      <Label id="lblCurrentBet" layoutX="369.0" layoutY="42.0" text="Label">
          <font>
             <Font size="14.0" />
          </font>
@@ -37,5 +38,40 @@
             <Font size="14.0" />
          </font>
       </Label>
+<VBox id="vbUserCard0" layoutX="46.0" layoutY="121.0" prefHeight="120.0" prefWidth="82.0" />
+<VBox id="vbUserCard1" layoutX="106.0" layoutY="121.0" prefHeight="120.0" prefWidth="82.0" />
+<VBox id="vbUserCard2" layoutX="166.0" layoutY="121.0" prefHeight="120.0" prefWidth="82.0" />
+<VBox id="vbUserCard3" layoutX="226.0" layoutY="121.0" prefHeight="120.0" prefWidth="82.0" />
+<VBox id="vbUserCard4" layoutX="286.0" layoutY="121.0" prefHeight="120.0" prefWidth="82.0" />
+<VBox id="vbUserCard5" layoutX="346.0" layoutY="121.0" prefHeight="120.0" prefWidth="82.0" />
+<VBox id="vbUserCard6" layoutX="406.0" layoutY="121.0" prefHeight="120.0" prefWidth="82.0" />
+<VBox id="vbUserCard7" layoutX="466.0" layoutY="121.0" prefHeight="120.0" prefWidth="82.0" />
+<VBox id="vbUserCard8" layoutX="526.0" layoutY="121.0" prefHeight="120.0" prefWidth="82.0" />
+<VBox id="vbUserCard9" layoutX="586.0" layoutY="121.0" prefHeight="120.0" prefWidth="82.0" />
+<VBox id="vbUserCard10" layoutX="646.0" layoutY="121.0" prefHeight="120.0" prefWidth="82.0" />
+<VBox id="vbUserCard11" layoutX="706.0" layoutY="121.0" prefHeight="120.0" prefWidth="82.0" />
+<VBox id="vbUserCard12" layoutX="766.0" layoutY="121.0" prefHeight="120.0" prefWidth="82.0" />
+<VBox id="vbUserCard13" layoutX="826.0" layoutY="121.0" prefHeight="120.0" prefWidth="82.0" />
+<VBox id="vbUserCard14" layoutX="886.0" layoutY="121.0" prefHeight="120.0" prefWidth="82.0" />
+
+
+      
+      
+<VBox id="vbDealerCard0" layoutX="473.0" layoutY="259.0" prefHeight="120.0" prefWidth="82.0" />
+<VBox id="vbDealerCard1" layoutX="413.0" layoutY="259.0" prefHeight="120.0" prefWidth="82.0" />
+<VBox id="vbDealerCard2" layoutX="353.0" layoutY="259.0" prefHeight="120.0" prefWidth="82.0" />
+<VBox id="vbDealerCard3" layoutX="293.0" layoutY="259.0" prefHeight="120.0" prefWidth="82.0" />
+<VBox id="vbDealerCard4" layoutX="233.0" layoutY="259.0" prefHeight="120.0" prefWidth="82.0" />
+<VBox id="vbDealerCard5" layoutX="173.0" layoutY="259.0" prefHeight="120.0" prefWidth="82.0" />
+<VBox id="vbDealerCard6" layoutX="113.0" layoutY="259.0" prefHeight="120.0" prefWidth="82.0" />
+<VBox id="vbDealerCard7" layoutX="53.0" layoutY="259.0" prefHeight="120.0" prefWidth="82.0" />
+<VBox id="vbDealerCard8" layoutX="-7.0" layoutY="259.0" prefHeight="120.0" prefWidth="82.0" />
+<VBox id="vbDealerCard9" layoutX="-67.0" layoutY="259.0" prefHeight="120.0" prefWidth="82.0" />
+<VBox id="vbDealerCard10" layoutX="-127.0" layoutY="259.0" prefHeight="120.0" prefWidth="82.0" />
+<VBox id="vbDealerCard11" layoutX="-187.0" layoutY="259.0" prefHeight="120.0" prefWidth="82.0" />
+<VBox id="vbDealerCard12" layoutX="-247.0" layoutY="259.0" prefHeight="120.0" prefWidth="82.0" />
+<VBox id="vbDealerCard13" layoutX="-307.0" layoutY="259.0" prefHeight="120.0" prefWidth="82.0" />
+<VBox id="vbDealerCard14" layoutX="-367.0" layoutY="259.0" prefHeight="120.0" prefWidth="82.0" />
+
    </children>
 </AnchorPane>

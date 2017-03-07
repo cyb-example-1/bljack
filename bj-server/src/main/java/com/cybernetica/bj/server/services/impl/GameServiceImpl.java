@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cybernetica.bj.common.CardSetUtils;
 import com.cybernetica.bj.server.dao.GameDao;
 import com.cybernetica.bj.server.dao.UserDao;
 import com.cybernetica.bj.server.exceptions.DaoException;
@@ -14,7 +15,6 @@ import com.cybernetica.bj.server.exceptions.ServiceException;
 import com.cybernetica.bj.server.models.Game;
 import com.cybernetica.bj.server.models.User;
 import com.cybernetica.bj.server.services.GameService;
-import com.cybernetica.bj.server.utils.CardSetUtils;
 
 
 @Service

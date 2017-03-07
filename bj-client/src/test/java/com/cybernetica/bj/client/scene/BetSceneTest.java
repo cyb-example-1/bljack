@@ -40,10 +40,8 @@ public class BetSceneTest  extends BaseSceneTest{
 		game.setStatus(GameStatus.BETTING);
 		userResponseDTO.getUser().setGame(game);
 
-		GameCoordinator.get().getEventDispatcher().onEvent(new UserDataEvent(userResponseDTO));
 		when(restService.get(eq("/user/get"),anyObject())).thenReturn(userResponseDTO);
-		
-		GameCoordinator.get().getEventDispatcher().onEvent(new LoginEvent(new  LoginResponseDTO()));
+		GameCoordinator.get().getEventDispatcher().onEvent(new UserDataEvent(userResponseDTO));
 	}
 	
     @Test

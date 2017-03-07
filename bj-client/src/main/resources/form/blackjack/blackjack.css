@@ -18,3 +18,11 @@ root {
 .button:hover {
     -fx-background-color: linear-gradient(#2A5058, #61a2b1);
 }
+
+
+.userCard1 {
+  
+    -fx-padding: 150;
+    -fx-spacing: 100;
+	
+}

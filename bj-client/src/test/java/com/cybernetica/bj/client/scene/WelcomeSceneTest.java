@@ -35,8 +35,6 @@ public class WelcomeSceneTest  extends BaseSceneTest{
 		userDTO.getUser().setBalance(BigDecimal.ZERO);
 		GameCoordinator.get().getEventDispatcher().onEvent(new UserDataEvent(userDTO));
 		when(restService.get(eq("/user/get"),anyObject())).thenReturn(userDTO);
-		
-		GameCoordinator.get().getEventDispatcher().onEvent(new LoginEvent(new  LoginResponseDTO()));
 	}
 	
     @Test

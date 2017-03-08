@@ -7,6 +7,11 @@ import java.math.BigDecimal;
 import com.cybernetica.bj.server.exceptions.ServiceException;
 import com.cybernetica.bj.server.models.User;
 
+/**
+ * User profile service
+ * @author dmitri
+ *
+ */
 public interface UserService {
 
 	/**

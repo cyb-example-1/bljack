@@ -31,6 +31,11 @@ public class SessionController extends BaseController {
 	@Autowired
 	private SessionService sessionService;
 	
+	/**
+	 * Log in method 
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping(value="/login",produces = "application/json", consumes="application/json",method=RequestMethod.POST)
 	@ResponseBody
 	public LoginResponseDTO login(@RequestBody LoginRequestDTO request) {
@@ -38,6 +43,11 @@ public class SessionController extends BaseController {
 	}
 	
 	
+	/**
+	 * health check point
+	 * @return
+	 * @throws ServiceException
+	 */
 	@RequestMapping(value="/status",produces = "application/json", consumes="application/json",method=RequestMethod.GET)
 	@ResponseBody
 	public String status() throws ServiceException {
@@ -46,6 +56,12 @@ public class SessionController extends BaseController {
 	}
 
 
+	/**
+	 * Logout actions
+	 * @param dto
+	 * @return
+	 * @throws ServiceException
+	 */
 	@RequestMapping(value="/logout",produces = "application/json", consumes="application/json",method=RequestMethod.POST)
 	@ResponseBody
 	public RestResponseDTO logout(@RequestBody LogoutRequestDTO dto) throws ServiceException {

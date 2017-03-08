@@ -18,6 +18,11 @@ import com.cybernetica.bj.common.dto.LogoutRequestDTO;
 import com.cybernetica.bj.server.controllers.SessionController;
 import com.cybernetica.bj.server.exceptions.ServiceException;
 
+/**
+ * Rest logout filter
+ * @author dmitri
+ *
+ */
 public final class RestLogoutSuccessHandler implements LogoutSuccessHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(RestLogoutSuccessHandler.class);

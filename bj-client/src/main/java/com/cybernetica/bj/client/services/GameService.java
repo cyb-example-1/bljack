@@ -49,7 +49,7 @@ public interface GameService extends Singleton<UserService> {
 	 * @return
 	 * @throws ClientException
 	 */
-	public UserResponseDTO beginGame(Long id) throws ClientException;
+	public UserResponseDTO beginGame(Long gameId) throws ClientException;
 
 	/**
 	 * Quits game, losing money
@@ -66,6 +66,14 @@ public interface GameService extends Singleton<UserService> {
 	 * @return
 	 * @throws ClientException
 	 */
-	public UserResponseDTO takeCard(Long id) throws ClientException;
+	public UserResponseDTO takeCard(Long gameId) throws ClientException;
+
+	/**
+	 * Completes the game
+	 * @param gameId
+	 * @return
+	 * @throws ClientException
+	 */
+	public UserResponseDTO finishGame(Long gameId) throws ClientException;
 
 }

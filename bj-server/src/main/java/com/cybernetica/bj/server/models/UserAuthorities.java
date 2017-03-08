@@ -9,6 +9,11 @@ import javax.persistence.Id;
 
 import org.hibernate.annotations.GenericGenerator;
 
+/**
+ * Authorities
+ * @author dmitri
+ *
+ */
 @SuppressWarnings("serial")
 @Entity(name="AUTHORITIES")
 public class UserAuthorities  implements Serializable{

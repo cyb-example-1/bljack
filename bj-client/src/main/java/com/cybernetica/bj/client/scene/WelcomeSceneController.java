@@ -32,6 +32,9 @@ public class WelcomeSceneController extends BaseSceneController<WelcomeSceneCont
 	private Button btnPlay;
 	private BigDecimal playMinimum;
 	
+	/**
+	 * {@inheritDoc}
+	 */	
 	@Override
 	protected void postBuild() {
 		
@@ -100,7 +103,9 @@ public class WelcomeSceneController extends BaseSceneController<WelcomeSceneCont
 			btnPlay.setVisible(false);
 	}
 
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected void postActivate() {
 		//simulate event

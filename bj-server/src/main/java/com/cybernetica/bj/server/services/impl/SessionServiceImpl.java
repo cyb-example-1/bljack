@@ -13,6 +13,11 @@ import com.cybernetica.bj.server.exceptions.ServiceException;
 import com.cybernetica.bj.server.models.SpringSession;
 import com.cybernetica.bj.server.services.SessionService;
 
+/**
+ * User session service
+ * @author dmitri
+ *
+ */
 @Transactional
 @Service
 public class SessionServiceImpl implements SessionService {

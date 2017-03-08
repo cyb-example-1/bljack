@@ -93,7 +93,7 @@ public class BaseSceneController<T extends BaseSceneController<T>> implements Si
 	
 	
 	/**
-	 * triggers when scene has been bound to stage
+	 * triggers when scene has been bound to stage or re-activated
 	 */
 	protected void postActivate(){
 		

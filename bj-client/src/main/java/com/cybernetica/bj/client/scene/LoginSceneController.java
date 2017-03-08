@@ -19,6 +19,9 @@ import javafx.scene.control.Label;
 public class LoginSceneController extends BaseSceneController<LoginSceneController> {
 	private static final Logger logger = LoggerFactory.getLogger(LoginSceneController.class);
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected void postBuild() {
 		

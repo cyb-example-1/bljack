@@ -11,9 +11,17 @@ import com.cybernetica.bj.server.dao.SessionDao;
 import com.cybernetica.bj.server.exceptions.DaoException;
 import com.cybernetica.bj.server.models.SpringSession;
 
+/**
+ * Game session DAO implementation
+ * @author dmitri
+ *
+ */
 @Repository
 public class SessionDaoImpl extends BaseDaoImpl implements SessionDao {
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public SpringSession findByUsername(String username) throws DaoException {
 		Session session = getSession();
@@ -25,6 +33,9 @@ public class SessionDaoImpl extends BaseDaoImpl implements SessionDao {
 		return list.get(0);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public List<SpringSession> getAllSessions() throws DaoException {
 		Session session = getSession();
@@ -35,6 +46,9 @@ public class SessionDaoImpl extends BaseDaoImpl implements SessionDao {
 		return list;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public SpringSession findBySession(String sessionId) throws DaoException {
 		Session session = getSession();
@@ -46,6 +60,9 @@ public class SessionDaoImpl extends BaseDaoImpl implements SessionDao {
 		return list.get(0);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void deleteAllSessions(String username, String sessionId) throws DaoException {
 		Session session = getSession();

@@ -27,10 +27,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
+/**
+ * Game process controller
+ * 
+ * @author
+ *
+ */
 public class BlackjackSceneController extends BaseSceneController<BlackjackSceneController> implements IDataListener {
 	private static final Logger logger = LoggerFactory.getLogger(WelcomeSceneController.class);
-
-	private BigDecimal betStep;
 
 	private Label textLabel;
 	private Label lblWinText;
@@ -39,6 +43,9 @@ public class BlackjackSceneController extends BaseSceneController<BlackjackScene
 	private Button btnTake;
 	private Button btnCancel;
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected void postBuild() {
 
@@ -49,8 +56,8 @@ public class BlackjackSceneController extends BaseSceneController<BlackjackScene
 		btnClose = (Button) getElementById("btnClose");
 		btnTake = (Button) getElementById("btnTake");
 		btnCancel = (Button) getElementById("btnCancel");
-		
-		EventHandler<ActionEvent> quitAction=new EventHandler<ActionEvent>() {
+
+		EventHandler<ActionEvent> quitAction = new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent e) {
@@ -82,20 +89,20 @@ public class BlackjackSceneController extends BaseSceneController<BlackjackScene
 			}
 		});
 
-		// btnPlay.setOnAction(new EventHandler<ActionEvent>() {
-		//
-		// @Override
-		// public void handle(ActionEvent e) {
-		// logger.trace("form.bet-play.click");
-		// try {
-		// GameService.get().beginGame(GameSession.get().getUser().getGame().getId());
-		// } catch (ClientException e1) {
-		// logger.debug(e1.getMessage());
-		// setElementText(textLabel,e1.getMessage());
-		// }
-		// }
-		// });
-		//
+		btnDone.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent e) {
+				logger.trace("form.done.click");
+				try {
+					GameService.get().finishGame(GameSession.get().getUser().getGame().getId());
+				} catch (ClientException e1) {
+					logger.debug(e1.getMessage());
+					setElementText(textLabel, e1.getMessage());
+				}
+			}
+		});
+
 		EventProducer.addUserDataListener(this);
 	}
 
@@ -117,48 +124,44 @@ public class BlackjackSceneController extends BaseSceneController<BlackjackScene
 		setElementTextById("username", userDTO.getUsername());
 		setElementTextById("balance", "" + balance + "$");
 		setElementTextById("lblCurrentBet", "" + currentBet + "$");
-		//setElementText(lblWinText,"");
+		// setElementText(lblWinText,"");
 
 		if (game.getStatus() == GameStatus.BETTING)
 			return;
-		
-		if(game.getStatus()==GameStatus.GAME_OVER) {
+
+		if (game.getStatus() == GameStatus.GAME_OVER) {
 			btnTake.setVisible(false);
 			btnCancel.setVisible(false);
 			btnDone.setVisible(false);
 			btnClose.setVisible(true);
-			
-			switch(game.getWinType()) {
+
+			switch (game.getWinType()) {
 			case 2:
-				setElementText(lblWinText,"Draw");
+				setElementText(lblWinText, "Draw");
 				break;
 			case 1:
-				setElementText(lblWinText,"You lose");
+				setElementText(lblWinText, "You lose");
 				break;
 			case 0:
-				setElementText(lblWinText,"! WINNER !");
-				break;							
+				setElementText(lblWinText, "! WINNER !");
+				break;
 			}
 		} else {
+			setElementText(lblWinText, "");
+
 			btnClose.setVisible(false);
-			
+
 			btnTake.setVisible(true);
 			btnCancel.setVisible(true);
 			btnDone.setVisible(true);
 		}
 
-		// if(currentBet.add(betStep).compareTo(balance)>0)
-		// btnBet.setVisible(false);
-		// else
-		// btnBet.setVisible(true);
-		//
-		// if(currentBet.compareTo(BigDecimal.ZERO)>0)
-		// btnPlay.setVisible(true);
-		// else
-		// btnPlay.setVisible(false);
-
 		drawCards(game.getUserCards(), game.getDealerCards());
 	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 
 	@Override
 	protected void postActivate() {

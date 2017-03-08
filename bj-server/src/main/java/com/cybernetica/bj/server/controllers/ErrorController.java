@@ -14,6 +14,11 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.cybernetica.bj.common.dto.RestResponseDTO;
 
+/**
+ * Rest error processing controller
+ * @author dmitri
+ *
+ */
 @RestController
 public class ErrorController implements org.springframework.boot.autoconfigure.web.ErrorController {
 
@@ -27,6 +32,12 @@ public class ErrorController implements org.springframework.boot.autoconfigure.w
 		this.errorAttributes = errorAttributes;
 	}
 
+	/**
+	 * Error handler method
+	 * @param request
+	 * @param response
+	 * @return
+	 */
 	@RequestMapping(value = PATH)
 	RestResponseDTO error(HttpServletRequest request, HttpServletResponse response) {
 		// Appropriate HTTP response code (e.g. 404 or 500) is automatically set

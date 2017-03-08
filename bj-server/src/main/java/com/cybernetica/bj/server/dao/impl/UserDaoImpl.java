@@ -14,10 +14,18 @@ import com.cybernetica.bj.server.exceptions.DaoException;
 import com.cybernetica.bj.server.models.User;
 import com.cybernetica.bj.server.models.UserAuthorities;
 
+/**
+ * User profile DAO implementation
+ * @author dmitri
+ *
+ */
 @Repository
 public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 	private static final Logger logger = LoggerFactory.getLogger(UserDao.class);
 
+	/**
+	 * {@inheritDoc}
+	 */	
 	@Override
 	public User findByUsername(String username) throws DaoException {
 		Session session = getSession();
@@ -30,6 +38,9 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 		return list.get(0);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Serializable> T save(T entity) throws DaoException {
@@ -42,6 +53,9 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 		return (T) user;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public User get(Long id) throws DaoException {
 		return get(User.class, id);

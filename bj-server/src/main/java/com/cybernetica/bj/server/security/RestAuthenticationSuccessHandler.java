@@ -25,6 +25,11 @@ import com.cybernetica.bj.server.exceptions.ServiceException;
 import com.cybernetica.bj.server.models.SpringSession;
 import com.cybernetica.bj.server.services.SessionService;
 
+/**
+ * Rest authentication succcess handler
+ * @author dmitri
+ *
+ */
 public final class RestAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(RestAuthenticationSuccessHandler.class);

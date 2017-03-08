@@ -23,6 +23,11 @@ import com.cybernetica.bj.server.security.RestAuthenticationProcessingFilter;
 import com.cybernetica.bj.server.security.RestAuthenticationSuccessHandler;
 import com.cybernetica.bj.server.security.RestLogoutSuccessHandler;
 
+/**
+ * Session configuration
+ * @author dmitri
+ *
+ */
 @EnableJdbcHttpSession
 @Configuration
 @EnableWebSecurity

@@ -88,6 +88,15 @@ public class GameController extends BaseController {
 		logger.trace("Game #{} for User #{} take card",id,userId);
 		User user = gameService.takeCard(userId,id);
 		return new UserResponseDTO(UserController.map(user));
+	}
+	
+	@RequestMapping(value="/finish/{id}",produces = "application/json")
+	@ResponseBody
+	public UserResponseDTO finishGame(@PathVariable(name="id") Long id) throws ServiceException {
+		Long userId = getLoggedUserId();
+		logger.trace("Game #{} for User #{} finish",id,userId);
+		User user = gameService.finishGame(userId,id);
+		return new UserResponseDTO(UserController.map(user));
 	}	
 	
 	
@@ -97,11 +106,16 @@ public class GameController extends BaseController {
 		ret.setCurrentBet(game.getCurrentBet());
 		ret.setId(game.getId());
 		ret.setUserCards(game.getUserCards());
-		if(game.getStatus()==GameStatus.GAME_OVER.getValue())//show all dealer cards
+		if(game.getStatus()==GameStatus.GAME_OVER.getValue()) {//show all dealer cards
 			ret.setDealerCards(game.getDealerCardOpened()|game.getDealerCardClosed());
+			if(game.getWinType()==null)
+				ret.setWinType(1);
+			else
+				ret.setWinType(game.getWinType());
+		}
 		else
 			ret.setDealerCards(game.getDealerCardOpened());
-		ret.setWinType(game.getWinType());
+		
 		return ret;
 	}
 

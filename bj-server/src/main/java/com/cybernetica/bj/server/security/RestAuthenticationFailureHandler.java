@@ -14,6 +14,11 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import com.cybernetica.bj.common.JsonUtils;
 import com.cybernetica.bj.common.dto.RestResponseDTO;
 
+/**
+ * Rest authentication failure handler
+ * @author dmitri
+ *
+ */
 public final class RestAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
 	private static final Logger logger = LoggerFactory.getLogger(RestAuthenticationFailureHandler.class);

@@ -14,6 +14,11 @@ import com.cybernetica.bj.server.exceptions.ServiceException;
 import com.cybernetica.bj.server.models.User;
 import com.cybernetica.bj.server.services.UserService;
 
+/**
+ * User profile service
+ * @author dmitri
+ *
+ */
 @Service
 @Transactional
 public class UserServiceImpl extends BaseServiceImpl implements UserService {

@@ -16,8 +16,14 @@ import com.cybernetica.bj.server.exceptions.ServiceException;
 import com.cybernetica.bj.server.models.Game;
 import com.cybernetica.bj.server.models.User;
 import com.cybernetica.bj.server.services.GameService;
+import com.cybernetica.bj.server.services.UserService;
 
 
+/**
+ * Game processing service implementation
+ * @author dmitri
+ *
+ */
 @Service
 @Transactional
 public class GameServiceImpl extends BaseServiceImpl implements GameService {
@@ -27,6 +33,9 @@ public class GameServiceImpl extends BaseServiceImpl implements GameService {
 	
 	@Autowired
 	private UserDao userDao;
+	
+	@Autowired
+	private UserService userService;
 
 	/**
 	 * {@inheritDoc}
@@ -111,8 +120,7 @@ public class GameServiceImpl extends BaseServiceImpl implements GameService {
 		dealerSeen=dealerSeen^dealerHidden;
 		dealerHidden=dealerHidden^userBitSet;
 		
-		
-		user.setBalance(user.getBalance().subtract(game.getCurrentBet()));
+		user = userService.updateBalance(user.getUsername(), game.getCurrentBet().negate());
 		
 		game.setStatus(2);
 		game.setUserCards(userBitSet);
@@ -145,14 +153,75 @@ public class GameServiceImpl extends BaseServiceImpl implements GameService {
 		Game game = getGame(user,gameId);
 		if(game.getStatus()==GameStatus.GAME_OVER.getValue())
 			return user;//completed
-		Long usedCards = game.getDealerCardClosed()|game.getDealerCardOpened()|game.getUserCards();
+		Long dealerCards = game.getDealerCardClosed()|game.getDealerCardOpened();
+		Long usedCards = dealerCards |game.getUserCards();
 		Long newSet = CardSetUtils.generateSet(usedCards);
-		Long userCards = newSet^(game.getDealerCardClosed()|game.getDealerCardOpened());
+		Long userCards = newSet^dealerCards;
 		game.setUserCards(userCards);
 		if(CardSetUtils.getSetScore(userCards)>21) {
 			game.setStatus(GameStatus.GAME_OVER.getValue());
 			game.setWinType(1);
 		}
+		return user;
+	}	
+	
+	/**
+	 * {@inheritDoc}
+	 */		
+	@Override
+	public User finishGame(Long userId, Long gameId) throws ServiceException {
+		User user=getUser(userId);
+		Game game = getGame(user,gameId);
+		if(game.getStatus()==GameStatus.GAME_OVER.getValue())
+			return user;//completed
+		
+		
+		Long dealerCards = game.getDealerCardClosed()|game.getDealerCardOpened();
+		Long userCards = game.getUserCards();
+		
+		BigDecimal balanceUpdate=null;
+		Integer winType = null;
+		
+		if(CardSetUtils.getSetScore(userCards)==21) {//Blackjack. user get x1.5 profit
+			balanceUpdate=game.getCurrentBet().multiply(new BigDecimal("2.5"));
+			winType = 0;//player wins
+		}
+		
+		if(winType==null) {
+			//dealer takes until 17
+			while(CardSetUtils.getSetScore(dealerCards)<17) {
+				Long newSet = CardSetUtils.generateSet(dealerCards|userCards);
+				dealerCards = newSet^userCards;
+			}
+			
+			if(CardSetUtils.getSetScore(dealerCards)>21) {
+				winType=0;//player wins
+				balanceUpdate=game.getCurrentBet().multiply(new BigDecimal(2));
+			} else if(CardSetUtils.getSetScore(dealerCards)==CardSetUtils.getSetScore(userCards)){
+				winType=2;//draw
+				balanceUpdate=game.getCurrentBet();
+			}
+			else if(CardSetUtils.getSetScore(dealerCards)>CardSetUtils.getSetScore(userCards)){
+				winType=1;//dealer wins
+			}
+			else {//player wins
+				balanceUpdate=game.getCurrentBet().multiply(new BigDecimal(2));
+				winType=0;
+			}
+		}
+		
+		if(balanceUpdate!=null)
+			user=userService.updateBalance(user.getUsername(),balanceUpdate);
+		game.setDealerCardClosed(0L);
+		game.setDealerCardOpened(dealerCards);		
+		game.setStatus(GameStatus.GAME_OVER.getValue());	
+		game.setWinType(winType);
+		try {
+			gameDao.update(game);
+		} catch (DaoException e) {
+			throw new ServiceException(e);
+		}		
+		
 		return user;
 	}	
 	
@@ -194,7 +263,4 @@ public class GameServiceImpl extends BaseServiceImpl implements GameService {
 		}	
 		return game;
 	}
-
-
-	
 }

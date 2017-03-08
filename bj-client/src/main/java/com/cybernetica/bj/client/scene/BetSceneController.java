@@ -36,6 +36,10 @@ public class BetSceneController extends BaseSceneController<BetSceneController> 
 	private Button btnCancel;
 	
 	
+	/**
+	 * {@inheritDoc}
+	 */
+	
 	@Override
 	protected void postBuild() {
 		
@@ -127,6 +131,9 @@ public class BetSceneController extends BaseSceneController<BetSceneController> 
 	}
 
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected void postActivate() {
 		//simulate event

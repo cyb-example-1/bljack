@@ -6,6 +6,11 @@ import com.cybernetica.bj.server.exceptions.ServiceException;
 import com.cybernetica.bj.server.models.Game;
 import com.cybernetica.bj.server.models.User;
 
+/**
+ * Game processing service
+ * @author dmitri
+ *
+ */
 public interface GameService {
 
 	/**
@@ -59,5 +64,14 @@ public interface GameService {
 	 * @return
 	 */
 	User takeCard(Long userId, Long gameId) throws ServiceException;
+
+	/**
+	 * Finishes game
+	 * @param userId
+	 * @param gameId
+	 * @return
+	 * @throws ServiceException
+	 */
+	User finishGame(Long userId, Long gameId) throws ServiceException;
 
 }

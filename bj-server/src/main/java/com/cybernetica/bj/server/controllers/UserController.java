@@ -34,6 +34,11 @@ public class UserController extends BaseController {
 	@Autowired
 	private UserService userService;
 
+	/**
+	 * Returns user data
+	 * @return
+	 * @throws ServiceException
+	 */
 	@RequestMapping(value = "/get", produces = "application/json")
 	@ResponseBody
 	public UserResponseDTO get() throws ServiceException {
@@ -42,6 +47,12 @@ public class UserController extends BaseController {
 		return get(name);
 	}
 	
+	/**
+	 * REturns user data
+	 * @param username
+	 * @return
+	 * @throws ServiceException
+	 */
 	public UserResponseDTO get(String username) throws ServiceException {
 		User user;
 		user = userService.loadByUsername(username);
@@ -51,6 +62,12 @@ public class UserController extends BaseController {
 		return ret;
 	}	
 
+	/**
+	 * Updates user balance
+	 * @param dto
+	 * @return
+	 * @throws ServiceException
+	 */
 	@RequestMapping(value = "/balance", produces = "application/json", consumes = "application/json")
 	@ResponseBody
 	public UserResponseDTO balance(@RequestBody BalanceChangeDTO dto) throws ServiceException {
@@ -65,6 +82,11 @@ public class UserController extends BaseController {
 		return ret;
 	}
 
+	/**
+	 * mapping utility function
+	 * @param user
+	 * @return
+	 */
 	static UserDTO map(User user) {
 		UserDTO dto = new UserDTO();
 		dto.setId(user.getId());

@@ -34,6 +34,11 @@ import com.cybernetica.bj.server.models.User;
 import com.cybernetica.bj.server.services.SessionService;
 import com.cybernetica.bj.server.services.UserService;
 
+/**
+ * Rest authentication servlet filter
+ * @author dmitri
+ *
+ */
 public class RestAuthenticationProcessingFilter extends AbstractAuthenticationProcessingFilter {
 	
 	private static final Logger logger = LoggerFactory.getLogger(RestAuthenticationProcessingFilter.class);

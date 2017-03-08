@@ -1,9 +1,6 @@
 package com.cybernetica.bj.server.controllers;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.math.BigDecimal;
@@ -136,11 +133,31 @@ public class GameControllerTest extends BaseControllerTest {
 		assertNotNull(userData2.getUser().getGame());
 		assertEquals(userData.getUser().getBalance(), userData2.getUser().getBalance());
 		assertEquals(GameStatus.GAME_OVER, userData.getUser().getGame().getStatus());
+	}	
+	
+	
+	@Test
+	public void testFinishGame() throws Exception{
+		String sessionId=login();
+		
+		cancelGame(sessionId);
+		updateBalance(sessionId);
+		startGame(sessionId);
+		betGame(sessionId);
+		beginGame(sessionId);
+		
+		UserResponseDTO userData = getUserData("test");
+		finishGame(sessionId);
+		UserResponseDTO userData2 = getUserData("test");
+		assertNotNull(userData2.getUser().getGame());
+		if(userData2.getUser().getGame().getWinType()!=0)
+			assertEquals(userData.getUser().getBalance(), userData2.getUser().getBalance());
+		else
+			assertTrue(userData.getUser().getBalance().compareTo(userData2.getUser().getBalance())<0);
+		assertEquals(GameStatus.GAME_OVER, userData.getUser().getGame().getStatus());
 	}		
 	
 	
-
-
 
 	private String login() throws Exception{
 		ResponseEntity<LoginResponseDTO> ret = login("test","test");
@@ -234,6 +251,20 @@ public class GameControllerTest extends BaseControllerTest {
 		
 		assertNotNull(userData.getUser().getGame());
 		return result;
-	}	
+	}
+	
+	private ResultActions finishGame(String sessionId) throws Exception {
+		UserResponseDTO userData = getUserData("test");
+		Long gameId=userData.getUser().getGame().getId();
+		ResultActions result= get("/game/finish/{id}", sessionId,gameId);
+		
+		result.andExpect(status().isOk());
+		
+		userData = getUserData("test");
+		
+		assertNull(userData.getUser().getGame());
+		assertEquals(GameStatus.GAME_OVER.getValue(), userData.getUser().getGame().getStatus());
+		return result;		
+	}
 	
 }

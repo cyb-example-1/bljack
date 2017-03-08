@@ -16,6 +16,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import com.cybernetica.bj.server.exceptions.ServiceException;
 import com.cybernetica.bj.server.services.UserService;
 
+/**
+ * Web security configuration
+ * @author dmitri
+ *
+ */
 @Configuration
 class WebSecurityConfiguration extends GlobalAuthenticationConfigurerAdapter {
 	private static final Logger logger = LoggerFactory.getLogger(WebSecurityConfiguration.class);

@@ -1,5 +1,10 @@
 package com.cybernetica.bj.server.exceptions;
 
+/**
+ * Controller layer exception
+ * @author dmitri
+ *
+ */
 @SuppressWarnings("serial")
 public class ControllerException extends RuntimeException {
 	public ControllerException(String message) {

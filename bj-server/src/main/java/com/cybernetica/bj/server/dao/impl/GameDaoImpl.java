@@ -6,6 +6,11 @@ import org.springframework.stereotype.Repository;
 
 import com.cybernetica.bj.server.dao.GameDao;
 
+/**
+ * Game process DAO implementation
+ * @author dmitri
+ *
+ */
 @Repository
 public class GameDaoImpl extends BaseDaoImpl implements GameDao {
 	@SuppressWarnings("unused")

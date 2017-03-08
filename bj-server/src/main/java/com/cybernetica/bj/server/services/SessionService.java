@@ -5,6 +5,11 @@ import java.util.List;
 import com.cybernetica.bj.server.exceptions.ServiceException;
 import com.cybernetica.bj.server.models.SpringSession;
 
+/**
+ * User session service
+ * @author dmitri
+ *
+ */
 public interface SessionService {
 
 	/**

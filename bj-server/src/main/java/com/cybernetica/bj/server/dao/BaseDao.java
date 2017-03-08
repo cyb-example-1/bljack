@@ -4,6 +4,11 @@ import java.io.Serializable;
 
 import com.cybernetica.bj.server.exceptions.DaoException;
 
+/**
+ * generic DAO service
+ * @author dmitri
+ *
+ */
 public interface BaseDao {
 	
 	/**

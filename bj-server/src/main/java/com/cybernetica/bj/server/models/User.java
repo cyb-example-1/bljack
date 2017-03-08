@@ -13,6 +13,11 @@ import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.GenericGenerator;
 
+/**
+ * User profile model
+ * @author dmitri
+ *
+ */
 @SuppressWarnings("serial")
 @Entity(name="USERS")
 public class User implements Serializable{

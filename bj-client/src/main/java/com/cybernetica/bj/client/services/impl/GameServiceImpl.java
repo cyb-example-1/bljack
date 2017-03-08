@@ -90,6 +90,9 @@ public class GameServiceImpl extends BaseRestServiceImpl  implements GameService
 		return resp;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public UserResponseDTO quitGame(Long gameId) throws ClientException {
 		logger.debug("Quiting game #{} for user: #{}",gameId,GameSession.get().getUser().getId());
@@ -101,11 +104,28 @@ public class GameServiceImpl extends BaseRestServiceImpl  implements GameService
 		return resp;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public UserResponseDTO takeCard(Long gameId) throws ClientException {
 		logger.debug("Take card game #{} for user: #{}",gameId,GameSession.get().getUser().getId());
 		
 		UserResponseDTO resp = getRestService().get("/game/take/"+gameId, UserResponseDTO.class);
+		validate(resp);
+		
+		EventProducer.publishEvent(new UserDataEvent(resp.getUser()));
+		return resp;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */	
+	@Override
+	public UserResponseDTO finishGame(Long gameId) throws ClientException {
+		logger.debug("Complete game #{} for user: #{}",gameId,GameSession.get().getUser().getId());
+		
+		UserResponseDTO resp = getRestService().get("/game/finish/"+gameId, UserResponseDTO.class);
 		validate(resp);
 		
 		EventProducer.publishEvent(new UserDataEvent(resp.getUser()));

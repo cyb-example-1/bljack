@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.cybernetica.bj.client.context.EventProducer;
 import com.cybernetica.bj.client.exceptions.ClientException;
 import com.cybernetica.bj.client.services.impl.AuthServiceImpl;
 import com.cybernetica.bj.client.test.BaseServiceTest;
@@ -38,6 +39,7 @@ public class AuthServiceTest extends BaseServiceTest{
 		//GameCoordinator.get().getEventDispatcher().onEvent(new UserDataEvent(userDTO));
 		when(restService.get(eq("/user/get"),anyObject())).thenReturn(userDTO);		
 		
+		EventProducer.removeAllListeners();
 		LoginResponseDTO respDTO = authService.login("test", "test");
 		assertNotNull(respDTO);
 	}

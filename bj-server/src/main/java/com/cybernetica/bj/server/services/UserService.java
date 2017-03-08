@@ -27,6 +27,7 @@ public interface UserService {
 	 * Searches user by username and pre-loads its game within object
 	 * @param username
 	 * @return
+	 * @throws ServiceException
 	 */
 	User loadByUsername(String username) throws ServiceException;
 	

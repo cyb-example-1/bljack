@@ -25,7 +25,7 @@ public interface UserService    extends Singleton<UserService>{
 
 	/**
 	 * Update balance using provided augment
-	 * @param bigDecimal
+	 * @param augment
 	 */
 	public UserResponseDTO updateBalance(BigDecimal augment) throws ClientException;
 	

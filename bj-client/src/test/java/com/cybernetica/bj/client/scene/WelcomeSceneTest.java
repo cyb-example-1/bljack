@@ -71,9 +71,7 @@ public class WelcomeSceneTest  extends BaseSceneTest{
     }    
     
     @Test
-    public void testStartPlay() throws ClientException {
-    	testAddBalance();   	
-    	
+    public void testStartPlay() throws ClientException {   	
     	GameDTO game= new GameDTO();
     	game.setId(1L);
     	game.setStatus(GameStatus.BETTING);
@@ -89,7 +87,8 @@ public class WelcomeSceneTest  extends BaseSceneTest{
 		when(restService.get(eq("/user/get"),anyObject())).thenReturn(resultDto);    	
     	when(restService.get(eq("/game/start"),anyObject())).thenReturn(gameResponseDTO);
     	
-    	
+    	GameSession.get().getUser().setBalance(BigDecimal.TEN);
+    	Manager.get(WelcomeSceneController.class).onUserData(new UserDataEvent(GameSession.get().getUser()));   	
     	
         // given:
     	clickOn("#btnPlay");

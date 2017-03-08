@@ -1,0 +1,10 @@
+com.cybernetica.bj.client
+com.cybernetica.bj.client.context
+com.cybernetica.bj.client.events
+com.cybernetica.bj.client.exceptions
+com.cybernetica.bj.client.game
+com.cybernetica.bj.client.interfaces
+com.cybernetica.bj.client.scene
+com.cybernetica.bj.client.services
+com.cybernetica.bj.client.services.impl
+com.cybernetica.bj.client.utils

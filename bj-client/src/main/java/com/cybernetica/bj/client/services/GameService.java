@@ -45,7 +45,7 @@ public interface GameService extends Singleton<UserService> {
 	/**
 	 * Begins game
 	 * 
-	 * @param id
+	 * @param gameId
 	 * @return
 	 * @throws ClientException
 	 */
@@ -62,7 +62,7 @@ public interface GameService extends Singleton<UserService> {
 
 	/**
 	 * Take card
-	 * @param id
+	 * @param gameId
 	 * @return
 	 * @throws ClientException
 	 */

@@ -162,6 +162,12 @@ public class GameServiceImpl extends BaseServiceImpl implements GameService {
 			game.setStatus(GameStatus.GAME_OVER.getValue());
 			game.setWinType(1);
 		}
+		
+		try {
+			gameDao.update(game);
+		} catch (DaoException e) {
+			throw new ServiceException(e);
+		}		
 		return user;
 	}	
 	

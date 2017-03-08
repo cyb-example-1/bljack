@@ -1,0 +1,9 @@
+com.cybernetica.bj.server.config
+com.cybernetica.bj.server.controllers
+com.cybernetica.bj.server.dao
+com.cybernetica.bj.server.dao.impl
+com.cybernetica.bj.server.exceptions
+com.cybernetica.bj.server.models
+com.cybernetica.bj.server.security
+com.cybernetica.bj.server.services
+com.cybernetica.bj.server.services.impl

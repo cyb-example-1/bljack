@@ -88,6 +88,8 @@ public class BetSceneTest  extends BaseSceneTest{
     	game.setId(1L);
     	game.setStatus(GameStatus.BET_DONE);
     	game.setCurrentBet(new BigDecimal(10));
+    	game.setDealerCards(1L);
+    	game.setUserCards(1L);
     	
     	UserDTO user= new UserDTO();
     	user.setBalance(new BigDecimal(90));

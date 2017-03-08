@@ -30,7 +30,7 @@ public class GameServiceImpl extends BaseRestServiceImpl  implements GameService
 	@Override
 	public GameResponseDTO gameStart() throws ClientException {
 		logger.debug("Starting game for user: #{}",GameSession.get().getUser().getId());
-		GameResponseDTO resp = getRestService().get("/game/start", GameResponseDTO.class);
+		GameResponseDTO resp = getRestService().post("/game/start", null,GameResponseDTO.class);
 		validate(resp);
 		
 		GameSession.get().getUser().setGame(resp.getObject());
@@ -46,7 +46,7 @@ public class GameServiceImpl extends BaseRestServiceImpl  implements GameService
 	@Override
 	public RestResponseDTO cancelBet(Long gameId) throws ClientException {
 		logger.debug("Canceling game #{} for user: #{}",gameId,GameSession.get().getUser().getId());
-		RestResponseDTO resp = getRestService().get("/game/cancel/"+gameId, RestResponseDTO.class);
+		RestResponseDTO resp = getRestService().delete("/game/cancel/"+gameId, RestResponseDTO.class);
 		validate(resp);
 		
 		GameSession.get().getUser().setGame(null);
@@ -97,7 +97,7 @@ public class GameServiceImpl extends BaseRestServiceImpl  implements GameService
 	public UserResponseDTO quitGame(Long gameId) throws ClientException {
 		logger.debug("Quiting game #{} for user: #{}",gameId,GameSession.get().getUser().getId());
 		
-		UserResponseDTO resp = getRestService().get("/game/quit/"+gameId, UserResponseDTO.class);
+		UserResponseDTO resp = getRestService().delete("/game/quit/"+gameId, UserResponseDTO.class);
 		validate(resp);
 		
 		EventProducer.publishEvent(new UserDataEvent(resp.getUser()));
@@ -111,7 +111,7 @@ public class GameServiceImpl extends BaseRestServiceImpl  implements GameService
 	public UserResponseDTO takeCard(Long gameId) throws ClientException {
 		logger.debug("Take card game #{} for user: #{}",gameId,GameSession.get().getUser().getId());
 		
-		UserResponseDTO resp = getRestService().get("/game/take/"+gameId, UserResponseDTO.class);
+		UserResponseDTO resp = getRestService().post("/game/take/"+gameId,null, UserResponseDTO.class);
 		validate(resp);
 		
 		EventProducer.publishEvent(new UserDataEvent(resp.getUser()));

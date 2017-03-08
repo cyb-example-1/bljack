@@ -46,8 +46,7 @@ public interface BaseDao {
 	
 	/**
 	 * removes entity
-	 * @param entityCls
-	 * @param id
+	 * @param entity
 	 * @throws DaoException
 	 */
 	<T> void delete(T entity) throws DaoException;

@@ -1,6 +1,10 @@
 package com.cybernetica.bj.server.controllers;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.math.BigDecimal;
@@ -132,7 +136,7 @@ public class GameControllerTest extends BaseControllerTest {
 		UserResponseDTO userData2 = getUserData("test");
 		assertNotNull(userData2.getUser().getGame());
 		assertEquals(userData.getUser().getBalance(), userData2.getUser().getBalance());
-		assertEquals(GameStatus.GAME_OVER, userData.getUser().getGame().getStatus());
+		assertEquals(GameStatus.GAME_OVER, userData2.getUser().getGame().getStatus());
 	}	
 	
 	
@@ -154,7 +158,7 @@ public class GameControllerTest extends BaseControllerTest {
 			assertEquals(userData.getUser().getBalance(), userData2.getUser().getBalance());
 		else
 			assertTrue(userData.getUser().getBalance().compareTo(userData2.getUser().getBalance())<0);
-		assertEquals(GameStatus.GAME_OVER, userData.getUser().getGame().getStatus());
+		assertEquals(GameStatus.GAME_OVER, userData2.getUser().getGame().getStatus());
 	}		
 	
 	
@@ -173,11 +177,11 @@ public class GameControllerTest extends BaseControllerTest {
 		
 		//game cancel
 		Long gameId=userData.getUser().getGame().getId();
-		return get("/game/cancel/{id}", sessionId,gameId);
+		return delete("/game/cancel/{id}", sessionId,gameId);
 	}
 	
 	private ResultActions startGame(String sessionId) throws Exception{
-		ResultActions result = get("/game/start",sessionId);
+		ResultActions result = post("/game/start",(String)null,sessionId);
 		
 		result.andExpect(status().isOk());
 		GameResponseDTO gameResponseDTO = getResult(result, GameResponseDTO.class);
@@ -230,7 +234,7 @@ public class GameControllerTest extends BaseControllerTest {
 	private ResultActions quitGame(String sessionId) throws Exception {
 		UserResponseDTO userData = getUserData("test");
 		Long gameId=userData.getUser().getGame().getId();
-		ResultActions result= get("/game/quit/{id}", sessionId,gameId);
+		ResultActions result= delete("/game/quit/{id}", sessionId,gameId);
 		
 		result.andExpect(status().isOk());
 		
@@ -240,10 +244,13 @@ public class GameControllerTest extends BaseControllerTest {
 		return result;
 	}
 	
+
+
+
 	private ResultActions takeCard(String sessionId) throws Exception {
 		UserResponseDTO userData = getUserData("test");
 		Long gameId=userData.getUser().getGame().getId();
-		ResultActions result= get("/game/take/{id}", sessionId,gameId);
+		ResultActions result= post("/game/take/{id}",(String) null,sessionId,gameId);
 		
 		result.andExpect(status().isOk());
 		
@@ -262,9 +269,8 @@ public class GameControllerTest extends BaseControllerTest {
 		
 		userData = getUserData("test");
 		
-		assertNull(userData.getUser().getGame());
-		assertEquals(GameStatus.GAME_OVER.getValue(), userData.getUser().getGame().getStatus());
+		assertNotNull(userData.getUser().getGame());
+		assertEquals(GameStatus.GAME_OVER, userData.getUser().getGame().getStatus());
 		return result;		
 	}
-	
 }

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,7 +40,7 @@ public class UserController extends BaseController {
 	 * @return
 	 * @throws ServiceException
 	 */
-	@RequestMapping(value = "/get", produces = "application/json")
+	@RequestMapping(value = "/get", produces = "application/json",method=RequestMethod.GET)
 	@ResponseBody
 	public UserResponseDTO get() throws ServiceException {
 		logger.trace("User read");
@@ -68,7 +69,7 @@ public class UserController extends BaseController {
 	 * @return
 	 * @throws ServiceException
 	 */
-	@RequestMapping(value = "/balance", produces = "application/json", consumes = "application/json")
+	@RequestMapping(value = "/balance", produces = "application/json", consumes = "application/json",method=RequestMethod.POST)
 	@ResponseBody
 	public UserResponseDTO balance(@RequestBody BalanceChangeDTO dto) throws ServiceException {
 		logger.trace("User balance change {}", dto);

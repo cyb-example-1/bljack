@@ -33,11 +33,29 @@ public interface RestService   extends Singleton<RestService>{
 
 	/**
 	 * GET request
-	 * @param string
-	 * @param class1
+	 * @param uri
+	 * @param respClass
 	 * @return
 	 */
 	public <T extends RestResponseDTO> T get(String uri,Class<T> respClass) throws ClientException;
+	
+	
+	/**
+	 * PUT request
+	 * @param uri
+	 * @param respClass
+	 * @return
+	 */
+	public <T extends RestResponseDTO> T put(String uri,Class<T> respClass) throws ClientException;	
+	
+	
+	/**
+	 * DELETE request
+	 * @param uri
+	 * @param respClass
+	 * @return
+	 */
+	public <T extends RestResponseDTO> T delete(String uri,Class<T> respClass) throws ClientException;		
 
 
 	

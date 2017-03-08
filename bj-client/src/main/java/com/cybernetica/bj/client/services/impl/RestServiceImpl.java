@@ -60,6 +60,7 @@ public class RestServiceImpl implements RestService{
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public <T extends RestResponseDTO> T get(String uri,Class<T> respClass) throws ClientException{
 		logger.debug("calling {}",uri);
 		return doExecute("GET",uri,null,respClass);
@@ -76,22 +77,30 @@ public class RestServiceImpl implements RestService{
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public <T extends RestResponseDTO,Y extends BaseDTO> T post(String uri,Y content,Class<T> respClass) throws ClientException{
 		logger.debug("calling {} with {}",uri,content);
 		return doExecute("POST",uri,content,respClass);
 	}
 	
 	/**
-	 * DELETE
-	 * @param uri
-	 * @param respClass
-	 * @return
-	 * @throws ClientException
+	 * {@inheritDoc}
 	 */
+	@Override
 	public <T extends RestResponseDTO> T delete(String uri,Class<T> respClass) throws ClientException{
 		logger.debug("calling {}",uri);
 		return doExecute("DELETE",uri,null,respClass);
 	}
+	
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public <T extends RestResponseDTO> T put(String uri, Class<T> respClass) throws ClientException {
+		logger.debug("calling {}",uri);
+		return doExecute("PUT",uri,null,respClass);
+	}	
 	
 	
 	private <T extends RestResponseDTO,Y extends BaseDTO> T doExecute(String method,String path,Y content,Class<T> respClass) throws ClientException {
@@ -153,4 +162,5 @@ public class RestServiceImpl implements RestService{
 			throw new ClientException("error.json.parse", e);
 		}
 	}
+
 }

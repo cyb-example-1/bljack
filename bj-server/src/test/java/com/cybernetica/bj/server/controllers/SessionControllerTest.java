@@ -33,7 +33,7 @@ public class SessionControllerTest extends BaseControllerTest{
 	public void testLogout() throws Exception {
 		ResponseEntity<LoginResponseDTO> ret = login("test","test");
 		String sessionId=ret.getHeaders().getFirst("X-Auth-Token");
-		ResultActions result = get("/game/start",sessionId);
+		ResultActions result = post("/game/start",(String)null,sessionId);
 		result.andExpect(status().isOk());
 		
 		result = get("/session/logout", sessionId);
@@ -46,7 +46,7 @@ public class SessionControllerTest extends BaseControllerTest{
 	
 	@Test
 	public void testUnauthorizedAccess() throws Exception {
-		ResultActions result = get("/game/start",null);
+		ResultActions result = post("/game/start",(String)null,null);
 		result.andExpect(status().isUnauthorized());
 	}
 	

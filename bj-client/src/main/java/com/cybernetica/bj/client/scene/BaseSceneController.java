@@ -66,7 +66,6 @@ public class BaseSceneController<T extends BaseSceneController<T>> implements Si
 	 * @param cssFile 
 	 * @param fxml 
 	 * @return
-	 * @throws IOException 
 	 */
 	public Scene getScene(String fxml, String cssFile){
 		if (scene == null) {

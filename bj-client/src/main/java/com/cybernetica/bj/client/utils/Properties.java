@@ -36,7 +36,7 @@ public class Properties {
 
 	/**
 	 * Returns bigdecimal
-	 * @param string
+	 * @param key
 	 * @return
 	 */
 	public static BigDecimal getBigDecimal(String key) {

@@ -25,6 +25,7 @@ public interface GameService {
 	 * Cancels current betting stage. No money loss
 	 * @param userId
 	 * @param gameId
+	 * @return
 	 * @throws ServiceException
 	 */
 	User cancelGame(Long userId, Long gameId) throws ServiceException;
@@ -43,15 +44,16 @@ public interface GameService {
 	/**
 	 * Finishes betting and begins blackjack
 	 * @param userId
-	 * @param id
+	 * @param gameId
 	 * @return
+	 * @throws ServiceException
 	 */
 	User beginGame(Long userId, Long gameId) throws ServiceException;
 
 	/**
 	 * Quits game. money loss.
 	 * @param userId
-	 * @param id
+	 * @param gameId
 	 * @return
 	 * @throws ServiceException
 	 */
@@ -60,8 +62,9 @@ public interface GameService {
 	/**
 	 * Take card
 	 * @param userId
-	 * @param id
+	 * @param gameId
 	 * @return
+	 * @throws ServiceException
 	 */
 	User takeCard(Long userId, Long gameId) throws ServiceException;
 

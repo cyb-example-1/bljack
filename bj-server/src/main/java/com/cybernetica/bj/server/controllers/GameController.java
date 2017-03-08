@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,7 +35,7 @@ public class GameController extends BaseController {
 	private GameService gameService;
 
 	
-	@RequestMapping(value="/start",produces = "application/json")
+	@RequestMapping(value="/start",produces = "application/json",method=RequestMethod.POST)
 	@ResponseBody
 	public GameResponseDTO gameStart() throws ServiceException {
 		logger.trace("Game start");
@@ -43,7 +44,7 @@ public class GameController extends BaseController {
 		return new GameResponseDTO(map(game));
 	}
 	
-	@RequestMapping(value="/cancel/{id}",produces = "application/json")
+	@RequestMapping(value="/cancel/{id}",produces = "application/json",method=RequestMethod.DELETE)
 	@ResponseBody
 	public RestResponseDTO gameCancel(@PathVariable(name="id") Long id) throws ServiceException {
 		Long userId = getLoggedUserId();
@@ -52,7 +53,7 @@ public class GameController extends BaseController {
 		return new RestResponseDTO();
 	}
 	
-	@RequestMapping(value="/bet",produces = "application/json", consumes = "application/json")
+	@RequestMapping(value="/bet",produces = "application/json", consumes = "application/json", method=RequestMethod.POST)
 	@ResponseBody
 	public GameResponseDTO gameBet(@RequestBody GameBetChangeDTO betDTO) throws ServiceException {
 		Long userId = getLoggedUserId();
@@ -62,7 +63,7 @@ public class GameController extends BaseController {
 		return new GameResponseDTO(map(game));
 	}	
 	
-	@RequestMapping(value="/begin/{id}",produces = "application/json")
+	@RequestMapping(value="/begin/{id}",produces = "application/json", method=RequestMethod.GET)
 	@ResponseBody
 	public UserResponseDTO gameBegin(@PathVariable(name="id") Long id) throws ServiceException {
 		Long userId = getLoggedUserId();
@@ -71,7 +72,7 @@ public class GameController extends BaseController {
 		return new UserResponseDTO(UserController.map(user));
 	}
 	
-	@RequestMapping(value="/quit/{id}",produces = "application/json")
+	@RequestMapping(value="/quit/{id}",produces = "application/json",method=RequestMethod.DELETE)
 	@ResponseBody
 	public UserResponseDTO gameQuit(@PathVariable(name="id") Long id) throws ServiceException {
 		Long userId = getLoggedUserId();
@@ -81,7 +82,7 @@ public class GameController extends BaseController {
 	}	
 	
 	
-	@RequestMapping(value="/take/{id}",produces = "application/json")
+	@RequestMapping(value="/take/{id}",produces = "application/json", method=RequestMethod.POST)
 	@ResponseBody
 	public UserResponseDTO takeCard(@PathVariable(name="id") Long id) throws ServiceException {
 		Long userId = getLoggedUserId();
@@ -90,7 +91,7 @@ public class GameController extends BaseController {
 		return new UserResponseDTO(UserController.map(user));
 	}
 	
-	@RequestMapping(value="/finish/{id}",produces = "application/json")
+	@RequestMapping(value="/finish/{id}",produces = "application/json", method=RequestMethod.GET)
 	@ResponseBody
 	public UserResponseDTO finishGame(@PathVariable(name="id") Long id) throws ServiceException {
 		Long userId = getLoggedUserId();

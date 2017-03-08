@@ -84,6 +84,26 @@ public abstract class BaseControllerTest {
 		return mockMvc.perform(builder);	
 	}	
 	
+	protected ResultActions delete(String uri, String sessionId, Object... uriVar) throws Exception {
+		MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.delete(uri,uriVar)
+		.contentType(MediaType.APPLICATION_JSON_UTF8)
+		.accept(MediaType.APPLICATION_JSON_UTF8);
+		if(sessionId!=null)
+			builder.header("X-Auth-Token", sessionId);
+		
+		return mockMvc.perform(builder);	
+	}	
+	
+	protected ResultActions put(String uri, String sessionId, Object... uriVar) throws Exception {
+		MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.put(uri,uriVar)
+		.contentType(MediaType.APPLICATION_JSON_UTF8)
+		.accept(MediaType.APPLICATION_JSON_UTF8);
+		if(sessionId!=null)
+			builder.header("X-Auth-Token", sessionId);
+		
+		return mockMvc.perform(builder);	
+	}	
+	
 	protected <T extends BaseDTO> ResultActions post(String uri, T request, String sessionId, Object... uriVar) throws Exception {
 		if(request==null)
 			return post(uri,(String)null,sessionId,uriVar);
